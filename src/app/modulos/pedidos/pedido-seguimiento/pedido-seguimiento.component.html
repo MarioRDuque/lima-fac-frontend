@@ -1,0 +1,103 @@
+<div class="bg-breadcrumb">
+  <div class="p-3">
+    <div class="text-right" style="color: white; font-size: 14px; font-weight: 700; cursor: pointer">
+      > Pedidos > Seguimiento
+    </div>
+  </div>
+</div>
+<div style="margin: 20px;">
+  <div class="row justify-content-center card-bonito" *ngIf="solicitando" style="margin-bottom: 20px;">
+    <div class="col col-auto">
+      <p class="text-primary text-center">Cargando ...</p>
+       <app-cargando></app-cargando>
+    </div>
+  </div>
+  <div *ngIf="!solicitando" class="card-bonito" style="margin-bottom: 20px;">
+    <div class="row toolbar pt-3 pb-1 mb-3">
+        <div class="col text-left">
+          PEDIDO N°: {{idPedido}}
+        </div>
+        <div class="col text-right">
+          <i class="material-icons md-48 cursor-pointer mx-2 text-danger" title="eliminar" (click)="confirmarEliminacion()">delete</i>
+          <i *ngIf="!pedido.fechaentrega" class="material-icons md-48 cursor-pointer text-primary" title="editar" routerLink="/pedidos/formulario/{{idPedido}}">create</i>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box-shadow p-3 mb-3">
+          <div class="">
+            <label><u><strong>Cliente</strong></u></label>
+            <li>{{pedido.idcliente.idpersona.nombrecompleto}}</li>
+          </div>
+          <div class="mt-2">
+            <label><u><strong>Descripcion del pedido</strong></u></label>
+            <li>{{pedido.descripcion}}</li>
+          </div>
+          <div class="mt-2">
+            <label><u><strong>Direccion</strong></u></label>
+            <li>{{pedido.direccion}}</li>
+          </div>
+          <div class="mt-2">
+            <label><u><strong>Registrado por</strong></u></label>
+            <li>{{pedido.usuariosave}}</li>
+          </div>
+          <div class="mt-2">
+            <label><u><strong>Fecha de Pedido</strong></u></label>
+            <li>{{pedido.fechapedido | date:"dd/MM/yyyy"}}</li>
+          </div>
+          <div class="mt-2">
+            <label><u><strong>Fecha Limite de Entrega</strong></u></label>
+            <li>{{pedido.fechalimite | date:"dd/MM/yyyy"}}</li>
+          </div>
+          <div class="mt-2">
+            <p>
+              <ngui-map [center]="center">
+
+              </ngui-map>
+              place: {{address | json}}
+            </p>
+          </div>
+          <div class="mt-2">
+            <label><u><strong>Productos</strong></u></label>
+            <div class="col box-line-negocio-cuerpo table-responsive-secundaria ">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Unidad Medida</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let producto of pedido.detallePedidoList">
+                    <td>{{producto.idproducto ? producto.idproducto.nombre : "NO ESPECIFICA"}}</td>
+                    <td>{{producto.idunidad ? producto.idunidad.descripcion : "NO ESPECIFICA"}}</td>
+                    <td>{{producto.cantidad}}</td>
+                    <td>{{producto.moneda.simbolo}} {{producto.preciototal | number : '1.2-2'}}</td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <th>IMPORTE TOTAL</th>
+                    <th></th>
+                    <th></th>
+                    <th>S./ {{importe}}</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: right" class="pt-3 pb-3">
+      <button class="btn btn-primary" routerLink="/pedidos/lista">Volver al listado</button>
+      <button *ngIf="!pedido.fechaentrega" class="btn btn-primary" (click)="confirmarCierre('venta')">Terminar Venta</button>
+      <button class="btn btn-primary" (click)="confirmarCierre('voleta')">Imprimir Boleta</button>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-end">
+  <a href="" id="boletaDownload" #boletaDownload></a>
+</div>

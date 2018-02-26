@@ -1,0 +1,82 @@
+<div class="modal-header">
+  <p class="modal-title">¿Seguro que desea realizar esta acción?</p>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+	<div class="row justify-content-center" *ngIf="solicitando">
+	  <div class="col col-auto">
+	    <p class="text-primary text-center">Obteniendo revisiones</p>
+	     <app-cargando></app-cargando> 
+	  </div>
+	</div>
+	<div *ngIf="!solicitando">
+	  <p class="text-primary text-center" *ngIf="(!revisiones || revisiones.length === 0) && solicitudExitosa">No se encontraron resultados</p>
+	  <p class="text-primary text-center" *ngIf="!solicitudExitosa">Ocurrio un Error</p>
+	  <div class="row pb-3 pt-3" [class.justify-content-center]="!revisiones || !solicitudExitosa">
+	    <div class="col-auto" *ngIf="solicitudExitosa">
+	      <form class="form-inline">
+	        <div class="form-group">
+	          <div class="input-group">
+	            <input class="form-control" placeholder="yyyy-mm-dd" name="d" [(ngModel)]="desde" ngbDatepicker #d="ngbDatepicker">
+	            <button class="input-group-addon cursor-pointer" (click)="d.toggle()" type="button">
+	              <i class="material-icons">today</i>
+	            </button>
+	          </div>
+	          <div class="input-group">
+	            <input class="form-control" placeholder="yyyy-mm-dd" name="d1" [(ngModel)]="hasta" ngbDatepicker #d1="ngbDatepicker">
+	            <button class="input-group-addon cursor-pointer" (click)="d1.toggle()" type="button">
+	              <i class="material-icons">today</i>
+	            </button>
+	          </div>
+	          <div class="input-group">
+	            <button class="input-group-addon cursor-pointer" (click)="busqueda()" type="button">
+	              <i class="material-icons">search</i>
+	            </button>
+	          </div>
+	        </div>
+	      </form>
+	    </div>
+	  </div>
+	  <div *ngIf="revisiones && revisiones.length>0 && solicitudExitosa">
+	    <div class="row">
+	      <div class="col">
+	        <table class="table table-sigro table-hover table-responsive">
+	          <thead class="thead-inverse">
+	            <tr>
+	              <th>Código</th>
+	              <th>Factor</th>
+	              <th>Riesgo</th>
+	              <th>Fecha</th>
+	              <th>Descripción</th>
+	              <th>Registrado por</th>
+	            </tr>
+	          </thead>
+	          <tbody>
+	            <tr *ngFor="let evento of revisiones" [ngClass]="{'color-ec': evento.estadoEvento === 'C', 'color-ep': evento.estadoEvento === 'P'}" class="cursor-pointer" routerLink="/revisiones/seguimiento/{{evento.id}}">
+	              <td>{{evento.id}}</td>
+	              <td>{{evento.factor}}</td>
+	              <td>{{evento.riesgo}}</td>
+	              <td>{{evento.fechaOcurrencia | date:"dd/MM/yyyy"}}</td>
+	              <td>{{evento.descripcion}}</td>
+	              <td>{{evento.usuarioRegistra ? evento.usuarioRegistra : evento.normalRegistra}}</td>
+	            </tr>
+	          </tbody>
+	        </table>
+	      </div>
+	    </div>
+	    <div class="row align-items-center mb-3">
+	      <div class="col">
+	        <p class="card-text text-secondary"><small>Mostrando {{paginacion.paginaActual}} de {{paginacion.totalPaginas}} páginas.</small></p>
+	      </div>
+	      <div class="text-right padding-right-15">
+	        <ngb-pagination style="margin-bottom: 0px;" class="ngb-pagination-sigro" [collectionSize]="paginacion.totalRegistros" [(page)]="page" [maxSize]="1" [boundaryLinks]="true" (pageChange)="traerrevisiones()"></ngb-pagination>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Close click')">Cerrar</button>
+</div>

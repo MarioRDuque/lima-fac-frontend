@@ -1,0 +1,58 @@
+.modal-header{
+  padding: 8px;
+  border-bottom: 1px solid #fff;
+}
+h5{
+  color: rgba(30,99,213,.8);
+}
+form input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: 0;
+  border: 1px solid rgba(30,99,213,.5);
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 250px;
+  border-radius: 3px;
+  padding: 10px 15px;
+  margin: 0 auto 10px auto;
+  display: block;
+  text-align: center;
+  font-size: 16px;
+  color: #1a5075;
+  -webkit-transition-duration: 0.25s;
+          transition-duration: 0.25s;
+  font-weight: 400;
+}
+form input:focus {
+  border: 1px solid rgba(30,99,213,.7);
+  background-color: white;
+}
+
+.bd-ingresar{
+  font-family: 'Source Sans Pro', sans-serif;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: 0;
+  border: 0;
+  padding: 10px 15px;
+  margin: 0 auto 10px auto;
+  border-radius: 3px;
+  width: 250px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-transition-duration: 0.25s;
+          transition-duration: 0.25s;
+  background-color: #1e63d5;
+  color: #fff;
+}
+.bd-ingresar:hover{
+  background-color: #124DAE;
+}
+
+@media (max-width: 576px){
+  form input, .bd-ingresar {
+    width: 200px;
+  }
+}

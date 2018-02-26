@@ -1,0 +1,18 @@
+.border-cuaderno {
+    border-left: 1px solid #2196F3!important;
+}
+@media (max-width: 768px) {
+    .border-cuaderno {
+        border-left : 0px!important;
+    }
+}
+.box-line-negocio {
+    box-sizing: border-box;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+}
+.box-line-negocio-cuerpo {
+    border: 1px solid #e9ecef;
+}
+.pc-line-neg{
+    padding: .5rem 1rem;
+}

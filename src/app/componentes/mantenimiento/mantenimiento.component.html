@@ -1,0 +1,360 @@
+<div class="bg-breadcrumb">
+  <div class="p-3">
+    <div class="text-right" style="color: white; font-size: 14px; font-weight: 700; cursor: pointer">
+      > Mantenimiento
+    </div>
+  </div>
+</div>
+<div style="margin: 20px;">
+  <div class="card-bonito" style="padding-top: 20px;">
+    <ngb-tabset [justify]="currentJustify" (tabChange)="changeTab($event)">
+          <ngb-tab id="usuario" title="Agregar Usuario">
+            <ng-template ngbTabContent>
+              <div style="background-color: #fff" class="p-3">
+                <div class="modal-body">
+                  <div class="row justify-content-center" *ngIf="solicitando">
+                    <div class="col col-auto">
+                      <p class="text-primary text-center">Cargando...</p>
+                      <app-cargando></app-cargando>
+                    </div>
+                  </div>
+                  <div class="form-row" *ngIf="!vistaFormulario && !solicitando">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Ingrese nombre de usuario" [(ngModel)]="numusu">
+                      <input type="text" class="form-control" placeholder="Ingrese dni" [(ngModel)]="numdoc">
+                      <button type="button" class="input-group-addon cursor-pointer" (click)="busqueda('usuario')"><i class="material-icons">search</i></button>
+                      <button type="button" class="input-group-addon cursor-pointer" (click)="nuevo()"><i class="material-icons">add_circle</i> Nuevo</button>
+                    </div>
+                  </div>
+                  <div *ngIf="!vistaFormulario && !solicitando">
+                    <br>
+                    <div class="row">
+                      <div class="col table-responsive">
+                        <table class="table table-sigro table-hover">
+                          <thead class="thead-inverse">
+                          <tr>
+                            <th>Nombre de usuario</th>
+                            <th>Numero Doc.</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th style="width:30px;">Opciones</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr class="cursor-pointer" *ngFor="let usuario of usuarios">
+                            <td>{{usuario.userId}}</td>
+                            <td>{{usuario.dni}}</td>
+                            <td>{{usuario.nombre}} {{usuario.apellidos}}</td>
+                            <td>{{usuario.tipousuario ? usuario.tipousuario.nombre : null}}</td>
+                            <td>{{usuario.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
+                            <td style="padding-top: 0px; padding-bottom: 0px;">
+                              <i class="material-icons mi-30 cursor-pointer text-danger" (click)="confirmarEliminacion(usuario, 'usuario')" title="eliminar">delete</i>
+                              <i class="material-icons mi-30 cursor-pointer text-primary" (click)="traerParaEdicion(usuario.id, 'usuario')" title="editar">create</i>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6 table-responsive">
+                        <ngb-pagination style="margin-bottom: 0px;" class="ngb-pagination-sigro" [collectionSize]="paginacion.totalRegistros" [(page)]="page" [maxSize]="1" [boundaryLinks]="true" (pageChange)="traer('usuarios')"></ngb-pagination>
+                      </div>
+                      <div class="col-md-6 text-right pr-3">
+                        <p class="card-text text-secondary"><small>Mostrando {{paginacion.paginaActual}} de {{paginacion.totalPaginas}} páginas.</small></p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <form #usuarioForm="ngForm" *ngIf="vistaFormulario && !solicitando">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="login" class="col-form-label">Nombre de usuario </label>
+                        <input type="text" id="login"  name="login" class="form-control" placeholder="Ingresa nombre de usuario" [(ngModel)]="usuario.userId" maxlength="90" required>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label">DNI <span class="text-primary">*</span> </label>
+                        <input type="number" id="dni" name="dni" class="form-control" placeholder="¿Cual es el numero de documento?" [(ngModel)]="usuario.dni"
+                               min="0" max="99999999" required>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="col-form-label">Estado <span class="text-primary">*</span> </label>
+                        <div>
+                          <ui-switch [(ngModel)]="usuario.estado" name="estado"></ui-switch>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label">Nombre <span class="text-primary">*</span></label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="¿Cual es el nombre?" [(ngModel)]="usuario.nombre" maxlength="30" required>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="¿Cuales son los apellidos?" [(ngModel)]="usuario.apellidos" maxlength="80">
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label">Clave <span class="text-primary">*</span></label>
+                        <label style="float: right; margin-bottom: 0;" *ngIf="verpass"><i class="material-icons cursor-pointer" (click)="ver_password()" name="ver_pass" value="ver" >remove_red_eye</i></label>
+                        <label style="float: right; margin-bottom: 0;" *ngIf="!verpass"><i class="material-icons cursor-pointer"  (click)="ver_password()">visibility_off</i></label>
+                          <span id="pass" >
+                            <input type="password"  class="form-control" id="clave" #clave name="clave" placeholder="Ingrese Clave" (keyup)="compararClaves()" [(ngModel)]="usuario.password" maxlength="32" >
+                          </span>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label">Confirmar Clave <span class="text-primary">*</span></label>
+                        <label style="float: right; margin-bottom: 0;" *ngIf="clavesIguales"><i style="color: green;" class="material-icons">check</i></label>
+                        <label style="float: right; margin-bottom: 0;" *ngIf="!clavesIguales"><i style="color: red;" class="material-icons">close</i></label>
+                        <input type="password" class="form-control" id="clave1" name="clave1" placeholder="Confirme Clave" [(ngModel)]="usuario.clave1"
+                               (keyup)="compararClaves()" maxlength="32">
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-9">
+                        <label class="col-form-label">Correo <span class="text-primary">*</span> </label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese email" [(ngModel)]="usuario.correo" maxlength="80">
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="tipoDocs" class="col-form-label">Tipo de usuario <span class="text-primary">*</span></label>
+                        <select class="form-control" id="tipoDocs" name="tipoUsers" [(ngModel)]="usuario.tipousuario.id" required>
+                          <option *ngFor="let tipo of tiposUsuario" [ngValue]="tipo.id">
+                            {{ tipo.nombre }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <button *ngIf="!usuario.id" type="submit" class="btn btn-primary" [disabled]="!usuarioForm.form.valid || !clavesIguales" (click)="onSubmit('usuario',usuario)">Guardar</button>
+                      <button *ngIf="usuario.id" type="submit" class="btn btn-primary" [disabled]="!usuarioForm.form.valid || !clavesIguales" (click)="onSubmit('usuario',usuario)">Editar</button>
+                      <button type="button" class="btn btn-outline-dark" (click)="vistaFormulario = false">Cancelar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab id="tipodocumento" title="Tipos de Documento" (click)="traer('tipodocumento')">
+            <ng-template ngbTabContent>
+              <div style="background-color: #fff" class="p-3">
+                <div class="modal-body">
+                  <div class="row justify-content-center" *ngIf="solicitando">
+                    <div class="col col-auto">
+                      <p class="text-primary text-center">Cargando...</p>
+                      <app-cargando></app-cargando>
+                    </div>
+                  </div>
+                  <div class="form-row" *ngIf="!vistaFormulario && !solicitando">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Ingrese abreviatura del tipo de documento" [(ngModel)]="abrev">
+                      <button type="button" class="input-group-addon cursor-pointer" (click)="busqueda('tipodocumento')"><i class="material-icons">search</i></button>
+                      <button type="button" class="input-group-addon cursor-pointer" (click)="nuevo()"><i class="material-icons">add_circle</i> Nuevo</button>
+                    </div>
+                  </div>
+                  <div *ngIf="!vistaFormulario && !solicitando">
+                    <br>
+                    <div class="row">
+                      <div class="col table-responsive">
+                        <table class="table table-sigro table-hover">
+                          <thead class="thead-inverse">
+                          <tr>
+                            <th>Nombre</th>
+                            <th>Abreviatura</th>
+                            <th style="width:30px;">Opciones</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr class="cursor-pointer" *ngFor="let tipodocumento of documentos">
+                            <td>{{tipodocumento.nombre}}</td>
+                            <td>{{tipodocumento.abreviatura}}</td>
+                            <td style="padding-top: 0px; padding-bottom: 0px;">
+                              <i class="material-icons mi-30 cursor-pointer text-danger" (click)="confirmarEliminacion(tipodocumento, 'tipodocumento')" title="eliminar">delete</i>
+                              <i class="material-icons mi-30 cursor-pointer text-primary" (click)="traerParaEdicion(tipodocumento.id, 'tipodocumento')" title="editar">create</i>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6 table-responsive">
+                        <ngb-pagination style="margin-bottom: 0px;" class="ngb-pagination-sigro" [collectionSize]="paginacion.totalRegistros" [(page)]="page" [maxSize]="1" [boundaryLinks]="true" (pageChange)="traer('tipodocumento')"></ngb-pagination>
+                      </div>
+                      <div class="col-md-6 text-right pr-3">
+                        <p class="card-text text-secondary"><small>Mostrando {{paginacion.paginaActual}} de {{paginacion.totalPaginas}} páginas.</small></p>
+                      </div>
+                    </div>
+                  </div>
+                  <form #tipoDocForm="ngForm" *ngIf="vistaFormulario && !solicitando">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="nombret" class="col-form-label">Nombre de tipo documento </label>
+                        <input type="text" id="nombret"  name="nombret" class="form-control" placeholder="Ingresa nombre" [(ngModel)]="tipodocumento.nombre" maxlength="50" required>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label">Abreviatura <span class="text-primary">*</span> </label>
+                        <input type="text" id="abrev"  name="abrev" class="form-control" placeholder="Ingresa abreviatura" [(ngModel)]="tipodocumento.abreviatura" maxlength="6" required>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <button *ngIf="!tipodocumento.id" type="submit" class="btn btn-primary" [disabled]="!tipoDocForm.form.valid" (click)="onSubmit('tipodocumento',tipodocumento)">Guardar</button>
+                      <button *ngIf="tipodocumento.id" type="submit" class="btn btn-primary" [disabled]="!tipoDocForm.form.valid" (click)="onSubmit('tipodocumento',tipodocumento)">Editar</button>
+                      <button type="button" class="btn btn-outline-dark" (click)="vistaFormulario = false">Cancelar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab id="unidad" title="Unidades de Medida">
+            <ng-template ngbTabContent>
+              <div style="background-color: #fff" class="p-3">
+                <div class="modal-body">
+                  <div class="row justify-content-center" *ngIf="solicitando">
+                    <div class="col col-auto">
+                      <p class="text-primary text-center">Cargando...</p>
+                      <app-cargando></app-cargando>
+                    </div>
+                  </div>
+                  <div class="form-row" *ngIf="!vistaFormulario && !solicitando">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Ingrese abreviatura del unidad de medida" [(ngModel)]="abrev">
+                      <button type="button" class="input-group-addon cursor-pointer" (click)="busqueda('unidad')"><i class="material-icons">search</i></button>
+                      <button type="button" class="input-group-addon cursor-pointer" (click)="nuevo()"><i class="material-icons">add_circle</i> Nuevo</button>
+                    </div>
+                  </div>
+                  <div *ngIf="!vistaFormulario && !solicitando">
+                    <br>
+                    <div class="row">
+                      <div class="col table-responsive">
+                        <table class="table table-sigro table-hover">
+                          <thead class="thead-inverse">
+                          <tr>
+                            <th>Nombre</th>
+                            <th>Abreviatura</th>
+                            <th>Cantidad</th>
+                            <th style="width:30px;">Opciones</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr class="cursor-pointer" *ngFor="let unidad of unidades">
+                            <td>{{unidad.descripcion}}</td>
+                            <td>{{unidad.abreviatura}}</td>
+                            <td>{{unidad.cantidad}}</td>
+                            <td style="padding-top: 0px; padding-bottom: 0px;">
+                              <i class="material-icons mi-30 cursor-pointer text-danger" title="eliminar" (click)="confirmarEliminacion(unidad, 'unidad')">delete</i>
+                              <i class="material-icons mi-30 cursor-pointer text-primary" title="editar" (click)="traerParaEdicion(unidad.id, 'unidad')">create</i>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6 table-responsive">
+                        <ngb-pagination style="margin-bottom: 0px;" class="ngb-pagination-sigro" [collectionSize]="paginacion.totalRegistros" [(page)]="page" [maxSize]="1" [boundaryLinks]="true" (pageChange)="traer('unidad')"></ngb-pagination>
+                      </div>
+                      <div class="col-md-6 text-right pr-3">
+                        <p class="card-text text-secondary"><small>Mostrando {{paginacion.paginaActual}} de {{paginacion.totalPaginas}} páginas.</small></p>
+                      </div>
+                    </div>
+                  </div>
+                  <form #unidadForm="ngForm" *ngIf="vistaFormulario && !solicitando">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="nombreu" class="col-form-label">Nombre de unidad de medida </label>
+                        <input type="text" id="nombreu"  name="nombreu" class="form-control" placeholder="Ingresa nombre" [(ngModel)]="unidad.descripcion" maxlength="100" required>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label class="col-form-label">Abreviatura <span class="text-primary">*</span> </label>
+                        <input type="text" id="abrevu"  name="abrevu" class="form-control" placeholder="Ingresa abreviatura" [(ngModel)]="unidad.abreviatura" maxlength="50" required>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label class="col-form-label">Cantidad <span class="text-primary">*</span> </label>
+                        <input type="number" id="cant"  name="cant" class="form-control" placeholder="Ingresa cantidad" [(ngModel)]="unidad.cantidad" onKeyUp="if(this.value>9999999999){this.value='9999999999';}else if(this.value<0){this.value='0';}" required>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <button *ngIf="!unidad.id" type="submit" class="btn btn-primary" [disabled]="!unidadForm.form.valid" (click)="onSubmit('unidad',unidad)">Guardar</button>
+                      <button *ngIf="unidad.id" type="submit" class="btn btn-primary" [disabled]="!unidadForm.form.valid" (click)="onSubmit('unidad',unidad)">Actualizar</button>
+                      <button type="button" class="btn btn-outline-dark" (click)="vistaFormulario = false">Cancelar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab id="categoria" title="Categorias">
+            <ng-template ngbTabContent>
+              <div style="background-color: #fff" class="p-3">
+                <div class="modal-body">
+                  <div class="row justify-content-center" *ngIf="solicitando">
+                    <div class="col col-auto">
+                      <p class="text-primary text-center">Cargando...</p>
+                      <app-cargando></app-cargando>
+                    </div>
+                  </div>
+                  <div class="form-row" *ngIf="!vistaFormulario && !solicitando">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Ingrese descripcion del categoria" [(ngModel)]="abrev">
+                      <button type="button" class="input-group-addon cursor-pointer" (click)="busqueda('unidad')"><i class="material-icons">search</i></button>
+                      <button type="button" class="input-group-addon cursor-pointer" (click)="nuevo()"><i class="material-icons">add_circle</i> Nuevo</button>
+                    </div>
+                  </div>
+                  <div *ngIf="!vistaFormulario && !solicitando">
+                    <br>
+                    <div class="row">
+                      <div class="col table-responsive">
+                        <table class="table table-sigro table-hover">
+                          <thead class="thead-inverse">
+                          <tr>
+                            <th>ID</th>
+                            <th>Descripcion</th>
+                            <th style="width:30px;">Opciones</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr class="cursor-pointer" *ngFor="let categoria of categorias">
+                            <td>{{categoria.id}}</td>
+                            <td>{{categoria.descripcion}}</td>
+                            <td style="padding-top: 0px; padding-bottom: 0px;">
+                              <i class="material-icons mi-30 cursor-pointer text-danger" title="eliminar" (click)="confirmarEliminacion(categoria, 'categoria')">delete</i>
+                              <i class="material-icons mi-30 cursor-pointer text-primary" title="editar" (click)="traerParaEdicion(categoria.id, 'categoria')">create</i>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6 table-responsive">
+                        <ngb-pagination style="margin-bottom: 0px;" class="ngb-pagination-sigro" [collectionSize]="paginacion.totalRegistros" [(page)]="page" [maxSize]="1" [boundaryLinks]="true" (pageChange)="traer('categoria')"></ngb-pagination>
+                      </div>
+                      <div class="col-md-6 text-right pr-3">
+                        <p class="card-text text-secondary"><small>Mostrando {{paginacion.paginaActual}} de {{paginacion.totalPaginas}} páginas.</small></p>
+                      </div>
+                    </div>
+                  </div>
+                  <form #categoriaForm="ngForm" *ngIf="vistaFormulario && !solicitando">
+                    <div class="form-row">
+                      <div class="form-group col-md-12">
+                        <label for="nombrec" class="col-form-label">Nombre de Categoria </label>
+                        <input type="text" id="nombrec"  name="nombrec" class="form-control" placeholder="Ingresa nombre" [(ngModel)]="categoria.descripcion" maxlength="200" required>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <button *ngIf="!categoria.id" type="submit" class="btn btn-primary" [disabled]="!categoriaForm.form.valid" (click)="onSubmit('categoria',categoria)">Guardar</button>
+                      <button *ngIf="categoria.id" type="submit" class="btn btn-primary" [disabled]="!categoriaForm.form.valid" (click)="onSubmit('categoria',categoria)">Actualizar</button>
+                      <button type="button" class="btn btn-outline-dark" (click)="vistaFormulario = false">Cancelar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+  </div>
+</div>
+

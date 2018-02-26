@@ -1,0 +1,59 @@
+{
+  "index": "/index.html",
+  "assetGroups": [{
+    "name": "lima",
+    "installMode": "prefetch",
+    "resources": {
+      "files": [
+        "/favicon.ico",
+        "/index.html"
+      ],
+      "versionedFiles": [
+        "/*.bundle.css",
+        "/*.bundle.js",
+        "/*.chunk.js",
+        "/*.jpg",
+        "/*.png",
+        "/*.woff",
+        "/*.woff2",
+        "/*.ttf",
+        "/*.eot"
+      ]
+    }
+  }, {
+    "name": "assets",
+    "installMode": "lazy",
+    "updateMode": "prefetch",
+    "resources": {
+      "files": [
+        "/assets/**"
+      ]
+    }
+  }
+  ],
+  "dataGroups": [{
+    "name": "api-freshness",
+    "urls": [
+      "/pedidos/pagina/1/cantidadPorPagina/10",
+      "/productos/pagina/1/cantidadPorPagina/10"
+    ],
+    "cacheConfig": {
+      "strategy": "freshness",
+      "maxSize": 1000,
+      "maxAge": "3d",
+      "timeout": "10s"
+    }
+    },
+    {
+      "name": "api-performance",
+      "urls": [
+
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 100,
+        "maxAge": "3d"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+.color-ep{
+    color: #ab0a0a;
+}
+.color-ec{
+    color: #1964b3;;
+}
+@media (max-width: 1199px) {
+    .table-responsive {
+        display: block;
+    }
+}

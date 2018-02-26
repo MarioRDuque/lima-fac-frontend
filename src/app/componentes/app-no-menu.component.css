@@ -1,0 +1,30 @@
+.bd-masthead{
+    background-color: #0f3779;
+    background: linear-gradient(135deg,#0f3779,#1e63d5);
+}
+.bd-masthead {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    text-align: center;
+    color: #efefef;
+}
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+.bd-masthead .lead {
+    margin-right: auto;
+    margin-bottom: 2rem;
+    margin-left: auto;
+    width: 80%;
+    font-size: 2rem;
+    color: #fff;
+}
+.bd-masthead .btn-outline-light{
+    background-color: #fff;
+    color: #0f3779;
+}
+.bd-masthead .btn-outline-light:hover{
+    color: #fff;
+    background-color:transparent;
+}

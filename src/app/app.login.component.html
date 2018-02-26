@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <div class="container">
+    <div class="row justify-content-end">
+      <div class="col-auto">
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<form (ngSubmit)="ingresar()" #loginForm="ngForm">
+  <div class="modal-body pt-0">
+    <div class="container pb-3">
+      <div class="row justify-content-center">
+        <div class="col-auto">
+          <h5 class="modal-title text-center mb-4">Inicia Sesión</h5>
+          <input type="text" class="form-control" placeholder="Usuario" [(ngModel)]="user.username" #username="ngModel" id="username"
+            name="username" required>
+          <input type="password" class="form-control" placeholder="Password" [(ngModel)]="user.password" #password="ngModel" id="password"
+            name="password" required>
+          <div *ngIf="cargando">
+            <app-cargando></app-cargando>
+          </div>
+          <button *ngIf="!cargando" class="bd-ingresar" [disabled]="!loginForm.form.valid">Ingresar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
