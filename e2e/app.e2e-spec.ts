@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('limatambo-a5 App', () => {
+describe('lfacf App', () => {
   let page: AppPage;
 
   beforeEach(() => {

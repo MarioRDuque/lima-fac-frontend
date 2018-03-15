@@ -1,0 +1,173 @@
+<header class="page-header">
+  <div class="container-fluid">
+    <h2 class="no-margin-bottom">Datos de los Clientes</h2>
+  </div>
+</header>
+<section class="dashboard-counts p-3">
+  <div class="bg-white has-shadow">
+    <div class="modal-header card-bonito" style="padding: 10px!important;">
+      <h5 class="modal-title" *ngIf="!vistaFormulario">Clientes</h5>
+      <h5 *ngIf="!cliente.id && vistaFormulario" class="modal-title">Agregar Cliente</h5>
+      <h5 *ngIf="cliente.id && vistaFormulario" class="modal-title">Modificar Cliente</h5>
+      <button *ngIf="isModal" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body card-bonito">
+      <div class="row justify-content-center" *ngIf="solicitando">
+        <div class="col col-auto">
+          <p class="text-primary text-center">Cargando...</p>
+          <app-cargando></app-cargando>
+        </div>
+      </div>
+
+      <div class="form-row" *ngIf="!vistaFormulario && !solicitando">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Ingrese nombre" [(ngModel)]="nombre">
+          <input type="text" class="form-control" placeholder="Ingrese dni" [(ngModel)]="numdoc">
+          <select class="form-control" style="height: calc(2.5rem + 2px);" id="centrob" name="centrob" [(ngModel)]="centrob">
+            <option value="" selected > TODOS </option>
+            <option *ngFor="let centro of centros" [ngValue]="centro.id">
+              {{ centro.nombre }}
+            </option>
+          </select>
+          <button type="button" class="btn btn-primary cursor-pointer" (click)="busqueda()"><i class="fa fa-search"></i></button>
+          <button type="button" class="btn btn-primary cursor-pointer" (click)="nuevoCliente()"><i class="fa fa-plus-circle"></i> Nuevo</button>
+        </div>
+      </div>
+
+      <div *ngIf="!vistaFormulario && !solicitando">
+        <br>
+        <div class="row">
+          <div class="col table-responsive">
+            <table class="table table-sigro table-hover table-bordered">
+              <thead class="thead-inverse">
+              <tr>
+                <th>Tipo Doc.</th>
+                <th>Numero Doc.</th>
+                <th>Nombre</th>
+                <th style="width:30px;">Opciones</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="cursor-pointer" (click)="activeModal.dismiss(cliente)" *ngFor="let cliente of clientes">
+                <td>{{cliente.idpersona.idtipodocumento.abreviatura}}</td>
+                <td>{{cliente.idpersona.numdocumento}}</td>
+                <td>{{cliente.idpersona.nombrecompleto}}</td>
+                <td class="pb-0 pt-0">
+                  <i *ngIf="!isModal" class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar" (click)="confirmarEliminacion(cliente)"></i>
+                  <i class="fa fa-pencil fa-2x cursor-pointer text-primary" title="editar" (click)="editarCliente(cliente.id)"></i>
+                  <i *ngIf="isModal" class="fa fa-check-square-o fa-2x cursor-pointer text-primary" title="elegir"></i>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6 table-responsive">
+            <ngb-pagination style="margin-bottom: 0px;" class="ngb-pagination-sigro" [collectionSize]="paginacion.totalRegistros" [(page)]="page" [maxSize]="1" [boundaryLinks]="true" (pageChange)="traerClientes()"></ngb-pagination>
+          </div>
+          <div class="col-md-6 text-right pr-3">
+            <p class="card-text text-secondary"><small>Mostrando {{paginacion.paginaActual}} de {{paginacion.totalPaginas}} páginas.</small></p>
+          </div>
+        </div>
+      </div>
+
+      <form #clienteForm="ngForm" *ngIf="vistaFormulario && !solicitando">
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="tipoDocs" class="col-form-label">Sexo </label>
+            <select class="form-control" id="sexo" name="sexo" [(ngModel)]="cliente.sexo">
+              <option *ngFor="let sexo of sexos" [ngValue]="sexo.id">
+                {{ sexo.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="tipoDocs" class="col-form-label">Tipo de documento <span class="text-primary">*</span></label>
+            <select class="form-control" id="tipoDocs" name="tipoDocs" [(ngModel)]="cliente.idpersona.idtipodocumento.id" required>
+              <option *ngFor="let tipo of tipoDocs" [ngValue]="tipo.id">
+                {{ tipo.abreviatura }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-form-label">Numero de documento <span class="text-primary">*</span> </label>
+            <input type="number" id="numdocumento"  name="numdocumento" class="form-control" placeholder="¿Cual es el numero de documento?" [(ngModel)]="cliente.idpersona.numdocumento"
+                   min="0" max="99999999999" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label class="col-form-label">Nombre <span class="text-primary">*</span></label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="¿Cual es el nombre?" [(ngModel)]="cliente.idpersona.nombre" maxlength="30" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-form-label">Apellidos</label>
+            <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="¿Cuales son los apellidos?" [(ngModel)]="cliente.idpersona.apellidos" maxlength="30">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label class="col-form-label">Telefono</label>
+            <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="¿Cual es el numero de telefono?" [(ngModel)]="cliente.telefono" maxlength="15">
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-form-label">Celular</label>
+            <input type="tel" class="form-control" id="celular" name="celular" placeholder="¿Cuales es el numero de celular?" [(ngModel)]="cliente.celular" maxlength="15">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="distritos" class="col-form-label">Distrito </label>
+            <select class="form-control" id="distritos" name="distritos" [(ngModel)]="distritoSelect" (change)="traerUbigeos('centro', distritoSelect)" required>
+              <option *ngFor="let distrito of distritos" [ngValue]="distrito.id">
+                {{ distrito.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="centro" class="col-form-label">Centro Poblado</label>
+            <select class="form-control" id="centro" name="centro" [(ngModel)]="cliente.idpersona.idubigeo.id">
+              <option *ngFor="let centro of centros" [ngValue]="centro.id">
+                {{ centro.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-form-label">Referencia</label>
+            <input type="text" id="referencia"  name="referencia" class="form-control" placeholder="¿Cual es la referencia?" [(ngModel)]="cliente.idpersona.referencia">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label class="col-form-label">Direccion especifica</label>
+            <input places-auto-complete (place_changed)="placeChanged($event)" [types]="['geocode']" type="text"
+                   class="form-control" id="dir" name="dir" placeholder="¿Cual es el direccion?" [(ngModel)]="cliente.idpersona.direccion"/>
+          </div>
+        </div>
+        <!--p>
+          place: {{address | json}}
+          <ngui-map [center]="center"
+                    [fullscreenControl]="true"
+                    (click)="log($event, 'place_change')"
+                    [scrollwheel]="false">
+            <marker [position]="center"
+                    [geoFallbackPosition]="center"
+                    (dragstart)="log($event, 'dragstart')"
+                    (dragend)="log($event, 'dragend')"
+                    draggable="true"></marker>
+          </ngui-map>
+
+        </p-->
+        <br>
+        <div style="text-align: right">
+          <button type="submit" class="btn btn-primary" [disabled]="!clienteForm.form.valid" (click)="onSubmit()" *ngIf="!cliente.id">Guardar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!clienteForm.form.valid" (click)="onSubmit()" *ngIf="cliente.id">Actualizar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="cancelar()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

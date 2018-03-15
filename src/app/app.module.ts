@@ -1,60 +1,73 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppRouterModule } from './app-routing.module';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NguiMapModule } from '@ngui/map';
-import { SourceCodeService } from './source-code.service';
-import { NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { UiSwitchModule } from 'ngx-ui-switch';
-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AppRouterModule } from './app-routing.module';
-import { ComponentesModule } from './componentes/componentes.module';
-import { PedidosModule } from './modulos/pedidos/pedidos.module';
+import { NguiMapModule } from '@ngui/map';
+import { SourceCodeService } from './source-code.service';
+
+import { AppComponent } from './app.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { LoginComponent } from './login/login.component';
+import { ClienteComponent } from './cliente/cliente.component';
+import { PedidoComponent } from './pedido/pedido.component';
+import { MantenimientoComponent } from './mantenimiento/mantenimiento.component';
+import { ReporteComponent } from './reporte/reporte.component';
 
 import { AuthService } from './servicios/auth.service';
 import { ApiRequestService } from './servicios/api-request.service';
 import { ReportService } from './servicios/report.service';
 import { GenericoService } from './servicios/generico.service';
 import { HomeService } from './servicios/home.service';
+import { AuthGuardService } from './servicios/auth-guard.service';
 import { environment } from '../environments/environment';
-
-import { AppComponent, ModalLogin } from './app.component';
-
 import { AppConfig } from './app-config';
-import { WelcomeComponent } from './componentes/welcome.component';
-import { EleccionComponent } from './componentes/eleccion/eleccion.component';
-import { MantenimientoComponent } from './componentes/mantenimiento/mantenimiento.component';
-import { ReporteComponent } from './componentes/reporte/reporte.component';
-import { ClienteComponent } from './componentes/cliente/cliente.component';
-import { AppNoMenuComponent } from './componentes/app-no-menu.component';
+import { ProductoComponent } from './producto/producto.component';
+import { CargandoComponent } from './util/cargando/cargando.component';
+import { ConfirmacionComponent } from './util/confirmacion/confirmacion.component';
+import { PedidoListaComponent } from './pedido/pedido-lista/pedido-lista.component';
+import { PedidoFormularioComponent } from './pedido/pedido-formulario/pedido-formulario.component';
+import { PedidoSeguimientoComponent } from './pedido/pedido-seguimiento/pedido-seguimiento.component';
+import { VentaComponent } from './venta/venta.component';
+import { FacturacionComponent } from './facturacion/facturacion.component';
+import { VentaListaComponent } from './venta/venta-lista/venta-lista.component';
+import { VentaFormularioComponent } from './venta/venta-formulario/venta-formulario.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ModalLogin,
     WelcomeComponent,
-    EleccionComponent,
+    LoginComponent,
+    ClienteComponent,
+    PedidoComponent,
     MantenimientoComponent,
     ReporteComponent,
-    AppNoMenuComponent
-  ],
-  entryComponents: [
-    ModalLogin,
+    ProductoComponent,
+    CargandoComponent,
+    ConfirmacionComponent,
+    PedidoListaComponent,
+    PedidoFormularioComponent,
+    PedidoSeguimientoComponent,
+    VentaComponent,
+    FacturacionComponent,
+    VentaListaComponent,
+    VentaFormularioComponent
   ],
   imports: [
     NgbModule.forRoot(),
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     BrowserModule,
     AppRouterModule,
-    ComponentesModule,
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    PedidosModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     NguiMapModule.forRoot({
@@ -62,6 +75,9 @@ import { AppNoMenuComponent } from './componentes/app-no-menu.component';
       '&libraries=visualization,places,drawing',
     }),
     UiSwitchModule
+  ],
+  entryComponents: [
+    ConfirmacionComponent
   ],
   providers: [
     SourceCodeService,
@@ -71,6 +87,7 @@ import { AppNoMenuComponent } from './componentes/app-no-menu.component';
     ReportService,
     GenericoService,
     HomeService,
+    AuthGuardService,
     NgbActiveModal
   ],
   bootstrap: [AppComponent]

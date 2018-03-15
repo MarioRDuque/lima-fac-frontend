@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "limatambo-a5"
+    "name": "lfacf"
   },
   "apps": [
     {
@@ -9,8 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico",
-        "manifest.json"
+        "favicon.ico"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -19,14 +18,21 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
-      "serviceWorker": true,
       "styles": [
-        "bootstrap.min.css",
-        "iconfont/material-icons.css",
-        "styles.css",
-        "../node_modules/ngx-toastr/toastr.css"
+        "vendor/bootstrap/css/bootstrap.min.css",
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "css/style.default.css",
+        "../node_modules/ngx-toastr/toastr.css",
+        "styles.scss"
       ],
-      "scripts": [],
+      "scripts": [
+        "vendor/jquery/jquery.min.js",
+        "vendor/popper.js/umd/popper.min.js",
+        "vendor/bootstrap/js/bootstrap.min.js",
+        "vendor/jquery.cookie/jquery.cookie.js",
+        "vendor/jquery-validation/jquery.validate.min.js",
+        "js/front.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
@@ -60,7 +66,6 @@
   },
   "defaults": {
     "styleExt": "css",
-    "component": {
-    }
+    "component": {}
   }
 }

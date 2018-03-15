@@ -32,7 +32,7 @@ export class AuthService {
     public almacenamiento: Storage = localStorage;
     public almacenamientoLocal: Storage = localStorage;
 
-    public urlDestino: string = "/menu";
+    public urlDestino: string = "/";
 
     constructor(
         private router: Router,
@@ -69,7 +69,7 @@ export class AuthService {
                     authRespuesta = {
                         "success": false,
                         "mensaje": jsonResp.msgDesc,
-                        "urlDestino": "/welcome"
+                        "urlDestino": "login"
                     };
                 }
                 return authRespuesta;
@@ -84,7 +84,7 @@ export class AuthService {
     cerrarSession(): void {
         this.almacenamiento.clear();
         this.almacenamientoLocal.clear();
-        this.router.navigate(["welcome"]);/* ir al backend y caducar token */
+        this.router.navigate(["login"]);/* ir al backend y caducar token */
     }
 
     getUserName():string {

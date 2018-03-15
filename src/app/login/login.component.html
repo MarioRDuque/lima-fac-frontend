@@ -1,0 +1,42 @@
+<div class="page login-page">
+    <div class="container d-flex align-items-center">
+      <div class="form-holder has-shadow">
+        <div class="row">
+          <!-- Logo & Information Panel-->
+          <div class="col-lg-6">
+            <div class="info d-flex align-items-center">
+              <div class="content">
+                <div class="logo">
+                  <h1>Geektic Soluciones</h1>
+                </div>
+                <p>...</p>
+              </div>
+            </div>
+          </div>
+          <!-- Form Panel    -->
+          <div class="col-lg-6 bg-white">
+            <div class="form d-flex align-items-center">
+              <div class="content">
+                <form id="login-form">
+                  <div class="form-group">
+                    <input id="login-username" type="text" name="loginUsername" required="" class="form-control" [(ngModel)]="user.username">
+                    <label for="login-username" class="label-material">Nombre de usuario</label>
+                  </div>
+                  <div class="form-group">
+                    <input id="login-password" type="password" name="loginPassword" required="" class="form-control" [(ngModel)]="user.password">
+                    <label for="login-password" class="label-material">Clave</label>
+                  </div>
+                  <a id="login" (click)="ingresar()" class="btn btn-primary">Login</a>
+                </form>
+                <a href="#" class="forgot-pass">¿Olvido Contraseña?</a><br><small>¿No tienes una cuenta? </small><a href="register.html" class="signup">Registrarse</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyrights text-center">
+      <p>Diseñado por <a href="https://bootstrapious.com/admin-templates" class="external">Geektic Soluciones</a>
+      </p>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+<header class="page-header">
+  <div class="container-fluid">
+    <h2 class="no-margin-bottom">Reportes</h2>
+  </div>
+</header>
+<section class="dashboard-counts p-3">
+  <div class="">
+    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+      <ngb-panel title="Productos por entregar del dia">
+        <ng-template ngbPanelContent>
+          <div class="text-right">
+            <button type="button" class="btn btn-primary" (click)="descargarReporte('rptProductosPorEntregar')"><i class="fa fa-file-archive-o margen-0" style="font-size: 12px;"></i> Generar</button>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel title="Productos entregados del dia">
+        <ng-template ngbPanelContent>
+          <div class="text-right">
+            <button type="button" class="btn btn-primary" (click)="descargarReporte('rptProductosEntregados')"><i class="fa fa-file-archive-o margen-0" style="font-size: 12px;"></i> Generar</button>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel title="Pedidos por entregar">
+        <ng-template ngbPanelContent>
+          <div class="text-right">
+            <button type="button" class="btn btn-primary" (click)="descargarReporte('rptPedidosPorEntregar')"><i class="fa fa-file-archive-o margen-0" style="font-size: 12px;"></i> Generar</button>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel title="Pedidos entregados">
+        <ng-template ngbPanelContent>
+          <div class="form-row">
+            <div class="form-group col col-md-6">
+              <label class="col-form-label">Desde:</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                       name="dp" [(ngModel)]="inicio" ngbDatepicker #d="ngbDatepicker">
+                <button class="input-group-addon" (click)="d.toggle()" type="button">
+                  <i class="fa fa-calendar margen-0"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group col col-md-6">
+              <label class="col-form-label">Hasta: </label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                       name="dp1" [(ngModel)]="fin" ngbDatepicker #d1="ngbDatepicker">
+                <button class="input-group-addon" (click)="d1.toggle()" type="button">
+                  <i class="fa fa-calendar margen-0"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="text-right">
+            <button type="button" class="btn btn-primary" (click)="descargarReporte('rptPedidosEntregados')"><i class="fa fa-file-archive-o margen-0" style="font-size: 12px;"></i> Generar</button>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel title="Notas de pedido del dia">
+        <ng-template ngbPanelContent>
+          <div class="text-right">
+            <button type="button" class="btn btn-primary" (click)="descargarReporte('rptNotasDePedido')"><i class="fa fa-file-archive-o margen-0" style="font-size: 12px;"></i> Generar</button>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+  <div class="row justify-content-end">
+    <a href="" id="exelDownload" #exelDownload></a>
+  </div>
+</section>

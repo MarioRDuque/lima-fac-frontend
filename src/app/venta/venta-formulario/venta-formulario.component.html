@@ -1,0 +1,148 @@
+<div>
+  <div class="modal-header card-bonito" style="padding: 10px!important;">
+    <h5 *ngIf="!venta.id" class="modal-title">Nueva Venta</h5>
+    <h5 *ngIf="venta.id" class="modal-title">Modificar Venta</h5>
+  </div>
+  <div class="modal-body card-bonito">
+    <div class="row justify-content-center" *ngIf="cargando">
+      <div class="col col-auto">
+        <p class="text-primary text-center">Cargando...</p>
+        <app-cargando></app-cargando>
+      </div>
+    </div>
+    <div *ngIf="!cargando">
+      <form (ngSubmit)="onSubmit()" #ventaForm="ngForm">
+        <div class="row">
+          <div class="col-md-12 input-group">
+            <div class="input-group-prepend">
+              <select [(ngModel)]="venta.idmoneda" class="btn btn-outline-secondary dropdown-toggle"  style="margin-bottom: 0px;" id="tipom-{{i}}" name="tipom-{{i}}" required>
+                <option *ngFor="let to of tiposMon" [ngValue]="to">
+                  {{ to.definicion }}
+                </option>
+              </select>
+            </div>
+            <div class="input-group-prepend">
+              <select [(ngModel)]="venta.tipooperacion" class="btn btn-outline-secondary dropdown-toggle"  style="margin-bottom: 0px;" id="tipo-{{i}}" name="tipo-{{i}}" required>
+                <option *ngFor="let to of tiposOperacion" [ngValue]="to.id">
+                  {{ to.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="input-group-prepend">
+              <select [(ngModel)]="venta.idtipodocumento" class="btn btn-outline-secondary dropdown-toggle"  style="margin-bottom: 0px;" id="doc-{{i}}" name="doc-{{i}}" required>
+                <option *ngFor="let to of tipoDocs" [ngValue]="to">
+                  {{ to.abreviatura }}
+                </option>
+              </select>
+            </div>
+            <input type="text" class="form-control" name="documento" placeholder="Ingrese numero de documento" [(ngModel)]="venta.doccliente">
+            <button class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="validarCliente()">
+              Validar Documento <i class="fa fa-search cursor-pointer"></i>
+            </button>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group pt-2">
+              <label class="col-form-label">Datos del cliente <span class="text-primary">*</span></label>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Ingrese cliente" [(ngModel)]="venta.nombrecliente" maxlength="90" id="nombrecompleto"
+                       name="cdescor" required>
+                <button class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="abrirClientes()">
+                  <i class="fa fa-search cursor-pointer"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pl-3 pr-3">
+          <div class="card">
+            <div class="card-close">
+              <div class="dropdown">
+                <button type="button" id="closeCard1" class="dropdown-toggle">
+                  <i class="fa fa-refresh fa-2x cursor-pointer text-primary" (click)="calcularImporte()" title="refrescar"> </i>
+                  <i class="fa fa-plus-circle fa-2x cursor-pointer text-primary" (click)="abrirProductos()" title="agregar a cesta"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-header d-flex align-items-center" style="background-color: #bfffbf;">
+              <h3 class="h4">Detalle de Venta</h3>
+            </div>
+            <div class="card-body">
+              <div class="row no-gutters" *ngIf="venta.ventadetList && venta.ventadetList.length>0">
+                <div class="col box-line-negocio-cuerpo  table-responsive-secundaria">
+                  <table class="table table-sigro table-hover mb-0 table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Nombre.</th>
+                        <th>Unidad.</th>
+                        <th>Precio U.</th>
+                        <th>Descuento U.</th>
+                        <th>Cantidad</th>
+                        <th>Descuento Tot.</th>
+                        <th>Total.</th>
+                        <th style="width:20px;">Opcion</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let detalle of venta.ventadetList; let i = index">
+                      <td>{{detalle.idproducto.nombre}}</td>
+                      <td style="min-width: 200px; padding-bottom: 0;">
+                        <select style="height: calc(1.7rem); padding: 0 10px;" class="form-control" id="unidad-{{i}}" name="unidad-{{i}}"
+                                [(ngModel)]="venta.ventadetList[i].idunidadmedida" (change)="obtenerPrecio(detalle);" required>
+                          <option *ngFor="let unidad of venta.ventadetList[i].idproducto.productomedidaList" [ngValue]="unidad.idunidadmedida">
+                            {{ unidad.idunidadmedida.descripcion }}
+                          </option>
+                        </select>
+                      </td>
+                      <td>
+                        {{venta.idmoneda.simbolo}}
+                        <input style="width:80px;" type="number" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}" (keyup)="operaciones(detalle)">
+                      </td>
+                      <td>
+                        <input style="width:80px;" type="number" [(ngModel)]="detalle.descuentounitario" name="desc-{{i}}" (keyup)="operaciones(detalle)">
+                      </td>
+                      <td>
+                        <input style="width:80px;" type="number" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}" (keyup)="operaciones(detalle)">
+                      </td>
+                        <td>
+                          {{venta.idmoneda.simbolo}} {{detalle.descuentototal | number : '1.2-2'}}
+                        </td>
+                      <td>
+                        {{venta.idmoneda.simbolo}} {{detalle.preciototal | number : '1.2-2'}}
+                      </td>
+                      <td class="text-right">
+                        <i class="fa fa-close fa-2x cursor-pointer text-primary margen-0" (click)="confirmarEliminacionDetalle(detalle)"></i>
+                      </td>
+                    </tr>
+                    </tbody>
+                    <thead>
+                      <tr>
+                        <th colspan="6" class="text-right">Operacion Gravada</th>
+                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe - importe*0.18 | number : '1.2-2'}}</span></th>
+                      </tr>
+                      <tr>
+                        <th colspan="6" class="text-right">Impuesto General de la Renta (IGV). 18%</th>
+                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe*0.18 | number : '1.2-2'}}</span></th>
+                      </tr>
+                      <tr>
+                        <th colspan="6" class="text-right">Importe total</th>
+                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe | number : '1.2-2'}}</span></th>
+                      </tr>
+                    </thead>
+                    <br>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: right" class="p-3">
+          <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="!venta.id">Guardar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="venta.id">Actualizar</button>
+          <button type="button" class="btn btn-outline-dark" routerLink="/ventas/lista">Cancelar</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

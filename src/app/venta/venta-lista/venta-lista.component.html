@@ -1,0 +1,68 @@
+<div>
+  <div class="modal-header card-bonito" style="padding: 10px!important;">
+    <h5 class="modal-title">Ventas</h5>
+  </div>
+  <div class="modal-body card-bonito">
+    <div class="row justify-content-center" *ngIf="solicitando">
+      <div class="col col-auto">
+        <p class="text-primary text-center">Cargando...</p>
+        <app-cargando></app-cargando>
+      </div>
+    </div>
+    <div *ngIf="!solicitando">
+      <p class="text-primary text-center pt-3" *ngIf="(!ventas || ventas.length === 0) && solicitudExitosa">No se encontraron resultados</p>
+      <div class="form-row p-3" *ngIf="!vistaFormulario && !solicitando">
+        <div class="input-group">
+          <input class="form-control" placeholder="Ingrese DNI para busqueda" name="dnic" [(ngModel)]="dnic">
+          <input class="form-control" placeholder="Ingrese Nombres para busqueda" name="nombrec" [(ngModel)]="nombrec">
+        </div>
+        <div class="input-group">
+          <input class="form-control" placeholder="Desde(yyyy-mm-dd)" name="d" [(ngModel)]="desde" ngbDatepicker #d="ngbDatepicker">
+          <button class="input-group-addon cursor-pointer" (click)="d.toggle()" type="button">
+            <i class="fa fa-calendar"></i>
+          </button>
+          <input class="form-control" placeholder="Hasta(yyyy-mm-dd)" name="d1" [(ngModel)]="hasta" ngbDatepicker #d1="ngbDatepicker">
+          <button class="input-group-addon cursor-pointer" (click)="d1.toggle()" type="button">
+            <i class="fa fa-calendar"></i>
+          </button>
+          <button type="button" class="btn btn-primary cursor-pointer" (click)="busqueda()"><i class="fa fa-search"></i></button>
+          <button type="button" class="btn btn-primary cursor-pointer" (click)="nuevoVenta()"><i class="fa fa-plus-circle"></i> Nuevo</button>
+        </div>
+      </div>
+      <div *ngIf="ventas && ventas.length > 0">
+        <div class="row">
+          <div class="col table-responsive">
+            <table class="table table-sigro table-hover table-bordered">
+              <thead class="thead-inverse">
+              <tr>
+                <th>Código</th>
+                <th>Cliente</th>
+                <th>Fec. Venta</th>
+                <th>Tipo Venta</th>
+                <th>Registrado Por</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="cursor-pointer" *ngFor="let venta of ventas" routerLink="/ventas/formulario/{{venta.id}}">
+                <td>{{venta.serie}} - {{venta.correlativo}}</td>
+                <td>{{venta.doccliente}} {{venta.nombrecliente}}</td>
+                <td>{{venta.fechaemision | date:"dd/MM/yyyy"}}</td>
+                <td>{{venta.direccion}}</td>
+                <td>{{venta.usuariosave}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6 table-responsive">
+            <ngb-pagination style="margin-bottom: 0px;" class="ngb-pagination-sigro" [collectionSize]="paginacion.totalRegistros" [(page)]="page" [maxSize]="1" [boundaryLinks]="true" (pageChange)="traerVentas()"></ngb-pagination>
+          </div>
+          <div class="col-md-6 text-right pr-3">
+            <p class="card-text text-secondary"><small>Mostrando {{paginacion.paginaActual}} de {{paginacion.totalPaginas}} páginas.</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
