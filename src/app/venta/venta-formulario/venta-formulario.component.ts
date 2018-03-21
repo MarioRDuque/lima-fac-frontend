@@ -145,7 +145,7 @@ export class VentaFormularioComponent implements OnInit {
       this.igv = igv.valor;
       this.cargando = false;
     } else {
-      return this.api.get('moneda')
+      return this.api.get('parametro/igv')
         .then(
           data => {
             if(data && data.extraInfo){
