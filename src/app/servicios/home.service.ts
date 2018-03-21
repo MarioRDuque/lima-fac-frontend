@@ -41,6 +41,8 @@ export class HomeService {
     this.traer100Pedidos();
     this.guardarCategorias();
     this.guardarTipoDocumento();
+    this.guardarMonedas();
+    this.guardarIGV();
     this.traerUbigeos('distrito',null);
     this.traerUbigeos('centro',1);
     this.guardarUnidadesDeMedida();
@@ -138,11 +140,39 @@ export class HomeService {
   }
 
   guardarUnidadesDeMedida(){
-    this.apiRequest.get('unidad')
+  this.apiRequest.get('unidad')
+    .then(
+      data => {
+        if(data && data.extraInfo){
+          localStorage.setItem("unidades", JSON.stringify(data.extraInfo));
+        } else {
+          this.toastr.info(data.operacionMensaje,"Informacion");
+        }
+      }
+    )
+    .catch(err => this.handleError(err));
+}
+
+  guardarMonedas(){
+    this.apiRequest.get('moneda')
       .then(
         data => {
           if(data && data.extraInfo){
-            localStorage.setItem("unidades", JSON.stringify(data.extraInfo));
+            localStorage.setItem("monedas", JSON.stringify(data.extraInfo));
+          } else {
+            this.toastr.info(data.operacionMensaje,"Informacion");
+          }
+        }
+      )
+      .catch(err => this.handleError(err));
+  }
+
+  guardarIGV(){
+    this.apiRequest.get('parametro/igv')
+      .then(
+        data => {
+          if(data && data.extraInfo){
+            localStorage.setItem("igv", JSON.stringify(data.extraInfo[0]));
           } else {
             this.toastr.info(data.operacionMensaje,"Informacion");
           }

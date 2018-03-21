@@ -16,8 +16,11 @@
           <!-- Form Panel    -->
           <div class="col-lg-6 bg-white">
             <div class="form d-flex align-items-center">
-              <div class="content">
-                <form id="login-form">
+              <div *ngIf="cargando">
+                <app-cargando></app-cargando>
+              </div>
+              <div class="content" *ngIf="!cargando">
+                <form id="login-form" #login="ngForm" (ngSubmit)="ingresar()">
                   <div class="form-group">
                     <input id="login-username" type="text" name="loginUsername" required="" class="form-control" [(ngModel)]="user.username">
                     <label for="login-username" class="label-material">Nombre de usuario</label>
@@ -26,7 +29,7 @@
                     <input id="login-password" type="password" name="loginPassword" required="" class="form-control" [(ngModel)]="user.password">
                     <label for="login-password" class="label-material">Clave</label>
                   </div>
-                  <a id="login" (click)="ingresar()" class="btn btn-primary">Login</a>
+                  <button type="submit" id="login" class="btn btn-primary" [disabled]="!login.form.valid">Login</button>
                 </form>
                 <a href="#" class="forgot-pass">¿Olvido Contraseña?</a><br><small>¿No tienes una cuenta? </small><a href="register.html" class="signup">Registrarse</a>
               </div>

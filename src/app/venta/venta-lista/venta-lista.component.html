@@ -1,6 +1,7 @@
 <div>
   <div class="modal-header card-bonito" style="padding: 10px!important;">
     <h5 class="modal-title">Ventas</h5>
+    <button type="button" class="btn btn-primary btn-sm cursor-pointer" (click)="nuevoVenta()"><i class="fa fa-plus-circle"></i> Nuevo</button>
   </div>
   <div class="modal-body card-bonito">
     <div class="row justify-content-center" *ngIf="solicitando">
@@ -25,8 +26,7 @@
           <button class="input-group-addon cursor-pointer" (click)="d1.toggle()" type="button">
             <i class="fa fa-calendar"></i>
           </button>
-          <button type="button" class="btn btn-primary cursor-pointer" (click)="busqueda()"><i class="fa fa-search"></i></button>
-          <button type="button" class="btn btn-primary cursor-pointer" (click)="nuevoVenta()"><i class="fa fa-plus-circle"></i> Nuevo</button>
+          <button type="button" class="btn btn-primary btn-sm cursor-pointer" (click)="busqueda()"><i class="fa fa-search"></i></button>
         </div>
       </div>
       <div *ngIf="ventas && ventas.length > 0">

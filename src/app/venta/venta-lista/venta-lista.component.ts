@@ -36,6 +36,10 @@ export class VentaListaComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.page = 1;
+    this.dnic = "";
+    this.nombrec = "";
+    this.parametros = {};
     this.traerVentas();
   }
 

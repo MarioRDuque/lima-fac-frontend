@@ -2,7 +2,7 @@ import {Ventadet} from "./entidad.ventadet";
 export class Venta {
   id:number;
   serie:string;
-  correlativo:string;
+  correlativo:number;
   rucempresa:string;
   tipooperacion:string;
   fechaemision:Date;
@@ -23,5 +23,6 @@ export class Venta {
   estado:boolean=true;
   usuariosave:string;
   usuarioupdate:string;
+  importetotal:number;
   ventadetList: Ventadet[] =[];
 }

@@ -28,6 +28,7 @@ export class VentaFormularioComponent implements OnInit {
   venta : Venta;
   tipoDocs : any = [];
   tiposMon : any = [];
+  igv:number=0;
   public page: number = 1;
   tiposOperacion = [
     {
@@ -77,6 +78,7 @@ export class VentaFormularioComponent implements OnInit {
     this.cargando = true;
     this.traerTipoDocs();
     this.traerTiposMon();
+    this.traerIGV();
     this.route.params.subscribe(params => {
       if(params['id']!=null) {
         this.idPedido = +params['id'];
@@ -118,7 +120,7 @@ export class VentaFormularioComponent implements OnInit {
   }
 
   traerTiposMon(){
-    let tiposMon = JSON.parse(localStorage.getItem("tiposMoneda"));
+    let tiposMon = JSON.parse(localStorage.getItem("monedas"));
     if(tiposMon && tiposMon.length>0){
       this.tiposMon = tiposMon;
       this.venta.idmoneda = this.tiposMon[0];
@@ -130,6 +132,28 @@ export class VentaFormularioComponent implements OnInit {
               this.tiposMon = data.extraInfo;
               this.venta.idmoneda = this.tiposMon[0];
             }
+          }
+        )
+        .catch(err => this.handleError(err));
+    }
+  }
+
+  traerIGV(){
+    this.cargando = true;
+    let igv = JSON.parse(localStorage.getItem("igv"));
+    if(igv){
+      this.igv = igv.valor;
+      this.cargando = false;
+    } else {
+      return this.api.get('moneda')
+        .then(
+          data => {
+            if(data && data.extraInfo){
+              this.igv = data.extraInfo[0].valor;
+            } else {
+              this.toastr.error("No se encontró valor para el IGV, por favor recargar la página.", "Alerta");
+            }
+            this.cargando =false;
           }
         )
         .catch(err => this.handleError(err));
@@ -258,7 +282,11 @@ export class VentaFormularioComponent implements OnInit {
       detalle.descuentounitario = detalle.preciounitario;
     }
     detalle.descuentototal = detalle.descuentounitario * detalle.cantidad;
+    detalle.igvitem = detalle.preciounitario * detalle.cantidad * this.igv;
     detalle.preciototal = (detalle.preciounitario * detalle.cantidad) - detalle.descuentototal;
+    detalle.igvitem = Math.round( detalle.igvitem * 100 ) / 100;
+    detalle.valorunitariosinigv = detalle.preciounitario - this.igv;
+    detalle.preciototalsinigv = detalle.valorunitariosinigv*detalle.cantidad;
     this.calcularImporte();
   };
 
@@ -271,10 +299,17 @@ export class VentaFormularioComponent implements OnInit {
 
   calcularImporte() {
     this.importe = 0;
+    this.venta.totaldesc = 0;
     for(var i=0; i<this.venta.ventadetList.length; i++){
       this.importe = this.venta.ventadetList[i].preciototal + this.importe;
+      this.venta.totalsinigv = this.importe - this.venta.ventadetList[i].igvitem;
+      this.venta.totaldesc = this.venta.ventadetList[i].descuentototal + this.venta.totaldesc;
     }
-    this.importe;
+    this.venta.importetotal = Math.round(this.importe*100)/100;
+    this.venta.totaldesc = Math.round(this.venta.totaldesc*100)/100;
+    this.venta.totalsinigv = Math.round(this.venta.totalsinigv*100)/100;
+    this.venta.igv = this.venta.importetotal - this.venta.totalsinigv;
+    this.venta.igv = Math.round(this.venta.igv*100)/100;
   };
 
   onSubmit(): void {

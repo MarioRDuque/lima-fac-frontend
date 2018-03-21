@@ -117,11 +117,11 @@
                     <thead>
                       <tr>
                         <th colspan="6" class="text-right">Operacion Gravada</th>
-                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe - importe*0.18 | number : '1.2-2'}}</span></th>
+                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe - importe*igv | number : '1.2-2'}}</span></th>
                       </tr>
                       <tr>
-                        <th colspan="6" class="text-right">Impuesto General de la Renta (IGV). 18%</th>
-                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe*0.18 | number : '1.2-2'}}</span></th>
+                        <th colspan="6" class="text-right">Impuesto General de la Renta (IGV). {{igv*100}}%</th>
+                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe*igv | number : '1.2-2'}}</span></th>
                       </tr>
                       <tr>
                         <th colspan="6" class="text-right">Importe total</th>
@@ -135,13 +135,11 @@
             </div>
           </div>
         </div>
-
         <div style="text-align: right" class="p-3">
           <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="!venta.id">Guardar</button>
           <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="venta.id">Actualizar</button>
           <button type="button" class="btn btn-outline-dark" routerLink="/ventas/lista">Cancelar</button>
         </div>
-
       </form>
     </div>
   </div>
