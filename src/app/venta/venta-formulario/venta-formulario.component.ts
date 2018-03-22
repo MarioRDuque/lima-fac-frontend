@@ -26,6 +26,7 @@ export class VentaFormularioComponent implements OnInit {
 
   public paginacion:Paginacion;
   venta : Venta;
+  ventas : any = [];
   tipoDocs : any = [];
   tiposMon : any = [];
   igv:number=0;
@@ -60,6 +61,7 @@ export class VentaFormularioComponent implements OnInit {
   public solicitudExitosa = false;
   public mensajeForUser : string = "";
   public productos : any = [];
+  public seriecorrelativo;
 
   constructor(
     private route: ActivatedRoute,
@@ -99,6 +101,21 @@ export class VentaFormularioComponent implements OnInit {
       this.venta.nombrecliente = reason && reason.idpersona ? reason.idpersona.nombrecompleto : "";
     });
   };
+
+  buscarVenta(): void {
+    this.cargando = true;
+    this.api.post('venta/pagina/'+this.page+'/cantidadPorPagina/'+this.paginacion.cantidadPorPagina, {seriecorrelativo:this.seriecorrelativo})
+      .then(data => {
+        if(data && data.registros){
+          this.cargando = false;
+          this.ventas = data.registros;
+        } else {
+          this.toastr.info("No se encontró documento.", "Aviso");
+          this.cargando = false;
+        }
+      })
+      .catch(err => this.handleError(err));
+  }
 
   traerTipoDocs(){
     let tipoDocs = JSON.parse(localStorage.getItem("tiposDocumento"));
@@ -203,6 +220,9 @@ export class VentaFormularioComponent implements OnInit {
         detalle.idunidadmedida = reason && reason.productomedidaList[0] ? reason.productomedidaList[0].idunidadmedida : {};
         detalle.preciounitario = reason.productomedidaList[0].precio>0?reason.productomedidaList[0].precio:0;
         detalle.preciototal = 1 * reason.productomedidaList[0].precio>0?reason.productomedidaList[0].precio:0;
+        if(reason.afectoigv){
+          detalle.afectacionigv = 20;
+        }
         this.venta.ventadetList.push(detalle);
         this.operaciones(detalle);
       }
@@ -236,8 +256,34 @@ export class VentaFormularioComponent implements OnInit {
       .catch(err => this.handleError(err));
   };
 
+  validarDocumento(){
+
+  }
+
+  generarNotaPedido(id){
+    this.cargando = true;
+    this.api.get("venta/notapedido/"+id)
+      .then(respuesta => {
+        if(respuesta && respuesta.extraInfo){
+          this.cargando = false;
+          this.toastr.success(respuesta.operacionMensaje, 'Exito');
+          this.router.navigate(['./ventas/lista/']);
+        }else{
+          this.cargando = false;
+          this.toastr.error(respuesta.operacionMensaje, 'Error');
+        }
+      })
+      .catch(err => this.handleError(err));
+  }
+
   guardarVenta(ventaParam: any){
     ventaParam.usuariosave = this.auth.getUserName();
+    if(ventaParam.tipooperacion == '03'){
+      ventaParam.idtipodocumento = this.tipoDocs.find(item => item.id == 1);
+    }
+    if(ventaParam.tipooperacion == '01'){
+      ventaParam.idtipodocumento = this.tipoDocs.find(item => item.id == 2);
+    }
     this.api.post("venta",ventaParam)
       .then(respuesta => {
         if(respuesta && respuesta.extraInfo){
@@ -302,14 +348,14 @@ export class VentaFormularioComponent implements OnInit {
     this.venta.totaldesc = 0;
     for(var i=0; i<this.venta.ventadetList.length; i++){
       this.importe = this.venta.ventadetList[i].preciototal + this.importe;
-      this.venta.totalsinigv = this.importe - this.venta.ventadetList[i].igvitem;
       this.venta.totaldesc = this.venta.ventadetList[i].descuentototal + this.venta.totaldesc;
     }
     this.venta.importetotal = Math.round(this.importe*100)/100;
     this.venta.totaldesc = Math.round(this.venta.totaldesc*100)/100;
-    this.venta.totalsinigv = Math.round(this.venta.totalsinigv*100)/100;
-    this.venta.igv = this.venta.importetotal - this.venta.totalsinigv;
+    this.venta.igv = this.importe - this.importe*this.igv;
+    this.venta.totalsinigv = this.importe-this.venta.igv;
     this.venta.igv = Math.round(this.venta.igv*100)/100;
+    this.venta.totalsinigv = Math.round(this.venta.totalsinigv*100)/100;
   };
 
   onSubmit(): void {

@@ -84,13 +84,19 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-12">
+          <div class="form-group col-md-10">
             <label for="cat" class="col-form-label">Categoria <span class="text-primary">*</span></label>
             <select style="height: calc(2rem);" class="form-control" id="cat" name="cat" [(ngModel)]="producto.idcategoria.id" required>
               <option *ngFor="let cat of categorias" [ngValue]="cat.id">
                 {{ cat.descripcion }}
               </option>
             </select>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="preciounitario" class="col-form-label">Afecto IGV</label>
+            <div>
+              <ui-switch [(ngModel)]="producto.afectoigv" name="estado"></ui-switch>
+            </div>
           </div>
         </div>
         <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-3 p-2 pl-3" style="background-color: antiquewhite">

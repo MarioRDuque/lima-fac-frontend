@@ -20,6 +20,7 @@
       "prefix": "app",
       "styles": [
         "vendor/bootstrap/css/bootstrap.min.css",
+        "../node_modules/primeng/resources/primeng.css",
         "../node_modules/font-awesome/css/font-awesome.css",
         "css/style.default.css",
         "../node_modules/ngx-toastr/toastr.css",

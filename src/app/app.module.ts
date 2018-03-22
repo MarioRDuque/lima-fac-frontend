@@ -21,6 +21,9 @@ import { PedidoComponent } from './pedido/pedido.component';
 import { MantenimientoComponent } from './mantenimiento/mantenimiento.component';
 import { ReporteComponent } from './reporte/reporte.component';
 
+import {InputMaskModule} from 'primeng/inputmask';
+import {KeyFilterModule} from 'primeng/keyfilter';
+
 import { AuthService } from './servicios/auth.service';
 import { ApiRequestService } from './servicios/api-request.service';
 import { ReportService } from './servicios/report.service';
@@ -74,7 +77,9 @@ import { VentaFormularioComponent } from './venta/venta-formulario/venta-formula
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
       '&libraries=visualization,places,drawing',
     }),
-    UiSwitchModule
+    UiSwitchModule,
+    InputMaskModule,
+    KeyFilterModule
   ],
   entryComponents: [
     ConfirmacionComponent

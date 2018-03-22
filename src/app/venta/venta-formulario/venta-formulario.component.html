@@ -28,18 +28,26 @@
                 </option>
               </select>
             </div>
-            <div class="input-group-prepend">
+            <div class="input-group-prepend" *ngIf="venta.tipooperacion == 00">
               <select [(ngModel)]="venta.idtipodocumento" class="btn btn-outline-secondary dropdown-toggle"  style="margin-bottom: 0px;" id="doc-{{i}}" name="doc-{{i}}" required>
                 <option *ngFor="let to of tipoDocs" [ngValue]="to">
                   {{ to.abreviatura }}
                 </option>
               </select>
             </div>
-            <input type="text" class="form-control" name="documento" placeholder="Ingrese numero de documento" [(ngModel)]="venta.doccliente">
-            <button class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="validarCliente()">
+            <input class="form-control" maxlength="8" *ngIf="venta.tipooperacion == 03" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de DNI" [(ngModel)]="venta.doccliente">
+            <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 01" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de RUC" [(ngModel)]="venta.doccliente">
+            <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 00" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de documento" [(ngModel)]="venta.doccliente">
+            <input class="form-control" maxlength="13" *ngIf="venta.tipooperacion == 07" type="text" name="documento" placeholder="Ingrese numero de BOLETA y/o FACTURA" [(ngModel)]="seriecorrelativo">
+            <button *ngIf="venta.tipooperacion != 07" class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="validarDocumento()">
               Validar Documento <i class="fa fa-search cursor-pointer"></i>
             </button>
+            <button *ngIf="venta.tipooperacion == 07" class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="buscarVenta()">
+              Buscar Documento <i class="fa fa-search cursor-pointer"></i>
+            </button>
           </div>
+        </div>
+        <div class="row" *ngIf="venta.tipooperacion != 07">
           <div class="col-md-12">
             <div class="form-group pt-2">
               <label class="col-form-label">Datos del cliente <span class="text-primary">*</span></label>
@@ -53,24 +61,25 @@
             </div>
           </div>
         </div>
-        <div class="pl-3 pr-3">
-          <div class="card">
-            <div class="card-close">
-              <div class="dropdown">
-                <button type="button" id="closeCard1" class="dropdown-toggle">
-                  <i class="fa fa-refresh fa-2x cursor-pointer text-primary" (click)="calcularImporte()" title="refrescar"> </i>
-                  <i class="fa fa-plus-circle fa-2x cursor-pointer text-primary" (click)="abrirProductos()" title="agregar a cesta"></i>
-                </button>
+        <div *ngIf="venta.tipooperacion != 07">
+          <div class="pl-3 pr-3">
+            <div class="card">
+              <div class="card-close">
+                <div class="dropdown">
+                  <button type="button" id="closeCard1" class="dropdown-toggle">
+                    <i class="fa fa-refresh fa-2x cursor-pointer text-primary" (click)="calcularImporte()" title="refrescar"> </i>
+                    <i class="fa fa-plus-circle fa-2x cursor-pointer text-primary" (click)="abrirProductos()" title="agregar a cesta"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="card-header d-flex align-items-center" style="background-color: #bfffbf;">
-              <h3 class="h4">Detalle de Venta</h3>
-            </div>
-            <div class="card-body">
-              <div class="row no-gutters" *ngIf="venta.ventadetList && venta.ventadetList.length>0">
-                <div class="col box-line-negocio-cuerpo  table-responsive-secundaria">
-                  <table class="table table-sigro table-hover mb-0 table-bordered">
-                    <thead>
+              <div class="card-header d-flex align-items-center" style="background-color: #bfffbf;">
+                <h3 class="h4">Detalle de Venta</h3>
+              </div>
+              <div class="card-body">
+                <div class="row no-gutters" *ngIf="venta.ventadetList && venta.ventadetList.length>0">
+                  <div class="col box-line-negocio-cuerpo  table-responsive-secundaria">
+                    <table class="table table-sigro table-hover mb-0 table-bordered">
+                      <thead>
                       <tr>
                         <th>Nombre.</th>
                         <th>Unidad.</th>
@@ -81,40 +90,40 @@
                         <th>Total.</th>
                         <th style="width:20px;">Opcion</th>
                       </tr>
-                    </thead>
-                    <tbody>
+                      </thead>
+                      <tbody>
                       <tr *ngFor="let detalle of venta.ventadetList; let i = index">
-                      <td>{{detalle.idproducto.nombre}}</td>
-                      <td style="min-width: 200px; padding-bottom: 0;">
-                        <select style="height: calc(1.7rem); padding: 0 10px;" class="form-control" id="unidad-{{i}}" name="unidad-{{i}}"
-                                [(ngModel)]="venta.ventadetList[i].idunidadmedida" (change)="obtenerPrecio(detalle);" required>
-                          <option *ngFor="let unidad of venta.ventadetList[i].idproducto.productomedidaList" [ngValue]="unidad.idunidadmedida">
-                            {{ unidad.idunidadmedida.descripcion }}
-                          </option>
-                        </select>
-                      </td>
-                      <td>
-                        {{venta.idmoneda.simbolo}}
-                        <input style="width:80px;" type="number" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}" (keyup)="operaciones(detalle)">
-                      </td>
-                      <td>
-                        <input style="width:80px;" type="number" [(ngModel)]="detalle.descuentounitario" name="desc-{{i}}" (keyup)="operaciones(detalle)">
-                      </td>
-                      <td>
-                        <input style="width:80px;" type="number" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}" (keyup)="operaciones(detalle)">
-                      </td>
+                        <td>{{detalle.idproducto.nombre}}</td>
+                        <td style="min-width: 200px; padding-bottom: 0;">
+                          <select style="height: calc(1.7rem); padding: 0 10px;" class="form-control" id="unidad-{{i}}" name="unidad-{{i}}"
+                                  [(ngModel)]="venta.ventadetList[i].idunidadmedida" (change)="obtenerPrecio(detalle);" required>
+                            <option *ngFor="let unidad of venta.ventadetList[i].idproducto.productomedidaList" [ngValue]="unidad.idunidadmedida">
+                              {{ unidad.idunidadmedida.descripcion }}
+                            </option>
+                          </select>
+                        </td>
+                        <td>
+                          {{venta.idmoneda.simbolo}}
+                          <input style="width:80px;" type="number" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}" (keyup)="operaciones(detalle)">
+                        </td>
+                        <td>
+                          <input style="width:80px;" type="number" [(ngModel)]="detalle.descuentounitario" name="desc-{{i}}" (keyup)="operaciones(detalle)">
+                        </td>
+                        <td>
+                          <input style="width:80px;" type="number" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}" (keyup)="operaciones(detalle)">
+                        </td>
                         <td>
                           {{venta.idmoneda.simbolo}} {{detalle.descuentototal | number : '1.2-2'}}
                         </td>
-                      <td>
-                        {{venta.idmoneda.simbolo}} {{detalle.preciototal | number : '1.2-2'}}
-                      </td>
-                      <td class="text-right">
-                        <i class="fa fa-close fa-2x cursor-pointer text-primary margen-0" (click)="confirmarEliminacionDetalle(detalle)"></i>
-                      </td>
-                    </tr>
-                    </tbody>
-                    <thead>
+                        <td>
+                          {{venta.idmoneda.simbolo}} {{detalle.preciototal | number : '1.2-2'}}
+                        </td>
+                        <td class="text-right">
+                          <i class="fa fa-close fa-2x cursor-pointer text-primary margen-0" (click)="confirmarEliminacionDetalle(detalle)"></i>
+                        </td>
+                      </tr>
+                      </tbody>
+                      <thead>
                       <tr>
                         <th colspan="6" class="text-right">Operacion Gravada</th>
                         <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe - importe*igv | number : '1.2-2'}}</span></th>
@@ -127,18 +136,51 @@
                         <th colspan="6" class="text-right">Importe total</th>
                         <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe | number : '1.2-2'}}</span></th>
                       </tr>
-                    </thead>
-                    <br>
-                  </table>
+                      </thead>
+                      <br>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <div style="text-align: right" class="p-3">
+            <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="!venta.id">Guardar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="venta.id">Actualizar</button>
+            <button type="button" class="btn btn-outline-dark" routerLink="/ventas/lista">Cancelar</button>
+          </div>
         </div>
-        <div style="text-align: right" class="p-3">
-          <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="!venta.id">Guardar</button>
-          <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="venta.id">Actualizar</button>
-          <button type="button" class="btn btn-outline-dark" routerLink="/ventas/lista">Cancelar</button>
+        <div *ngIf="venta.tipooperacion == 07" class="pt-2">
+          <div *ngIf="ventas && ventas.length > 0">
+            <div class="row">
+              <div class="col table-responsive">
+                <table class="table table-sigro table-hover table-bordered">
+                  <thead class="thead-inverse">
+                  <tr>
+                    <th>Código</th>
+                    <th>Cliente</th>
+                    <th>Fec. Venta</th>
+                    <th>Tipo Venta</th>
+                    <th>Registrado Por</th>
+                    <th>Generar</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr class="cursor-pointer" *ngFor="let venta of ventas">
+                    <td>{{venta.serie}} - {{venta.correlativo}}</td>
+                    <td>{{venta.doccliente}} {{venta.nombrecliente}}</td>
+                    <td>{{venta.fechaemision | date:"dd/MM/yyyy"}}</td>
+                    <td>{{venta.direccion}}</td>
+                    <td>{{venta.usuariosave}}</td>
+                    <td class="pb-0 pt-0">
+                      <i class="fa fa-file-archive-o fa-2x cursor-pointer text-primary" (click)="generarNotaPedido(venta.id)"></i>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>
