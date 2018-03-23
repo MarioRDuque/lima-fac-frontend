@@ -11,6 +11,7 @@ import { ClienteComponent } from './../../cliente/cliente.component';
 import { ProductoComponent } from './../../producto/producto.component';
 import { ApiRequestService } from '../../servicios/api-request.service';
 import { AuthService } from '../../servicios/auth.service';
+import { ReportService } from '../../servicios/report.service';
 import { Paginacion } from '../../entidades/entidad.paginacion';
 import { Venta } from '../../entidades/entidad.venta';
 import { Ventadet } from '../../entidades/entidad.ventadet';
@@ -62,12 +63,14 @@ export class VentaFormularioComponent implements OnInit {
   public mensajeForUser : string = "";
   public productos : any = [];
   public seriecorrelativo;
+  @ViewChild("boletaDownload") boletaDownload;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
     private api: ApiRequestService,
+    private apiReport: ReportService,
     private modalService: NgbModal,
     public auth: AuthService
   ) {
@@ -277,6 +280,7 @@ export class VentaFormularioComponent implements OnInit {
   }
 
   guardarVenta(ventaParam: any){
+    this.cargando = true;
     ventaParam.usuariosave = this.auth.getUserName();
     if(ventaParam.tipooperacion == '03'){
       ventaParam.idtipodocumento = this.tipoDocs.find(item => item.id == 1);
@@ -290,16 +294,19 @@ export class VentaFormularioComponent implements OnInit {
           this.solicitudExitosa = true;
           this.toastr.success(respuesta.operacionMensaje, 'Exito');
           this.limpiarCampos();
-          this.router.navigate(['./ventas/lista/']);
+          this.imprimirBoleta();
+          this.cargando = false;
         }else{
           this.solicitudExitosa = false;
           this.toastr.error(respuesta.operacionMensaje, 'Error');
+          this.cargando = false;
         }
       })
       .catch(err => this.handleError(err));
   };
 
   editarVenta(ventaParam: Venta){
+    this.cargando = true;
     ventaParam.fechaemision = new Date(ventaParam.fechaemision);
     ventaParam.fechaemision.setDate(ventaParam.fechaemision.getDate()+1);
     ventaParam.usuarioupdate = this.auth.getUserName();
@@ -309,15 +316,47 @@ export class VentaFormularioComponent implements OnInit {
           if(respuesta && respuesta.extraInfo){
             this.solicitudExitosa = true;
             this.toastr.success(respuesta.operacionMensaje, 'Exito');
-            this.router.navigate(['./ventas/lista']);
+            this.imprimirBoleta();
           }else{
             this.solicitudExitosa = false;
             this.toastr.error(respuesta.operacionMensaje, 'Error');
           }
+          this.cargando = false;
         }
       })
       .catch(err => this.handleError(err));
   };
+
+  imprimirBoleta(){
+    this.cargando = true;
+    let params={
+      "codusu":this.auth.getUserName(),
+      "report":'rptBoletaSunat',
+      "idVenta":this.venta.id
+    };
+    this.apiReport.post("reporte/generarsunat",params)
+      .then(
+        data => {
+          if(data){
+            this.descargarArchivoPDF('application/pdf','rptDetalleBoleta.pdf',data);
+            this.cargando = false;
+            this.router.navigate(['./ventas/lista/']);
+          }
+        }
+      )
+      .catch(err => this.handleError(err));
+  }
+
+  descargarArchivoPDF(tipoDocumento,nombreArchivo,data){
+    if(data){
+      var fileName = nombreArchivo;
+      var file = new Blob([data._body],{type: tipoDocumento });
+      var url = URL.createObjectURL(file);
+      this.boletaDownload.nativeElement.href = url;
+      this.boletaDownload.nativeElement.target = "_blank";
+      this.boletaDownload.nativeElement.click();
+    }
+  }
 
   nuevoVenta(){
     this.router.navigate(["./venta/formulario"]);
