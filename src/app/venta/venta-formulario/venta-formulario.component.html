@@ -104,13 +104,13 @@
                         </td>
                         <td>
                           {{venta.idmoneda.simbolo}}
-                          <input style="width:80px;" type="number" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}" (keyup)="operaciones(detalle)">
+                          <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}" (keyup)="operaciones(detalle)">
                         </td>
                         <td>
-                          <input style="width:80px;" type="number" [(ngModel)]="detalle.descuentounitario" name="desc-{{i}}" (keyup)="operaciones(detalle)">
+                          <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.descuentounitario" name="desc-{{i}}" (keyup)="operaciones(detalle)">
                         </td>
                         <td>
-                          <input style="width:80px;" type="number" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}" (keyup)="operaciones(detalle)">
+                          <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}" (keyup)="operaciones(detalle)">
                         </td>
                         <td>
                           {{venta.idmoneda.simbolo}} {{detalle.descuentototal | number : '1.2-2'}}
