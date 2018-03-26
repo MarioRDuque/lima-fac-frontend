@@ -6,7 +6,7 @@ export class Ventadet {
   descuentounitario:number=0;
   descuentototal:number=0;
   igvitem:number=0;
-  afectacionigv:number=10;
+  afectacionigv:string="10";
   iscitem:number=0;
   tiposistemaisc:string="01";
   valorunitariosinigv:number=0;

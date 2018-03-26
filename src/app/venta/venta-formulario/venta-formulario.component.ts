@@ -31,6 +31,7 @@ export class VentaFormularioComponent implements OnInit {
   tipoDocs : any = [];
   tiposMon : any = [];
   igv:number=0;
+  idventa:number;
   public page: number = 1;
   tiposOperacion = [
     {
@@ -44,10 +45,6 @@ export class VentaFormularioComponent implements OnInit {
     {
       id:'07',
       nombre:"NOTA DE CREDITO"
-    },
-    {
-      id:'08',
-      nombre:"NOTA DE CARGO"
     },
     {
       id:'00',
@@ -224,7 +221,7 @@ export class VentaFormularioComponent implements OnInit {
         detalle.preciounitario = reason.productomedidaList[0].precio>0?reason.productomedidaList[0].precio:0;
         detalle.preciototal = 1 * reason.productomedidaList[0].precio>0?reason.productomedidaList[0].precio:0;
         if(reason.afectoigv){
-          detalle.afectacionigv = 20;
+          detalle.afectacionigv = "20";
         }
         this.venta.ventadetList.push(detalle);
         this.operaciones(detalle);
@@ -291,6 +288,7 @@ export class VentaFormularioComponent implements OnInit {
     this.api.post("venta",ventaParam)
       .then(respuesta => {
         if(respuesta && respuesta.extraInfo){
+          this.idventa = respuesta.extraInfo;
           this.solicitudExitosa = true;
           this.toastr.success(respuesta.operacionMensaje, 'Exito');
           this.limpiarCampos();
@@ -314,6 +312,7 @@ export class VentaFormularioComponent implements OnInit {
       .then(respuesta => {
         if(respuesta !== undefined){
           if(respuesta && respuesta.extraInfo){
+            this.idventa = respuesta.extraInfo;
             this.solicitudExitosa = true;
             this.toastr.success(respuesta.operacionMensaje, 'Exito');
             this.imprimirBoleta();
@@ -332,7 +331,7 @@ export class VentaFormularioComponent implements OnInit {
     let params={
       "codusu":this.auth.getUserName(),
       "report":'rptBoletaSunat',
-      "idVenta":this.venta.id
+      "idVenta":this.idventa
     };
     this.apiReport.post("reporte/generarsunat",params)
       .then(
