@@ -29,7 +29,7 @@ export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad 
             return true;
         }
         this.authService.urlDestino = url;
-        this.router.navigate(['welcome']);
+        this.router.navigate(['login']);
         return false;
     }
 }

@@ -31,8 +31,7 @@ const routes: Routes = [
           {path: 'formulario', component: PedidoFormularioComponent},
           {path: 'formulario/:id', component: PedidoFormularioComponent},
           {path: 'seguimiento/:id', component: PedidoSeguimientoComponent},
-          {path: '', redirectTo: 'lista', pathMatch: 'full'},
-          {path: '**', component: PedidoListaComponent}
+          {path: '', redirectTo: 'lista', pathMatch: 'full'}
         ]
       },
       { path: 'reportes',  component: ReporteComponent },
@@ -42,8 +41,7 @@ const routes: Routes = [
           {path: 'lista', component: VentaListaComponent},
           {path: 'formulario', component: VentaFormularioComponent},
           {path: 'formulario/:id', component: VentaFormularioComponent},
-          {path: '', redirectTo: 'lista', pathMatch: 'full'},
-          {path: '**', component: VentaListaComponent}
+          {path: '', redirectTo: 'lista', pathMatch: 'full'}
         ]
       }
     ]

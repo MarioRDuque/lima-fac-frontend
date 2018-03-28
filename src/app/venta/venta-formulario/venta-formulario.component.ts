@@ -253,7 +253,7 @@ export class VentaFormularioComponent implements OnInit {
         this.solicitando = false;
         this.solicitudExitosa = true;
       })
-      .catch(err => this.handleError(err));
+      .catch(err => this.volverAlista(err));
   };
 
   validarDocumento(){
@@ -379,6 +379,14 @@ export class VentaFormularioComponent implements OnInit {
     this.cargando = false;
     this.solicitudExitosa = false;
     this.toastr.error("Error Interno", 'Error');
+  };
+
+  private volverAlista(error: any): void {
+    this.solicitando = false;
+    this.cargando = false;
+    this.solicitudExitosa = false;
+    this.toastr.error("Error Interno", 'Error');
+    this.router.navigate(["./ventas/lista"]);
   };
 
   calcularImporte() {
