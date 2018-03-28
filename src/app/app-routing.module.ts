@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
 import { AuthGuardService } from './servicios/auth-guard.service';
 
 import { LoginComponent } from './login/login.component';
@@ -61,6 +62,8 @@ const routes: Routes = [
 	exports: [
 		RouterModule
 	],
-	providers: []
+  providers: [
+    SelectivePreloadingStrategy,
+  ]
 })
 export class AppRouterModule { }
