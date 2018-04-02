@@ -366,11 +366,16 @@ export class VentaFormularioComponent implements OnInit {
       detalle.descuentounitario = detalle.preciounitario;
     }
     detalle.descuentototal = detalle.descuentounitario * detalle.cantidad;
-    detalle.igvitem = detalle.preciounitario * detalle.cantidad * this.igv;
+    if(detalle.afectacionigv == "10"){
+      detalle.igvitem = 0;
+      detalle.valorunitariosinigv = detalle.preciounitario;
+    } else {
+      detalle.igvitem = detalle.preciounitario * detalle.cantidad * this.igv;
+      detalle.valorunitariosinigv = detalle.preciounitario - detalle.preciounitario*this.igv;
+    }
     detalle.preciototal = (detalle.preciounitario * detalle.cantidad) - detalle.descuentototal;
     detalle.igvitem = Math.round( detalle.igvitem * 100 ) / 100;
-    detalle.valorunitariosinigv = detalle.preciounitario - this.igv;
-    detalle.preciototalsinigv = detalle.valorunitariosinigv*detalle.cantidad;
+    detalle.preciototalsinigv = (detalle.valorunitariosinigv*detalle.cantidad) - detalle.descuentototal;
     this.calcularImporte();
   };
 
@@ -392,13 +397,17 @@ export class VentaFormularioComponent implements OnInit {
   calcularImporte() {
     this.importe = 0;
     this.venta.totaldesc = 0;
+    this.venta.totalsinigv = 0;
     for(var i=0; i<this.venta.ventadetList.length; i++){
       this.importe = this.venta.ventadetList[i].preciototal + this.importe;
+      /*new*/
+      this.venta.totalsinigv = this.venta.ventadetList[i].preciototalsinigv + this.venta.totalsinigv;
+      /*fin new*/
       this.venta.totaldesc = this.venta.ventadetList[i].descuentototal + this.venta.totaldesc;
     }
     this.venta.importetotal = Math.round(this.importe*100)/100;
     this.venta.totaldesc = Math.round(this.venta.totaldesc*100)/100;
-    this.venta.totalsinigv = this.importe - this.importe*this.igv;
+    /*this.venta.totalsinigv = this.importe - this.importe*this.igv;*/
     this.venta.igv = this.importe-this.venta.totalsinigv;
     this.venta.igv = Math.round(this.venta.igv*100)/100;
     this.venta.totalsinigv = Math.round(this.venta.totalsinigv*100)/100;
