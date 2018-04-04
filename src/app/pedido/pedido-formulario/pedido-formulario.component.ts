@@ -28,6 +28,7 @@ export class PedidoFormularioComponent implements OnInit {
 
   pedidosSinGuardar : any = [];
   autocomplete: any;
+  u_default: any;
   address: any = {};
   center: any;
   code: string;
@@ -68,6 +69,7 @@ export class PedidoFormularioComponent implements OnInit {
 
   ngOnInit() {
     this.cargando = true;
+    this.traerUDefault();
     this.route.params.subscribe(params => {
       if(params['id']!=null){
         this.idPedido = +params['id'];
@@ -101,6 +103,29 @@ export class PedidoFormularioComponent implements OnInit {
     }, (reason) => {
       this.pedido.idcliente = reason ? reason : this.pedido.idcliente;
     });
+  }
+
+  traerUDefault(){
+    this.cargando = true;
+    let unidad = JSON.parse(localStorage.getItem("unidaddefault"));
+    if(unidad){
+      this.u_default = unidad;
+      this.cargando = false;
+    } else {
+      return this.api.get('unidad/default')
+        .then(
+          data => {
+            if(data && data.extraInfo){
+              this.u_default = data.extraInfo;
+              localStorage.setItem("unidaddefault",JSON.stringify(this.u_default));
+            } else {
+              this.toastr.error("No se encontró unidad por defecto por favor recargar la página.", "Alerta");
+            }
+            this.cargando =false;
+          }
+        )
+        .catch(err => this.handleError(err));
+    }
   }
 
   confirmarEliminacionDetalle(o):void{
@@ -138,6 +163,15 @@ export class PedidoFormularioComponent implements OnInit {
       this.ngOnInit();
     }, (reason) => {
       if(reason && reason.id){
+        if(!reason.productomedidaList[0]){
+          let pm = {
+            "estado":true,
+            "precio":1,
+            "idproducto":reason.id,
+            "idunidadmedida":this.u_default
+          };
+          reason.productomedidaList.push(pm);
+        }
         let detalle = {
           "idproducto":reason,
           "idunidad":reason && reason.productomedidaList[0] ? reason.productomedidaList[0].idunidadmedida : {},
@@ -265,8 +299,21 @@ export class PedidoFormularioComponent implements OnInit {
   llenarDatosParaEdicion(pedido: any) : void {
     if(pedido.detallePedidoList){
       for(var i=0; i<pedido.detallePedidoList.length; i++){
+        if(pedido.detallePedidoList[i].idproducto){
+          let pm = {
+            "estado":true,
+            "precio":1,
+            "idproducto":pedido.detallePedidoList[i].idproducto.id,
+            "idunidadmedida":this.u_default
+          };
+          pedido.detallePedidoList[i].idproducto.productomedidaList.push(pm);
+        }
         if(pedido.detallePedidoList[i].idproducto && pedido.detallePedidoList[i].idproducto.productomedidaList){
           let pmul = pedido.detallePedidoList[i].idproducto.productomedidaList.find(item => item.idunidadmedida.id === this.pedido.detallePedidoList[i].idunidad.id);
+          if(!pmul){
+            pmul = {};
+            pmul.idunidadmedida = this.u_default;
+          }
           this.pedido.detallePedidoList[i].idunidad = pmul.idunidadmedida;
         }
       }

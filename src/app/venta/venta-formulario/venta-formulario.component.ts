@@ -60,6 +60,7 @@ export class VentaFormularioComponent implements OnInit {
   public mensajeForUser : string = "";
   public productos : any = [];
   public seriecorrelativo;
+  public u_default:any;
   @ViewChild("boletaDownload") boletaDownload;
 
   constructor(
@@ -81,6 +82,7 @@ export class VentaFormularioComponent implements OnInit {
     this.traerTipoDocs();
     this.traerTiposMon();
     this.traerIGV();
+    this.traerUDefault();
     this.route.params.subscribe(params => {
       if(params['id']!=null) {
         this.idPedido = +params['id'];
@@ -177,6 +179,29 @@ export class VentaFormularioComponent implements OnInit {
     }
   }
 
+  traerUDefault(){
+    this.cargando = true;
+    let unidad = JSON.parse(localStorage.getItem("unidaddefault"));
+    if(unidad){
+      this.u_default = unidad;
+      this.cargando = false;
+    } else {
+      return this.api.get('unidad/default')
+        .then(
+          data => {
+            if(data && data.extraInfo){
+              this.u_default = data.extraInfo;
+              localStorage.setItem("unidaddefault",JSON.stringify(this.u_default));
+            } else {
+              this.toastr.error("No se encontró unidad por defecto por favor recargar la página.", "Alerta");
+            }
+            this.cargando =false;
+          }
+        )
+        .catch(err => this.handleError(err));
+    }
+  }
+
   confirmarEliminacionDetalle(o):void{
     const modalRef = this.modalService.open(ConfirmacionComponent);
     modalRef.result.then((result) => {
@@ -217,6 +242,15 @@ export class VentaFormularioComponent implements OnInit {
         let detalle = new Ventadet();
         detalle.idproducto = reason;
         detalle.idventa = this.venta.id;
+        if(!reason.productomedidaList[0]){
+          let pm = {
+            "estado":true,
+            "precio":1,
+            "idproducto":reason.id,
+            "idunidadmedida":this.u_default
+          };
+          reason.productomedidaList.push(pm);
+        }
         detalle.idunidadmedida = reason && reason.productomedidaList[0] ? reason.productomedidaList[0].idunidadmedida : {};
         detalle.preciounitario = reason.productomedidaList[0].precio>0?reason.productomedidaList[0].precio:0;
         detalle.preciototal = 1 * reason.productomedidaList[0].precio>0?reason.productomedidaList[0].precio:0;
@@ -427,8 +461,21 @@ export class VentaFormularioComponent implements OnInit {
     venta.idtipodocumento = tipodocselect;
     if(venta.ventadetList){
       for(var i=0; i<venta.ventadetList.length; i++){
+        if(venta.ventadetList[i].idproducto){
+          let pm = {
+            "estado":true,
+            "precio":1,
+            "idproducto":venta.ventadetList[i].idproducto.id,
+            "idunidadmedida":this.u_default
+          };
+          venta.ventadetList[i].idproducto.productomedidaList.push(pm);
+        }
         if(venta.ventadetList[i].idproducto && venta.ventadetList[i].idproducto.productomedidaList){
           let pmul = venta.ventadetList[i].idproducto.productomedidaList.find(item => item.idunidadmedida.id === this.venta.ventadetList[i].idunidadmedida.id);
+          if(!pmul){
+            pmul = {};
+            pmul.idunidadmedida = this.u_default;
+          }
           this.venta.ventadetList[i].idunidadmedida = pmul.idunidadmedida;
         }
       }

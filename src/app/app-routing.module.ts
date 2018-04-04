@@ -36,15 +36,15 @@ const routes: Routes = [
         ]
       },
       { path: 'reportes',  component: ReporteComponent },
-      { path: 'productos',  component: ProductoComponent },
-      { path: 'ventas',  component: VentaComponent,
+      { path: 'productos',  component: ProductoComponent }
+      /*{ path: 'ventas',  component: VentaComponent,
         children: [
           {path: 'lista', component: VentaListaComponent},
           {path: 'formulario', component: VentaFormularioComponent},
           {path: 'formulario/:id', component: VentaFormularioComponent},
           {path: '', redirectTo: 'lista', pathMatch: 'full'}
         ]
-      }
+      }*/
     ]
   },
   { path: '', redirectTo: '/', pathMatch: 'full' }
