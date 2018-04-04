@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class AppConfig {
 
-    public baseApiPath:string="https://lima-fac-backend.herokuapp.com/";
-    //public baseApiPath:string="http://localhost:8092/";
+    //public baseApiPath:string="https://lima-fac-backend.herokuapp.com/";
+    public baseApiPath:string="http://localhost:8092/";
 
     constructor(){
 
