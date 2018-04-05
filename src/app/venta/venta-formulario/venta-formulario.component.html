@@ -35,7 +35,7 @@
                 </option>
               </select>
             </div>
-            <input class="form-control" maxlength="8" *ngIf="venta.tipooperacion == 03" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de DNI" [(ngModel)]="venta.doccliente">
+            <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 03" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de DNI" [(ngModel)]="venta.doccliente">
             <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 01" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de RUC" [(ngModel)]="venta.doccliente">
             <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 00" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de documento" [(ngModel)]="venta.doccliente">
             <input class="form-control" maxlength="13" *ngIf="venta.tipooperacion == 07" type="text" name="documento" placeholder="Ingrese numero de BOLETA y/o FACTURA" [(ngModel)]="seriecorrelativo">
