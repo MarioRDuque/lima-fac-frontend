@@ -449,8 +449,18 @@ export class VentaFormularioComponent implements OnInit {
 
   onSubmit(): void {
     this.mensajeForUser = 'Guardando ...';
+    this.validarCampos();
     this.esEdicion ? this.editarVenta(this.venta) : this.guardarVenta(this.venta);
   };
+
+  validarCampos(){
+    if(this.tiposOperacion.id=="01"){
+      if(!this.venta.doccliente || this.venta.doccliente.length<11){
+        this.toastr.info("El documento en las facturas debe ser igual a 8");
+        return false;
+      }
+    }
+  }
 
   llenarDatosParaEdicion(venta: Venta) : void {
     let tipoMon= venta.idmoneda;
