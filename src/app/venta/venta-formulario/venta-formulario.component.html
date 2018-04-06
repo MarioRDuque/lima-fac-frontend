@@ -130,7 +130,7 @@
                       </tr>
                       <tr>
                         <th colspan="6" class="text-right">Impuesto General de la Renta (IGV). {{igv*100}}%</th>
-                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe*igv | number : '1.2-2'}}</span></th>
+                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{venta.igv | number : '1.2-2'}}</span></th>
                       </tr>
                       <tr>
                         <th colspan="6" class="text-right">Importe total</th>
@@ -151,6 +151,10 @@
           </div>
         </div>
         <div *ngIf="venta.tipooperacion == 07" class="pt-2">
+          <div class="col-md-12 pb-2">
+            <textarea name="" id="" cols="10" rows="5" maxlength="250" class="form-control"
+                      placeholder="Ingrese motivo de anulacion del documento"></textarea>
+          </div>
           <div *ngIf="ventas && ventas.length > 0">
             <div class="row">
               <div class="col table-responsive">
@@ -180,6 +184,9 @@
                 </table>
               </div>
             </div>
+          </div>
+          <div style="text-align: right" class="p-3">
+            <button type="button" class="btn btn-outline-dark" routerLink="/ventas/lista">Cancelar</button>
           </div>
         </div>
       </form>
