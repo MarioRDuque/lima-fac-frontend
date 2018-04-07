@@ -23,6 +23,8 @@ export class Venta {
   estado:boolean=true;
   usuariosave:string;
   usuarioupdate:string;
+  descripcion:string;
+  anulado:string;
   importetotal:number;
   ventadetList: Ventadet[] =[];
 }

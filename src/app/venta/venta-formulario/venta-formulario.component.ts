@@ -306,7 +306,7 @@ export class VentaFormularioComponent implements OnInit {
 
   generarNotaPedido(id){
     this.cargando = true;
-    this.api.get("venta/notapedido/"+id)
+    this.api.get("venta/notapedido/"+id+"/descripcion/"+this.venta.descripcion)
       .then(respuesta => {
         if(respuesta && respuesta.extraInfo){
           this.cargando = false;
