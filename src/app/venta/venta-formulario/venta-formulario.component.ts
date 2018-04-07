@@ -101,6 +101,7 @@ export class VentaFormularioComponent implements OnInit {
       this.ngOnInit();
     }, (reason) => {
       this.venta.nombrecliente = reason && reason.idpersona ? reason.idpersona.nombrecompleto : "";
+      this.venta.doccliente = reason && reason.idpersona ? reason.idpersona.numdocumento : "";
     });
   };
 
@@ -291,7 +292,16 @@ export class VentaFormularioComponent implements OnInit {
   };
 
   validarDocumento(){
-
+    return this.api.post('cliente/obtenerv', {dni:this.venta.doccliente})
+      .then(
+        data => {
+          if(data && data.extraInfo){
+            this.solicitando = false;
+            this.venta.nombrecliente = data.extraInfo.nombre;
+          }
+        }
+      )
+      .catch(err => this.handleError(err));
   }
 
   generarNotaPedido(id){
@@ -449,17 +459,50 @@ export class VentaFormularioComponent implements OnInit {
 
   onSubmit(): void {
     this.mensajeForUser = 'Guardando ...';
-    this.validarCampos();
-    this.esEdicion ? this.editarVenta(this.venta) : this.guardarVenta(this.venta);
+    if(this.validarCampos()){
+      this.esEdicion ? this.editarVenta(this.venta) : this.guardarVenta(this.venta);
+    }
   };
 
   validarCampos(){
-    if(this.tiposOperacion.id=="01"){
+    if(this.venta.tipooperacion=="01"){
       if(!this.venta.doccliente || this.venta.doccliente.length<11){
-        this.toastr.info("El documento en las facturas debe ser igual a 8");
+        this.toastr.info("El documento en las facturas debe ser igual a 11");
+        return false;
+      }
+      if(!this.venta.nombrecliente){
+        this.toastr.info("El nombre del cliente es obligatorio en las facturas.");
         return false;
       }
     }
+    if(this.venta.tipooperacion=="03"){
+      if(!this.venta.doccliente || this.venta.doccliente.length<8){
+        this.venta.doccliente = "99999999";
+        this.venta.nombrecliente = "CLIENTES VARIOS";
+      }
+      if(!this.venta.doccliente || this.venta.doccliente.length>8){
+        this.venta.doccliente = "99999999";
+        this.venta.nombrecliente = "CLIENTES VARIOS";
+      }
+      if(!this.venta.nombrecliente || this.venta.nombrecliente==""){
+        this.venta.nombrecliente = "CLIENTES VARIOS";
+      }
+    }
+    if(this.venta.tipooperacion!="07"){
+      if(!this.venta.ventadetList || this.venta.ventadetList.length<=0){
+        this.toastr.info("Debe añadir items a la a venta");
+        return false;
+      }
+    }
+    if(this.venta.tipooperacion=="00"){
+      if(!this.venta.doccliente || this.venta.doccliente==""){
+        this.venta.doccliente = "99999999";
+      }
+      if(!this.venta.nombrecliente || this.venta.nombrecliente==""){
+        this.venta.nombrecliente = "CLIENTES VARIOS";
+      }
+    }
+    return true;
   }
 
   llenarDatosParaEdicion(venta: Venta) : void {

@@ -35,7 +35,7 @@
                 </option>
               </select>
             </div>
-            <input class="form-control" maxlength="8" *ngIf="venta.tipooperacion == 03" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de DNI" [(ngModel)]="venta.doccliente">
+            <input class="form-control" *ngIf="venta.tipooperacion == 03" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de DNI" [(ngModel)]="venta.doccliente">
             <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 01" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de RUC" [(ngModel)]="venta.doccliente">
             <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 00" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de documento" [(ngModel)]="venta.doccliente">
             <input class="form-control" maxlength="13" *ngIf="venta.tipooperacion == 07" type="text" name="documento" placeholder="Ingrese numero de BOLETA y/o FACTURA" [(ngModel)]="seriecorrelativo">
@@ -53,7 +53,7 @@
               <label class="col-form-label">Datos del cliente <span class="text-primary">*</span></label>
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Ingrese cliente" [(ngModel)]="venta.nombrecliente" maxlength="90" id="nombrecompleto"
-                       name="cdescor" required>
+                       name="cdescor">
                 <button class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="abrirClientes()">
                   <i class="fa fa-search cursor-pointer"></i>
                 </button>
