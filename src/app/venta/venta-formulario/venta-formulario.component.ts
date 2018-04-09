@@ -457,6 +457,7 @@ export class VentaFormularioComponent implements OnInit {
     detalle.preciototal = (detalle.preciounitario * detalle.cantidad) - detalle.descuentototal;
     detalle.igvitem = Math.round( detalle.igvitem * 100 ) / 100;
     detalle.preciototalsinigv = (detalle.valorunitariosinigv*detalle.cantidad) - detalle.descuentototal;
+    detalle.preciototalsinigv = Math.round( detalle.preciototalsinigv * 100 ) / 100;
     this.calcularImporte();
   };
 
@@ -496,6 +497,7 @@ export class VentaFormularioComponent implements OnInit {
     this.venta.igv = this.importe-this.venta.totalsinigv;
     this.venta.igv = Math.round(this.venta.igv*100)/100;
     this.venta.totalsinigv = Math.round(this.venta.totalsinigv*100)/100;
+    this.venta.valopeexo = Math.round(this.venta.valopeexo*100)/100;
   };
 
   onSubmit(): void {
