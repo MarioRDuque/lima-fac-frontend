@@ -284,7 +284,7 @@ export class VentaFormularioComponent implements OnInit {
         detalle.preciounitario = reason.productomedidaList[0].precio>0?reason.productomedidaList[0].precio:0;
         detalle.preciototal = 1 * reason.productomedidaList[0].precio>0?reason.productomedidaList[0].precio:0;
         if(reason.afectoigv){
-          detalle.afectacionigv = "20";
+          detalle.afectacionigv = "10";
         }
         this.venta.ventadetList.push(detalle);
         this.operaciones(detalle);
@@ -486,7 +486,7 @@ export class VentaFormularioComponent implements OnInit {
       this.venta.totalsinigv = this.venta.ventadetList[i].preciototalsinigv + this.venta.totalsinigv;
       /*fin new*/
       this.venta.totaldesc = this.venta.ventadetList[i].descuentototal + this.venta.totaldesc;
-      if(this.venta.ventadetList[i].afectacionigv == "10"){
+      if(this.venta.ventadetList[i].afectacionigv == "20"){
         this.venta.valopeexo = this.venta.valopeexo + this.venta.ventadetList[i].igvitem;
       }
     }
