@@ -458,6 +458,7 @@ export class VentaFormularioComponent implements OnInit {
     detalle.igvitem = Math.round( detalle.igvitem * 100 ) / 100;
     detalle.preciototalsinigv = (detalle.valorunitariosinigv*detalle.cantidad) - detalle.descuentototal;
     detalle.preciototalsinigv = Math.round( detalle.preciototalsinigv * 100 ) / 100;
+    detalle.valorunitariosinigv = Math.round( detalle.valorunitariosinigv * 100 ) / 100;
     this.calcularImporte();
   };
 
