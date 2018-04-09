@@ -447,13 +447,13 @@ export class VentaFormularioComponent implements OnInit {
       detalle.descuentounitario = detalle.preciounitario;
     }
     detalle.descuentototal = detalle.descuentounitario * detalle.cantidad;
-    if(detalle.afectacionigv == "20"){
+    /*if(detalle.afectacionigv == "10"){
       detalle.igvitem = 0;
       detalle.valorunitariosinigv = detalle.preciounitario;
-    } else {
+    } else {*/
       detalle.igvitem = detalle.preciounitario * detalle.cantidad * this.igv;
       detalle.valorunitariosinigv = detalle.preciounitario - detalle.preciounitario*this.igv;
-    }
+    /*}*/
     detalle.preciototal = (detalle.preciounitario * detalle.cantidad) - detalle.descuentototal;
     detalle.igvitem = Math.round( detalle.igvitem * 100 ) / 100;
     detalle.preciototalsinigv = (detalle.valorunitariosinigv*detalle.cantidad) - detalle.descuentototal;
@@ -488,9 +488,9 @@ export class VentaFormularioComponent implements OnInit {
       this.venta.totalsinigv = this.venta.ventadetList[i].preciototalsinigv + this.venta.totalsinigv;
       /*fin new*/
       this.venta.totaldesc = this.venta.ventadetList[i].descuentototal + this.venta.totaldesc;
-      /*if(this.venta.ventadetList[i].afectacionigv == "20"){
+      if(this.venta.ventadetList[i].afectacionigv == "20"){
         this.venta.valopeexo = this.venta.valopeexo + this.venta.ventadetList[i].igvitem;
-      }*/
+      }
     }
     this.venta.importetotal = Math.round(this.importe*100)/100;
     this.venta.totaldesc = Math.round(this.venta.totaldesc*100)/100;
