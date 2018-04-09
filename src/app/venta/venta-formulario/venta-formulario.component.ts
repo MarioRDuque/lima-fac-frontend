@@ -504,6 +504,8 @@ export class VentaFormularioComponent implements OnInit {
   onSubmit(): void {
     this.mensajeForUser = 'Guardando ...';
     if(this.validarCampos()){
+      this.venta.importetotal = this.venta.importetotal + this.venta.valopeexo;
+      this.venta.importetotal = Math.round(this.importe*100)/100;
       this.esEdicion ? this.editarVenta(this.venta) : this.guardarVenta(this.venta);
     }
   };
