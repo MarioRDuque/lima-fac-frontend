@@ -32,6 +32,7 @@ export class VentaFormularioComponent implements OnInit {
   tiposMon : any = [];
   igv:number=0;
   idventa:number;
+  cliente:any={};
   public page: number = 1;
   tiposOperacion = [
     {
@@ -61,6 +62,8 @@ export class VentaFormularioComponent implements OnInit {
   public productos : any = [];
   public seriecorrelativo;
   public u_default:any;
+  public clientes:any=[];
+  public param:any={};
   @ViewChild("boletaDownload") boletaDownload;
 
   constructor(
@@ -93,6 +96,31 @@ export class VentaFormularioComponent implements OnInit {
       }
     });
   };
+
+  search(event) {
+    this.traerClientes(event.query);
+
+    /*this.mylookupservice.getResults(event.query).then(data => {
+      this.results = data;
+    });*/
+  }
+
+  traerClientes(query): any {
+    this.param = {
+      "docCliente":this.venta.doccliente
+    };
+    this.solicitando = true;
+    return this.api.post('cliente/pagina/'+1+'/cantidadPorPagina/'+this.paginacion.cantidadPorPagina, this.param)
+      .then(
+        data => {
+          if(data){
+            this.solicitando = false;
+            this.clientes = data.registros;
+          }
+        }
+      )
+      .catch(err => this.handleError(err));
+  }
 
   abrirClientes():void{
     const modalRef = this.modalService.open(ClienteComponent, { size: 'lg', keyboard: false});
@@ -405,18 +433,27 @@ export class VentaFormularioComponent implements OnInit {
     this.router.navigate(["./venta/formulario"]);
   };
 
+  operacionesIGV(){
+    if(this.venta && this.venta.ventadetList && this.venta.ventadetList.length>0){
+      for(let i=0; i<this.venta.ventadetList.length; i++){
+        this.operaciones(this.venta.ventadetList[i]);
+      }
+    }
+
+  }
+
   operaciones(detalle){
     if(detalle.descuentounitario>detalle.preciounitario){
       detalle.descuentounitario = detalle.preciounitario;
     }
     detalle.descuentototal = detalle.descuentounitario * detalle.cantidad;
-    if(detalle.afectacionigv == "10"){
+    /*if(detalle.afectacionigv == "10"){
       detalle.igvitem = 0;
       detalle.valorunitariosinigv = detalle.preciounitario;
-    } else {
+    } else {*/
       detalle.igvitem = detalle.preciounitario * detalle.cantidad * this.igv;
       detalle.valorunitariosinigv = detalle.preciounitario - detalle.preciounitario*this.igv;
-    }
+    /*}*/
     detalle.preciototal = (detalle.preciounitario * detalle.cantidad) - detalle.descuentototal;
     detalle.igvitem = Math.round( detalle.igvitem * 100 ) / 100;
     detalle.preciototalsinigv = (detalle.valorunitariosinigv*detalle.cantidad) - detalle.descuentototal;
@@ -442,12 +479,16 @@ export class VentaFormularioComponent implements OnInit {
     this.importe = 0;
     this.venta.totaldesc = 0;
     this.venta.totalsinigv = 0;
+    this.venta.valopeexo = 0;
     for(var i=0; i<this.venta.ventadetList.length; i++){
       this.importe = this.venta.ventadetList[i].preciototal + this.importe;
       /*new*/
       this.venta.totalsinigv = this.venta.ventadetList[i].preciototalsinigv + this.venta.totalsinigv;
       /*fin new*/
       this.venta.totaldesc = this.venta.ventadetList[i].descuentototal + this.venta.totaldesc;
+      if(this.venta.ventadetList[i].afectacionigv == "10"){
+        this.venta.valopeexo = this.venta.valopeexo + this.venta.ventadetList[i].igvitem;
+      }
     }
     this.venta.importetotal = Math.round(this.importe*100)/100;
     this.venta.totaldesc = Math.round(this.venta.totaldesc*100)/100;

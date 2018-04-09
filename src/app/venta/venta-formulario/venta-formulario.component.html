@@ -22,7 +22,7 @@
               </select>
             </div>
             <div class="input-group-prepend">
-              <select [(ngModel)]="venta.tipooperacion" class="btn btn-outline-secondary dropdown-toggle"  style="margin-bottom: 0px;" id="tipo-{{i}}" name="tipo-{{i}}" required>
+              <select [(ngModel)]="venta.tipooperacion" class="btn btn-outline-secondary dropdown-toggle" style="margin-bottom: 0px;" id="tipo-{{i}}" name="tipo-{{i}}" required>
                 <option *ngFor="let to of tiposOperacion" [ngValue]="to.id">
                   {{ to.nombre }}
                 </option>
@@ -151,7 +151,7 @@
           </div>
         </div>
         <div *ngIf="venta.tipooperacion == 07" class="pt-2">
-          <div class="col-md-12 pb-2">
+          <div class="col-md-12 pb-2" *ngIf="ventas && ventas.length > 0">
             <textarea name="descripcion" id="" cols="10" rows="5" maxlength="250" class="form-control"
                       placeholder="Ingrese motivo de anulacion del documento" [(ngModel)]="venta.descripcion"></textarea>
           </div>

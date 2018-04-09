@@ -23,6 +23,7 @@ import { ReporteComponent } from './reporte/reporte.component';
 
 import {InputMaskModule} from 'primeng/inputmask';
 import {KeyFilterModule} from 'primeng/keyfilter';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 import { AuthService } from './servicios/auth.service';
 import { ApiRequestService } from './servicios/api-request.service';
@@ -79,7 +80,8 @@ import { VentaFormularioComponent } from './venta/venta-formulario/venta-formula
     }),
     UiSwitchModule,
     InputMaskModule,
-    KeyFilterModule
+    KeyFilterModule,
+    AutoCompleteModule
   ],
   entryComponents: [
     ConfirmacionComponent
