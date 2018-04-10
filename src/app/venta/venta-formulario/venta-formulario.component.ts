@@ -482,19 +482,21 @@ export class VentaFormularioComponent implements OnInit {
     this.venta.totaldesc = 0;
     this.venta.totalsinigv = 0;
     this.venta.valopeexo = 0;
+    this.venta.igv = 0;
     for(var i=0; i<this.venta.ventadetList.length; i++){
       this.importe = this.venta.ventadetList[i].preciototal + this.importe;
       this.venta.totaldesc = this.venta.ventadetList[i].descuentototal + this.venta.totaldesc;
       if(this.venta.ventadetList[i].afectacionigv == "20"){
         this.venta.valopeexo = this.venta.valopeexo + this.venta.totalsinigv;
+        this.venta.igv = this.venta.igv + this.venta.ventadetList[i].igvitem;
       } else {
         this.venta.totalsinigv = this.venta.ventadetList[i].preciototalsinigv + this.venta.totalsinigv;
+        this.venta.igv = this.venta.igv + this.venta.ventadetList[i].igvitem;
       }
     }
     this.venta.importetotal = Math.round(this.importe*100)/100;
     this.venta.totaldesc = Math.round(this.venta.totaldesc*100)/100;
     /*this.venta.totalsinigv = this.importe - this.importe*this.igv;*/
-    this.venta.igv = this.importe-this.venta.totalsinigv;
     this.venta.igv = Math.round(this.venta.igv*100)/100;
     this.venta.totalsinigv = Math.round(this.venta.totalsinigv*100)/100;
     this.venta.valopeexo = Math.round(this.venta.valopeexo*100)/100;
