@@ -487,7 +487,7 @@ export class VentaFormularioComponent implements OnInit {
       this.importe = this.venta.ventadetList[i].preciototal + this.importe;
       this.venta.totaldesc = this.venta.ventadetList[i].descuentototal + this.venta.totaldesc;
       if(this.venta.ventadetList[i].afectacionigv == "20"){
-        this.venta.valopeexo = this.venta.valopeexo + this.venta.totalsinigv;
+        this.venta.valopeexo = this.venta.valopeexo + this.venta.ventadetList[i].preciototal;
         this.venta.igv = this.venta.igv + this.venta.ventadetList[i].igvitem;
       } else {
         this.venta.totalsinigv = this.venta.ventadetList[i].preciototalsinigv + this.venta.totalsinigv;
