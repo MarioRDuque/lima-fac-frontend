@@ -447,13 +447,13 @@ export class VentaFormularioComponent implements OnInit {
       detalle.descuentounitario = detalle.preciounitario;
     }
     detalle.descuentototal = detalle.descuentounitario * detalle.cantidad;
-    /*if(detalle.afectacionigv == "10"){
+    if(detalle.afectacionigv == "20"){
       detalle.igvitem = 0;
       detalle.valorunitariosinigv = detalle.preciounitario;
-    } else {*/
+    } else {
       detalle.igvitem = detalle.preciounitario * detalle.cantidad * this.igv;
       detalle.valorunitariosinigv = detalle.preciounitario - detalle.preciounitario*this.igv;
-    /*}*/
+    }
     detalle.preciototal = (detalle.preciounitario * detalle.cantidad) - detalle.descuentototal;
     detalle.igvitem = Math.round( detalle.igvitem * 100 ) / 100;
     detalle.preciototalsinigv = (detalle.valorunitariosinigv*detalle.cantidad) - detalle.descuentototal;
@@ -484,12 +484,11 @@ export class VentaFormularioComponent implements OnInit {
     this.venta.valopeexo = 0;
     for(var i=0; i<this.venta.ventadetList.length; i++){
       this.importe = this.venta.ventadetList[i].preciototal + this.importe;
-      /*new*/
-      this.venta.totalsinigv = this.venta.ventadetList[i].preciototalsinigv + this.venta.totalsinigv;
-      /*fin new*/
       this.venta.totaldesc = this.venta.ventadetList[i].descuentototal + this.venta.totaldesc;
       if(this.venta.ventadetList[i].afectacionigv == "20"){
-        this.venta.valopeexo = this.venta.valopeexo + this.venta.ventadetList[i].igvitem;
+        this.venta.valopeexo = this.venta.valopeexo + this.venta.totalsinigv;
+      } else {
+        this.venta.totalsinigv = this.venta.ventadetList[i].preciototalsinigv + this.venta.totalsinigv;
       }
     }
     this.venta.importetotal = Math.round(this.importe*100)/100;
@@ -505,7 +504,7 @@ export class VentaFormularioComponent implements OnInit {
     this.mensajeForUser = 'Guardando ...';
     if(this.validarCampos()){
       this.venta.importetotal = this.venta.importetotal + this.venta.valopeexo;
-      this.venta.importetotal = Math.round(this.importe*100)/100;
+      this.venta.importetotal = Math.round(this.venta.importetotal*100)/100;
       this.esEdicion ? this.editarVenta(this.venta) : this.guardarVenta(this.venta);
     }
   };

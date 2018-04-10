@@ -153,7 +153,7 @@
         <div *ngIf="venta.tipooperacion == 07" class="pt-2">
           <div class="col-md-12 pb-2" *ngIf="ventas && ventas.length > 0">
             <textarea name="descripcion" id="" cols="10" rows="5" maxlength="250" class="form-control"
-                      placeholder="Ingrese motivo de anulacion del documento" [(ngModel)]="venta.descripcion"></textarea>
+                      placeholder="Ingrese motivo de anulacion del documento" [(ngModel)]="venta.descripcion" required></textarea>
           </div>
           <div *ngIf="ventas && ventas.length > 0">
             <div class="row">
