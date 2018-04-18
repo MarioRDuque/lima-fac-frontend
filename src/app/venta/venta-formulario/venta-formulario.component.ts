@@ -380,6 +380,12 @@ export class VentaFormularioComponent implements OnInit {
     ventaParam.fechaemision = new Date(ventaParam.fechaemision);
     ventaParam.fechaemision.setDate(ventaParam.fechaemision.getDate()+1);
     ventaParam.usuarioupdate = this.auth.getUserName();
+    if(ventaParam.tipooperacion == '03'){
+      ventaParam.idtipodocumento = this.tipoDocs.find(item => item.id == 1);
+    }
+    if(ventaParam.tipooperacion == '01'){
+      ventaParam.idtipodocumento = this.tipoDocs.find(item => item.id == 2);
+    }
     this.api.put("venta",ventaParam)
       .then(respuesta => {
         if(respuesta !== undefined){
