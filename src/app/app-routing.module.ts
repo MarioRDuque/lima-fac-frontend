@@ -16,6 +16,7 @@ import { PedidoListaComponent } from './pedido/pedido-lista/pedido-lista.compone
 import { PedidoFormularioComponent } from './pedido/pedido-formulario/pedido-formulario.component';
 import { PedidoSeguimientoComponent } from './pedido/pedido-seguimiento/pedido-seguimiento.component';
 import { VentaListaComponent } from './venta/venta-lista/venta-lista.component';
+import { ReportesVentaComponent } from './venta/reportes-venta/reportes-venta.component';
 import { VentaFormularioComponent } from './venta/venta-formulario/venta-formulario.component';
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
       { path: 'ventas',  component: VentaComponent,
         children: [
           {path: 'lista', component: VentaListaComponent},
+          {path: 'repventas', component: ReportesVentaComponent},
           {path: 'formulario', component: VentaFormularioComponent},
           {path: 'formulario/:id', component: VentaFormularioComponent},
           {path: '', redirectTo: 'lista', pathMatch: 'full'}

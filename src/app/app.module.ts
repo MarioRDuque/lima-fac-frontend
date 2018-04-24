@@ -43,6 +43,7 @@ import { VentaComponent } from './venta/venta.component';
 import { FacturacionComponent } from './facturacion/facturacion.component';
 import { VentaListaComponent } from './venta/venta-lista/venta-lista.component';
 import { VentaFormularioComponent } from './venta/venta-formulario/venta-formulario.component';
+import { ReportesVentaComponent } from './venta/reportes-venta/reportes-venta.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { VentaFormularioComponent } from './venta/venta-formulario/venta-formula
     VentaComponent,
     FacturacionComponent,
     VentaListaComponent,
-    VentaFormularioComponent
+    VentaFormularioComponent,
+    ReportesVentaComponent
   ],
   imports: [
     NgbModule.forRoot(),
