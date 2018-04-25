@@ -457,7 +457,7 @@ export class VentaFormularioComponent implements OnInit {
       detalle.igvitem = 0;
       detalle.valorunitariosinigv = detalle.preciounitario;
     } else {
-      detalle.valorunitariosinigv = detalle.preciounitario/(1+this.igv);
+      detalle.valorunitariosinigv = detalle.preciounitario/(1+this.igv*1);
       detalle.igvitem = (detalle.preciounitario - detalle.valorunitariosinigv) * detalle.cantidad;
     }
     detalle.preciototalsinigv = (detalle.valorunitariosinigv*detalle.cantidad);
