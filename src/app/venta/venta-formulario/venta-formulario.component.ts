@@ -455,13 +455,14 @@ export class VentaFormularioComponent implements OnInit {
     detalle.descuentototal = detalle.descuentounitario * detalle.cantidad;
     if(detalle.afectacionigv == "20"){
       detalle.igvitem = 0;
-      detalle.valorunitariosinigv = detalle.preciounitario;
+      detalle.valorunitariosinigv = detalle.preciounitario - detalle.descuentounitario;
     } else {
-      detalle.valorunitariosinigv = detalle.preciounitario/(1+this.igv*1);
-      detalle.igvitem = (detalle.preciounitario - detalle.valorunitariosinigv) * detalle.cantidad;
+      detalle.valorunitariosinigv = (detalle.preciounitario/(1+this.igv*1)) -  detalle.descuentounitario;
+      //detalle.igvitem = (detalle.preciounitario - detalle.valorunitariosinigv) * detalle.cantidad;
+      detalle.igvitem = (this.igv * detalle.valorunitariosinigv) * detalle.cantidad;
     }
     detalle.preciototalsinigv = (detalle.valorunitariosinigv*detalle.cantidad);
-    detalle.preciototal = detalle.preciototalsinigv + detalle.igvitem - detalle.descuentototal;
+    detalle.preciototal = detalle.preciototalsinigv + detalle.igvitem;
     detalle.igvitem = Math.round( detalle.igvitem * 100 ) / 100;
     detalle.preciototalsinigv = Math.round( detalle.preciototalsinigv * 100 ) / 100;
     detalle.valorunitariosinigv = Math.round( detalle.valorunitariosinigv * 100 ) / 100;
