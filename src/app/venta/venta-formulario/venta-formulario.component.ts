@@ -505,7 +505,7 @@ export class VentaFormularioComponent implements OnInit {
     this.venta.importetotal = Math.round(this.importe*100)/100;
     this.venta.totaldesc = Math.round(this.venta.totaldesc*100)/100;
     /*this.venta.totalsinigv = this.importe - this.importe*this.igv;*/
-    this.venta.igv = Math.round(this.venta.igv*1000)/1000;
+    this.venta.igv = Math.round(this.venta.igv*100)/100;
     this.venta.totalsinigv = Math.round(this.venta.totalsinigv*100)/100;
     this.venta.valopeexo = Math.round(this.venta.valopeexo*100)/100;
   };
