@@ -2,6 +2,7 @@
   <div class="modal-header card-bonito" style="padding: 10px!important;">
     <h5 *ngIf="!pedido.id" class="modal-title">Nuevo Pedido</h5>
     <h5 *ngIf="pedido.id" class="modal-title">Modificar Pedido</h5>
+    <button style="float: right;" type="button" class="btn btn-outline-dark" routerLink="/pedidos/lista">Cancelar</button>
   </div>
   <div class="modal-body card-bonito">
     <div class="row justify-content-center" *ngIf="cargando">
@@ -12,28 +13,30 @@
     </div>
     <div *ngIf="!cargando">
       <form (ngSubmit)="onSubmit()" #pedidoForm="ngForm">
-        <div class="row">
+        <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center p-1 bg-azul">
+          <div class="col p-2 pl-3">
+            DATOS PRINCIPALES DEL PEDIDO
+          </div>
+        </div>
+        <div class="row bordear-todo">
           <div class="col-md-12">
-            <div class="form-group">
-              <label for="cdescor" class="col-form-label">Cliente <span class="text-primary">*</span></label>
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Ingrese cliente" [(ngModel)]="pedido.idcliente.idpersona.nombrecompleto" maxlength="90" id="nombrecompleto"
-                       name="cdescor" required>
-                <button class="input-group-addon" type="button" style="padding: 1px 6px;" (click)="abrirClientes()">
-                  <i class="fa fa-search cursor-pointer"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="cdeslar" class="col-form-label">Descripción del pedido</label>
-            <textarea class="form-control" id="cdeslar" placeholder="Describa su pedido" rows="3" maxlength="200" name="cdeslar"
-                      [(ngModel)]="pedido.descripcion"></textarea>
-            </div>
-
             <div class="form-row">
-              <div class="form-group col-md-12">
-                <label class="col-form-label">Fecha de limite de entrega <span class="text-primary">*</span></label>
+              <div class="form-group col-md-8">
+                <label for="cdescor" class="col-form-label">Cliente
+                  <span class="text-primary">*</span>
+                </label>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Ingrese cliente" [(ngModel)]="pedido.idcliente.idpersona.nombrecompleto"
+                    maxlength="90" id="nombrecompleto" name="cdescor" required>
+                  <button class="input-group-addon" type="button" style="padding: 1px 6px;" (click)="abrirClientes()">
+                    <i class="fa fa-search cursor-pointer"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="col-form-label">Fecha de limite de entrega
+                  <span class="text-primary">*</span>
+                </label>
                 <div class="input-group">
                   <input class="form-control" name="dp1" [(ngModel)]="pedido.fechalimite" ngbDatepicker #do="ngbDatepicker" required>
                   <button class="input-group-addon" (click)="do.toggle()" type="button" style="padding: 1px 6px;">
@@ -42,85 +45,85 @@
                 </div>
               </div>
             </div>
+            <div class="form-group">
+              <label for="cdeslar" class="col-form-label">Descripción del pedido</label>
+              <textarea class="form-control" id="cdeslar" placeholder="Describa su pedido" rows="3" maxlength="200" name="cdeslar" [(ngModel)]="pedido.descripcion"></textarea>
+            </div>
             <div class="form-row">
               <div class="form-group col-md-12">
                 <label class="col-form-label">Direccion </label>
-                <input places-auto-complete (place_changed)="placeChanged($event)" [types]="['geocode']" type="text"
-                       class="form-control" id="dir" name="dir" placeholder="¿Cual es la direccion del pedido?"
-                       [(ngModel)]="pedido.direccion"/>
+                <input places-auto-complete (place_changed)="placeChanged($event)" [types]="['geocode']" type="text" class="form-control"
+                  id="dir" name="dir" placeholder="¿Cual es la direccion del pedido?" [(ngModel)]="pedido.direccion" />
               </div>
             </div>
-            <p>
+            <p class="mb-2">
               <ngui-map [center]="center"></ngui-map>
-              place: {{address | json}}
             </p>
           </div>
         </div>
 
-        <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-3 p-3" style="background-color: antiquewhite;">
-          <div class="col p-3">
+        <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-2 p-1 bg-azul">
+          <div class="col p-1 pl-3">
             DETALLE DEL PEDIDO
           </div>
-          <div class="col-auto p-3">
-            <i class="fa fa-plus-circle fa-2x cursor-pointer text-primary" (click)="abrirProductos()"></i>
+          <div class="col-auto p-1">
+            <i class="fa fa-plus-circle fa-2x cursor-pointer" (click)="abrirProductos()"></i>
           </div>
         </div>
 
         <div class="row no-gutters" *ngIf="pedido.detallePedidoList && pedido.detallePedidoList.length>0">
           <div class="col box-line-negocio-cuerpo  table-responsive-secundaria">
-            <table class="table table-sigro table-hover mb-0 table-bordered">
+            <table class="table table-sigro table-striped table-hover mb-0 table-bordered">
               <thead>
-              <tr>
-                <th>Nombre.</th>
-                <th>Unidad.</th>
-                <th>Precio U.</th>
-                <th>Cantidad</th>
-                <th>Total.</th>
-                <th style="width:30px;">Opciones</th>
-              </tr>
+                <tr>
+                  <th>Nombre.</th>
+                  <th>Unidad.</th>
+                  <th style="width:80px;">Precio U.</th>
+                  <th style="width:80px;">Cantidad</th>
+                  <th>Total.</th>
+                  <th style="width:30px;">Opciones</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let detalle of pedido.detallePedidoList; let i = index">
-                <td>{{detalle.idproducto.nombre}}</td>
-                <td style="min-width: 200px;">
-                  <select style="height: calc(1.7rem); padding: 0 10px;" class="form-control" id="unidad-{{i}}" name="unidad-{{i}}"
-                          [(ngModel)]="pedido.detallePedidoList[i].idunidad" (change)="obtenerPrecio(detalle);" required>
-                    <option *ngFor="let unidad of pedido.detallePedidoList[i].idproducto.productomedidaList" [ngValue]="unidad.idunidadmedida">
-                      {{ unidad.idunidadmedida.descripcion }}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  {{detalle.moneda.simbolo}}
-                  <input type="number" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}"
-                         (ngModelChange)="detalle.preciototal = detalle.preciounitario * detalle.cantidad; calcularImporte()">
-                </td>
-                <td>
-                  <input type="number" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}"
-                         (ngModelChange)="detalle.preciototal = detalle.preciounitario * detalle.cantidad; calcularImporte()">
-                </td>
-                <td>
-                  {{detalle.moneda.simbolo}} {{detalle.preciototal | number : '1.2-2'}}
-                </td>
-                <td class="text-right">
-                  <i class="fa fa-close fa-2x cursor-pointer text-primary margen-0" (click)="confirmarEliminacionDetalle(detalle)"></i>
-                </td>
-              </tr>
+                <tr *ngFor="let detalle of pedido.detallePedidoList; let i = index">
+                  <td class="pb-1 pt-1">{{detalle.idproducto.nombre}}</td>
+                  <td class="pb-1 pt-1" style="min-width: 200px;">
+                    <select style="height: calc(1.7rem); padding: 0 10px; margin-bottom: 0" class="form-control" id="unidad-{{i}}" name="unidad-{{i}}"
+                      [(ngModel)]="pedido.detallePedidoList[i].idunidad" (change)="obtenerPrecio(detalle);" required>
+                      <option *ngFor="let unidad of pedido.detallePedidoList[i].idproducto.productomedidaList" [ngValue]="unidad.idunidadmedida">
+                        {{ unidad.idunidadmedida.descripcion }}
+                      </option>
+                    </select>
+                  </td>
+                  <td class="pb-1 pt-1">
+                    {{detalle.moneda.simbolo}}
+                    <input style="width: 80px" type="number" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}" (ngModelChange)="detalle.preciototal = detalle.preciounitario * detalle.cantidad; calcularImporte()">
+                  </td>
+                  <td class="pb-1 pt-1">
+                    <input style="width: 80px" type="number" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}" (ngModelChange)="detalle.preciototal = detalle.preciounitario * detalle.cantidad; calcularImporte()">
+                  </td>
+                  <td class="pb-1 pt-1">
+                    {{detalle.moneda.simbolo}} {{detalle.preciototal | number : '1.2-2'}}
+                  </td>
+                  <td class="pb-1 pt-1" class="text-right">
+                    <i class="fa fa-close fa-2x cursor-pointer text-primary margen-0" (click)="confirmarEliminacionDetalle(detalle)"></i>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-3 p-3" style="background-color: antiquewhite;">
-          <div class="col p-3">
+        <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-2 p-1 bg-azul">
+          <div class="col p-1 pl-3">
             <a (click)="calcularImporte()">CALCULAR IMPORTE TOTAL</a>
           </div>
-          <div class="col-auto p-3">
+          <div class="col-auto p-1">
             <strong style="font-size: 20px;">{{importe | number : '1.2-2'}}</strong>
           </div>
         </div>
 
-        <div style="text-align: right" class="pt-3 pb-3">
+        <div style="text-align: right" class="pt-3 pb-0">
           <button type="submit" class="btn btn-primary" [disabled]="!pedidoForm.form.valid" *ngIf="!pedido.id">Guardar</button>
           <button type="submit" class="btn btn-primary" [disabled]="!pedidoForm.form.valid" *ngIf="pedido.id">Actualizar</button>
           <button type="button" class="btn btn-outline-dark" routerLink="/pedidos/lista">Cancelar</button>

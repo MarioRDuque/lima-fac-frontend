@@ -22,6 +22,37 @@ td {
 .navbar-light .navbar-nav .nav-link:hover {
   color: rgba(30,99,213,.9);
 }
+nav.navbar {
+  padding: .4rem 1rem!important;
+}
+nav.side-navbar .sidebar-header {
+  padding: 10px 15px!important;
+}
+footer.main-footer {
+  padding: 10px 10px!important;
+}
+.content-inner {
+  min-height: calc(100vh - 53px)!important;
+  padding-bottom: 40px!important;
+}
+.form-group {
+    margin-bottom: 0.1rem!important;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #ccdcee!important;
+}
+.bg-azul {
+  background-color: #154360;
+  color: #fff;
+}
+.bordear-todo {
+  border: #9fa09f;
+  border-style: solid;
+  border-width: 1px;
+}
+nav.side-navbar ul li.active > a, nav.side-navbar ul li a:hover {
+  background: #154360!important;
+}
 .cuerpo-home{
   background-color: aliceblue;
 }

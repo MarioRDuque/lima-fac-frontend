@@ -2,6 +2,7 @@
   <div class="modal-header card-bonito" style="padding: 10px!important;">
     <h5 *ngIf="!venta.id" class="modal-title">Nueva Venta</h5>
     <h5 *ngIf="venta.id" class="modal-title">Modificar Venta</h5>
+    <button style="float: right;" type="button" class="btn btn-outline-dark" routerLink="/ventas/lista">Cancelar</button>
   </div>
   <div class="modal-body card-bonito">
     <div class="row justify-content-center" *ngIf="cargando">
@@ -15,45 +16,56 @@
         <div class="row">
           <div class="col-md-12 input-group">
             <div class="input-group-prepend">
-              <select [(ngModel)]="venta.idmoneda" class="btn btn-outline-secondary dropdown-toggle"  style="margin-bottom: 0px;" id="tipom-{{i}}" name="tipom-{{i}}" required>
+              <select [(ngModel)]="venta.idmoneda" class="btn btn-outline-secondary dropdown-toggle" style="margin-bottom: 0px;" id="tipom-{{i}}"
+                name="tipom-{{i}}" required>
                 <option *ngFor="let to of tiposMon" [ngValue]="to">
                   {{ to.definicion }}
                 </option>
               </select>
             </div>
             <div class="input-group-prepend">
-              <select [(ngModel)]="venta.tipooperacion" class="btn btn-outline-secondary dropdown-toggle" style="margin-bottom: 0px;" id="tipo-{{i}}" name="tipo-{{i}}" required>
+              <select [(ngModel)]="venta.tipooperacion" class="btn btn-outline-secondary dropdown-toggle" style="margin-bottom: 0px;" id="tipo-{{i}}"
+                name="tipo-{{i}}" required>
                 <option *ngFor="let to of tiposOperacion" [ngValue]="to.id">
                   {{ to.nombre }}
                 </option>
               </select>
             </div>
             <div class="input-group-prepend" *ngIf="venta.tipooperacion == 00">
-              <select [(ngModel)]="venta.idtipodocumento" class="btn btn-outline-secondary dropdown-toggle"  style="margin-bottom: 0px;" id="doc-{{i}}" name="doc-{{i}}" required>
+              <select [(ngModel)]="venta.idtipodocumento" class="btn btn-outline-secondary dropdown-toggle" style="margin-bottom: 0px;"
+                id="doc-{{i}}" name="doc-{{i}}" required>
                 <option *ngFor="let to of tipoDocs" [ngValue]="to">
                   {{ to.abreviatura }}
                 </option>
               </select>
             </div>
-            <input class="form-control" *ngIf="venta.tipooperacion == 03" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de DNI" [(ngModel)]="venta.doccliente">
-            <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 01" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de RUC" [(ngModel)]="venta.doccliente">
-            <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 00" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de documento" [(ngModel)]="venta.doccliente">
-            <input class="form-control" maxlength="13" *ngIf="venta.tipooperacion == 07" type="text" name="documento" placeholder="Ingrese numero de BOLETA y/o FACTURA" [(ngModel)]="seriecorrelativo">
+            <input class="form-control" *ngIf="venta.tipooperacion == 03" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de DNI"
+              [(ngModel)]="venta.doccliente">
+            <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 01" type="text" pKeyFilter="pint" name="documento"
+              placeholder="Ingrese numero de RUC" [(ngModel)]="venta.doccliente">
+            <input class="form-control" maxlength="11" *ngIf="venta.tipooperacion == 00" type="text" pKeyFilter="pint" name="documento"
+              placeholder="Ingrese numero de documento" [(ngModel)]="venta.doccliente">
+            <input class="form-control" maxlength="13" *ngIf="venta.tipooperacion == 07" type="text" name="documento" placeholder="Ingrese numero de BOLETA y/o FACTURA"
+              [(ngModel)]="seriecorrelativo">
             <button *ngIf="venta.tipooperacion != 07" class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="validarDocumento()">
-              Validar Documento <i class="fa fa-search cursor-pointer"></i>
+              Validar Documento
+              <i class="fa fa-search cursor-pointer"></i>
             </button>
             <button *ngIf="venta.tipooperacion == 07" class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="buscarVenta()">
-              Buscar Documento <i class="fa fa-search cursor-pointer"></i>
+              Buscar Documento
+              <i class="fa fa-search cursor-pointer"></i>
             </button>
           </div>
         </div>
         <div class="row" *ngIf="venta.tipooperacion != 07">
           <div class="col-md-12">
             <div class="form-group pt-2">
-              <label class="col-form-label">Datos del cliente <span class="text-primary">*</span></label>
+              <label class="col-form-label">Datos del cliente
+                <span class="text-primary">*</span>
+              </label>
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Ingrese cliente" [(ngModel)]="venta.nombrecliente" maxlength="90" id="nombrecompleto"
-                       name="cdescor">
+                  name="cdescor">
                 <button class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="abrirClientes()">
                   <i class="fa fa-search cursor-pointer"></i>
                 </button>
@@ -63,88 +75,94 @@
         </div>
         <div *ngIf="venta.tipooperacion != 07">
           <div class="pl-3 pr-3">
-            <div class="card">
-              <div class="card-close">
-                <div class="dropdown">
-                  <button type="button" id="closeCard1" class="dropdown-toggle">
-                    <i class="fa fa-refresh fa-2x cursor-pointer text-primary" (click)="calcularImporte()" title="refrescar"> </i>
-                    <i class="fa fa-plus-circle fa-2x cursor-pointer text-primary" (click)="abrirProductos()" title="agregar a cesta"></i>
-                  </button>
-                </div>
+            <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-2 p-1 bg-azul">
+              <div class="col p-1 pl-3">
+                DETALLE DEL VENTA
               </div>
-              <div class="card-header d-flex align-items-center" style="background-color: #bfffbf;">
-                <h3 class="h4">Detalle de Venta</h3>
+              <div class="col-auto p-1">
+                <i class="fa fa-refresh fa-2x cursor-pointer" (click)="calcularImporte()" title="refrescar"> </i>
+                <i class="fa fa-plus-circle fa-2x cursor-pointer" (click)="abrirProductos()" title="agregar a cesta"></i>
               </div>
-              <div class="card-body">
-                <div class="row no-gutters" *ngIf="venta.ventadetList && venta.ventadetList.length>0">
-                  <div class="col box-line-negocio-cuerpo  table-responsive-secundaria">
-                    <table class="table table-sigro table-hover mb-0 table-bordered">
-                      <thead>
-                      <tr>
-                        <th>Nombre.</th>
-                        <th>Unidad.</th>
-                        <th>Precio U.</th>
-                        <th>Descuento U.</th>
-                        <th>Cantidad</th>
-                        <th>Descuento Tot.</th>
-                        <th>Total.</th>
-                        <th style="width:20px;">Opcion</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let detalle of venta.ventadetList; let i = index">
-                        <td>{{detalle.idproducto.nombre}}</td>
-                        <td style="min-width: 200px; padding-bottom: 0;">
-                          <select style="height: calc(1.7rem); padding: 0 10px;" class="form-control" id="unidad-{{i}}" name="unidad-{{i}}"
-                                  [(ngModel)]="venta.ventadetList[i].idunidadmedida" (change)="obtenerPrecio(detalle);" required>
-                            <option *ngFor="let unidad of venta.ventadetList[i].idproducto.productomedidaList" [ngValue]="unidad.idunidadmedida">
-                              {{ unidad.idunidadmedida.descripcion }}
-                            </option>
-                          </select>
-                        </td>
-                        <td>
-                          {{venta.idmoneda.simbolo}}
-                          <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}" (keyup)="operaciones(detalle)">
-                        </td>
-                        <td>
-                          <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.descuentounitario" name="desc-{{i}}" (keyup)="operaciones(detalle)">
-                        </td>
-                        <td>
-                          <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}" (keyup)="operaciones(detalle)">
-                        </td>
-                        <td>
-                          {{venta.idmoneda.simbolo}} {{detalle.descuentototal | number : '1.2-2'}}
-                        </td>
-                        <td>
-                          {{venta.idmoneda.simbolo}} {{detalle.preciototal | number : '1.2-2'}}
-                        </td>
-                        <td class="text-right">
-                          <i class="fa fa-close fa-2x cursor-pointer text-primary margen-0" (click)="confirmarEliminacionDetalle(detalle)"></i>
-                        </td>
-                      </tr>
-                      </tbody>
-                      <thead>
-                      <tr>
-                        <th colspan="6" class="text-right">Operacion Gravada</th>
-                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe - venta.igv | number : '1.2-2'}}</span></th>
-                      </tr>
-                      <tr>
-                        <th colspan="6" class="text-right">Impuesto General de la Renta (IGV). {{igv*100}}%</th>
-                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{venta.igv | number : '1.2-2'}}</span></th>
-                      </tr>
-                      <tr>
-                        <th colspan="6" class="text-right">Importe total</th>
-                        <th colspan="2" style="font-size: 20px;"><strong>{{venta.idmoneda.simbolo}}. </strong><span>{{importe | number : '1.2-2'}}</span></th>
-                      </tr>
-                      </thead>
-                      <br>
-                    </table>
-                  </div>
-                </div>
+            </div>
+            <div class="row no-gutters" *ngIf="venta.ventadetList && venta.ventadetList.length>0">
+              <div class="col box-line-negocio-cuerpo  table-responsive-secundaria">
+                <table class="table table-sigro table-striped table-hover mb-0 table-bordered">
+                  <thead>
+                    <tr>
+                      <th class="p-1">Nombre.</th>
+                      <th class="p-1">Unidad.</th>
+                      <th class="p-1">Precio U.</th>
+                      <th class="p-1">Descuento U.</th>
+                      <th class="p-1">Cantidad</th>
+                      <th class="p-1">Descuento Tot.</th>
+                      <th class="p-1">Total.</th>
+                      <th style="width:20px;" class="p-1">Opcion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let detalle of venta.ventadetList; let i = index">
+                      <td class="p-1">{{detalle.idproducto.nombre}}</td>
+                      <td class="p-1" style="min-width: 200px;">
+                        <select style="height: calc(1.5rem); padding: 0 10px;" class="form-control mb-0" id="unidad-{{i}}" name="unidad-{{i}}" [(ngModel)]="venta.ventadetList[i].idunidadmedida"
+                          (change)="obtenerPrecio(detalle);" required>
+                          <option *ngFor="let unidad of venta.ventadetList[i].idproducto.productomedidaList" [ngValue]="unidad.idunidadmedida">
+                            {{ unidad.idunidadmedida.descripcion }}
+                          </option>
+                        </select>
+                      </td>
+                      <td class="p-1">
+                        {{venta.idmoneda.simbolo}}
+                        <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}"
+                          (keyup)="operaciones(detalle)">
+                      </td>
+                      <td class="p-1">
+                        <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.descuentounitario" name="desc-{{i}}"
+                          (keyup)="operaciones(detalle)">
+                      </td>
+                      <td class="p-1">
+                        <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}"
+                          (keyup)="operaciones(detalle)">
+                      </td>
+                      <td class="p-1">
+                        {{venta.idmoneda.simbolo}} {{detalle.descuentototal | number : '1.2-2'}}
+                      </td>
+                      <td class="p-1">
+                        {{venta.idmoneda.simbolo}} {{detalle.preciototal | number : '1.2-2'}}
+                      </td>
+                      <td class="text-right p-1">
+                        <i class="fa fa-close fa-2x cursor-pointer text-primary margen-0" (click)="confirmarEliminacionDetalle(detalle)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <thead>
+                    <tr>
+                      <th colspan="6" class="text-right">Operacion Gravada</th>
+                      <th colspan="2" style="font-size: 20px;">
+                        <strong>{{venta.idmoneda.simbolo}}. </strong>
+                        <span>{{importe - venta.igv | number : '1.2-2'}}</span>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colspan="6" class="text-right">Impuesto General de la Renta (IGV). {{igv*100}}%</th>
+                      <th colspan="2" style="font-size: 20px;">
+                        <strong>{{venta.idmoneda.simbolo}}. </strong>
+                        <span>{{venta.igv | number : '1.2-2'}}</span>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colspan="6" class="text-right">Importe total</th>
+                      <th colspan="2" style="font-size: 20px;">
+                        <strong>{{venta.idmoneda.simbolo}}. </strong>
+                        <span>{{importe | number : '1.2-2'}}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <br>
+                </table>
               </div>
             </div>
           </div>
-          <div style="text-align: right" class="p-3">
+          <div style="text-align: right" class="pl-3 pr-3 pt-2 pb-0">
             <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="!venta.id">Guardar</button>
             <button type="submit" class="btn btn-primary" [disabled]="!ventaForm.form.valid" *ngIf="venta.id">Actualizar</button>
             <button type="button" class="btn btn-outline-dark" routerLink="/ventas/lista">Cancelar</button>
@@ -152,40 +170,40 @@
         </div>
         <div *ngIf="venta.tipooperacion == 07" class="pt-2">
           <div class="col-md-12 pb-2" *ngIf="ventas && ventas.length > 0">
-            <textarea name="descripcion" id="" cols="10" rows="5" maxlength="250" class="form-control"
-                      placeholder="Ingrese motivo de anulacion del documento" [(ngModel)]="venta.descripcion" required></textarea>
+            <textarea name="descripcion" id="" cols="10" rows="5" maxlength="250" class="form-control" placeholder="Ingrese motivo de anulacion del documento"
+              [(ngModel)]="venta.descripcion" required></textarea>
           </div>
           <div *ngIf="ventas && ventas.length > 0">
             <div class="row">
               <div class="col table-responsive">
                 <table class="table table-sigro table-hover table-bordered">
                   <thead class="thead-inverse">
-                  <tr>
-                    <th>Código</th>
-                    <th>Cliente</th>
-                    <th>Fec. Venta</th>
-                    <th>Tipo Venta</th>
-                    <th>Registrado Por</th>
-                    <th>Generar</th>
-                  </tr>
+                    <tr>
+                      <th>Código</th>
+                      <th>Cliente</th>
+                      <th>Fec. Venta</th>
+                      <th>Tipo Venta</th>
+                      <th>Registrado Por</th>
+                      <th>Generar</th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr class="cursor-pointer" *ngFor="let venta of ventas">
-                    <td>{{venta.serie}} - {{venta.correlativo}}</td>
-                    <td>{{venta.doccliente}} {{venta.nombrecliente}}</td>
-                    <td>{{venta.fechaemision | date:"dd/MM/yyyy"}}</td>
-                    <td>{{venta.direccion}}</td>
-                    <td>{{venta.usuariosave}}</td>
-                    <td class="pb-0 pt-0">
-                      <i class="fa fa-file-archive-o fa-2x cursor-pointer text-primary" (click)="generarNotaPedido(venta.id)"></i>
-                    </td>
-                  </tr>
+                    <tr class="cursor-pointer" *ngFor="let venta of ventas">
+                      <td>{{venta.serie}} - {{venta.correlativo}}</td>
+                      <td>{{venta.doccliente}} {{venta.nombrecliente}}</td>
+                      <td>{{venta.fechaemision | date:"dd/MM/yyyy"}}</td>
+                      <td>{{venta.direccion}}</td>
+                      <td>{{venta.usuariosave}}</td>
+                      <td class="pb-0 pt-0">
+                        <i class="fa fa-file-archive-o fa-2x cursor-pointer text-primary" (click)="generarNotaPedido(venta.id)"></i>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
-          <div style="text-align: right" class="p-3">
+          <div style="text-align: right" class="p-3 pt-0">
             <button type="button" class="btn btn-outline-dark" routerLink="/ventas/lista">Cancelar</button>
           </div>
         </div>

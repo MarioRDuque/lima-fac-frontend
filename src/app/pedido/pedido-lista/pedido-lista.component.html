@@ -1,8 +1,9 @@
 <div>
   <div class="modal-header card-bonito" style="padding: 10px!important;">
     <h5 class="modal-title">Pedidos</h5>
+    <button style="float: right;" type="button" class="btn btn-primary btn-sm cursor-pointer" (click)="nuevoPedido()"><i class="fa fa-plus-circle"></i> Nuevo</button>
   </div>
-  <div class="modal-body card-bonito">
+  <div class="modal-body card-bonito pb-0 pt-0">
     <div class="row justify-content-center" *ngIf="solicitando">
       <div class="col col-auto">
         <p class="text-primary text-center">Cargando...</p>
@@ -11,11 +12,11 @@
     </div>
     <div *ngIf="!solicitando">
       <p class="text-primary text-center pt-3" *ngIf="(!pedidos || pedidos.length === 0) && solicitudExitosa">No se encontraron resultados</p>
-      <div class="form-row pt-3 pb-3" *ngIf="!vistaFormulario && !solicitando">
+      <div class="form-row pt-3 pb-3 ml-3 mr-3" *ngIf="!vistaFormulario && !solicitando">
         <div class="input-group">
           <input class="form-control" placeholder="Ingrese DNI para busqueda" name="dnic" [(ngModel)]="dnic">
           <input class="form-control" placeholder="Ingrese Nombres para busqueda" name="nombrec" [(ngModel)]="nombrec">
-          <select class="form-control" style="height: calc(2.5rem + 2px);" id="centrob" name="centrob" [(ngModel)]="centrob">
+          <select class="form-control" style="height: calc(1.9rem + 2px);" id="centrob" name="centrob" [(ngModel)]="centrob">
             <option value="" selected > TODOS </option>
             <option *ngFor="let centro of centros" [ngValue]="centro.id">
               {{ centro.nombre }}
@@ -32,7 +33,6 @@
             <i class="fa fa-calendar"></i>
           </button>
           <button type="button" class="btn btn-primary cursor-pointer" (click)="busqueda()"><i class="fa fa-search"></i></button>
-          <button type="button" class="btn btn-primary cursor-pointer" (click)="nuevoPedido()"><i class="fa fa-plus-circle"></i> Nuevo</button>
         </div>
       </div>
       <div *ngIf="pedidos && pedidos.length > 0">

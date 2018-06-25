@@ -63,13 +63,13 @@
 
       <span class="heading">Principal</span>
 
-      <ul class="list-unstyled">
+      <ul class="list-unstyled mb-0">
         <li class="active"><a routerLink="/"> <i class="fa fa-home"></i>Limatambo </a></li>
       </ul>
 
       <span class="heading">Preventas</span>
 
-      <ul class="list-unstyled">
+      <ul class="list-unstyled mb-0">
         <li *ngFor="let menu of auth.getMenus()">
           <a class="cursor-pointer" (click)="navegar(menu.url)"> <i class={{menu.icono}}></i> {{menu.nombre}}</a>
         </li>
@@ -77,7 +77,7 @@
 
       <span class="heading">Ventas</span>
 
-      <ul class="list-unstyled">
+      <ul class="list-unstyled mb-0">
         <li><a routerLink="/ventas"> <i class="fa fa-money"></i>Ventas </a></li>
         <li><a routerLink="/ventas/repventas"> <i class="fa fa-money"></i>Reportes </a></li>
         <li class="cursor-pointer"><a (click)="levantarFacturador()"> <i class="fa fa-sun-o"></i>Facturacion </a></li>

@@ -13,76 +13,121 @@
     </div>
   </div>
   <div *ngIf="!solicitando" class="card-bonito">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="box-shadow p-3 mb-3">
+    <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center p-1 mt-2 bg-azul">
+      <div class="col p-2 pl-3">
+        DATOS PRINCIPALES DEL PEDIDO
+      </div>
+    </div>
+    <div class="bordear-todo">
+      <div class="row mt-2">
+        <div class="col-md-6">
           <div class="">
-            <label><u><strong>Cliente</strong></u></label>
+            <label>
+              <u>
+                <strong>Cliente</strong>
+              </u>
+            </label>
             <li>{{pedido.idcliente.idpersona.nombrecompleto}}</li>
           </div>
+        </div>
+        <div class="col-md-6">
           <div class="mt-2">
-            <label><u><strong>Descripcion del pedido</strong></u></label>
+            <label>
+              <u>
+                <strong>Descripcion del pedido</strong>
+              </u>
+            </label>
             <li>{{pedido.descripcion}}</li>
           </div>
+        </div>
+        <div class="col-md-6">
           <div class="mt-2">
-            <label><u><strong>Direccion</strong></u></label>
+            <label>
+              <u>
+                <strong>Direccion</strong>
+              </u>
+            </label>
             <li>{{pedido.direccion}}</li>
           </div>
+        </div>
+        <div class="col-md-6">
           <div class="mt-2">
-            <label><u><strong>Registrado por</strong></u></label>
+            <label>
+              <u>
+                <strong>Registrado por</strong>
+              </u>
+            </label>
             <li>{{pedido.usuariosave}}</li>
           </div>
+        </div>
+        <div class="col-md-6">
           <div class="mt-2">
-            <label><u><strong>Fecha de Pedido</strong></u></label>
+            <label>
+              <u>
+                <strong>Fecha de Pedido</strong>
+              </u>
+            </label>
             <li>{{pedido.fechapedido | date:"dd/MM/yyyy"}}</li>
           </div>
+        </div>
+        <div class="col-md-6">
           <div class="mt-2">
-            <label><u><strong>Fecha Limite de Entrega</strong></u></label>
+            <label>
+              <u>
+                <strong>Fecha Limite de Entrega</strong>
+              </u>
+            </label>
             <li>{{pedido.fechalimite | date:"dd/MM/yyyy"}}</li>
           </div>
+        </div>
+        <div class="col-md-12">
           <div class="mt-2">
             <p>
               <ngui-map [center]="center">
-
               </ngui-map>
-              place: {{address | json}}
             </p>
-          </div>
-          <div class="mt-2">
-            <label><u><strong>Productos</strong></u></label>
-            <div class="col box-line-negocio-cuerpo table-responsive-secundaria ">
-              <table class="table table-hover mb-0">
-                <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Unidad Medida</th>
-                  <th>Cantidad</th>
-                  <th>Precio</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let producto of pedido.detallePedidoList">
-                  <td>{{producto.idproducto ? producto.idproducto.nombre : "NO ESPECIFICA"}}</td>
-                  <td>{{producto.idunidad ? producto.idunidad.descripcion : "NO ESPECIFICA"}}</td>
-                  <td>{{producto.cantidad}}</td>
-                  <td>{{producto.moneda.simbolo}} {{producto.preciototal | number : '1.2-2'}}</td>
-                </tr>
-                </tbody>
-                <thead>
-                <tr>
-                  <th>IMPORTE TOTAL</th>
-                  <th></th>
-                  <th></th>
-                  <th>S./ {{importe}}</th>
-                </tr>
-                </thead>
-              </table>
-            </div>
           </div>
         </div>
       </div>
     </div>
-    <div style="text-align: right" class="p-3">
+    <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center p-1 mt-2 bg-azul">
+      <div class="col p-2 pl-3">
+        DETALLES DEL PEDIDO
+      </div>
+    </div>
+    <div class="bordear-todo">
+      <div class="mt-2">
+        <div class="col box-line-negocio-cuerpo table-responsive-secundaria ">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Unidad Medida</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let producto of pedido.detallePedidoList">
+                <td>{{producto.idproducto ? producto.idproducto.nombre : "NO ESPECIFICA"}}</td>
+                <td>{{producto.idunidad ? producto.idunidad.descripcion : "NO ESPECIFICA"}}</td>
+                <td>{{producto.cantidad}}</td>
+                <td>{{producto.moneda.simbolo}} {{producto.preciototal | number : '1.2-2'}}</td>
+              </tr>
+            </tbody>
+            <thead>
+              <tr>
+                <th>IMPORTE TOTAL</th>
+                <th></th>
+                <th></th>
+                <th>S./ {{importe}}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: right" class="pt-3 pb-3">
       <button class="btn btn-primary" routerLink="/pedidos/lista">Volver al listado</button>
       <button *ngIf="!pedido.fechaentrega" class="btn btn-primary" (click)="confirmarCierre('venta')">Terminar Venta</button>
       <button class="btn btn-primary" (click)="confirmarCierre('voleta')">Imprimir Boleta</button>
