@@ -7,6 +7,8 @@ import { ApiRequestService } from '../servicios/api-request.service';
 import { ToastrService } from 'ngx-toastr';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,10 +16,13 @@ import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class LoginComponent implements OnInit {
 
-  myform: FormGroup;
+  /*myform: FormGroup;
   usuario: FormControl;
-  password: FormControl;
-  user: any = {};
+  password: FormControl;*/
+  user: any ={
+    
+  } ;
+
   cargando: boolean = false;
 
   constructor(

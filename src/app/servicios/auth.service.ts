@@ -45,6 +45,9 @@ export class AuthService {
             'username': username,
             'password': password,
         }
+
+        //  console.log(bodyData);
+
         let authRespuesta: AuthRespuesta;
         return this.apiRequest.post('session', bodyData)
             .then(
@@ -61,6 +64,7 @@ export class AuthService {
                             "tipoUsuario": jsonResp.item.tipoUsuario
                         }
                     };
+                    //calses de angular
                     this.almacenamiento.setItem(this.usuarioActualKey, JSON.stringify(authRespuesta.user));
                     this.homeService.guardarTiposEnStorage();
                 }
