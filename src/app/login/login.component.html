@@ -23,7 +23,6 @@
                 <form id="login-form" #login="ngForm" (ngSubmit)="ingresar()">
                   <div class="form-group">
                     <input id="login-username" type="text" name="loginUsername" required="" class="form-control" [(ngModel)]="user.username">
-                    <pre>{{user | json}}</pre>
                     <label for="login-username" class="label-material">Nombre de usuario</label>
                   </div>
                   <div class="form-group">
