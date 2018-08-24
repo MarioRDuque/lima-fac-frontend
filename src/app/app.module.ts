@@ -44,6 +44,7 @@ import { FacturacionComponent } from './facturacion/facturacion.component';
 import { VentaListaComponent } from './venta/venta-lista/venta-lista.component';
 import { VentaFormularioComponent } from './venta/venta-formulario/venta-formulario.component';
 import { ReportesVentaComponent } from './venta/reportes-venta/reportes-venta.component';
+import { DetalleImeisComponent } from './venta/venta-formulario/detalle-imeis/detalle-imeis.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { ReportesVentaComponent } from './venta/reportes-venta/reportes-venta.co
     FacturacionComponent,
     VentaListaComponent,
     VentaFormularioComponent,
-    ReportesVentaComponent
+    ReportesVentaComponent,
+    DetalleImeisComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -86,7 +88,8 @@ import { ReportesVentaComponent } from './venta/reportes-venta/reportes-venta.co
     AutoCompleteModule
   ],
   entryComponents: [
-    ConfirmacionComponent
+    ConfirmacionComponent,
+    DetalleImeisComponent
   ],
   providers: [
     SourceCodeService,
