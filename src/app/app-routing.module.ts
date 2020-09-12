@@ -6,7 +6,6 @@ import { AuthGuardService } from './servicios/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { PedidoComponent } from './pedido/pedido.component';
-import { AppComponent } from './app.component';
 import { MantenimientoComponent } from './mantenimiento/mantenimiento.component';
 import { ClienteComponent } from './cliente/cliente.component';
 import { ReporteComponent } from './reporte/reporte.component';
@@ -21,30 +20,33 @@ import { VentaFormularioComponent } from './venta/venta-formulario/venta-formula
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '',
+  {
+    path: '',
     component: WelcomeComponent,
     canActivate: [AuthGuardService],
     children: [
       { path: 'mantenimiento', component: MantenimientoComponent },
       { path: 'clientes', component: ClienteComponent },
-      { path: 'pedidos', component: PedidoComponent,
+      {
+        path: 'pedidos', component: PedidoComponent,
         children: [
-          {path: 'lista', component: PedidoListaComponent},
-          {path: 'formulario', component: PedidoFormularioComponent},
-          {path: 'formulario/:id', component: PedidoFormularioComponent},
-          {path: 'seguimiento/:id', component: PedidoSeguimientoComponent},
-          {path: '', redirectTo: 'lista', pathMatch: 'full'}
+          { path: 'lista', component: PedidoListaComponent },
+          { path: 'formulario', component: PedidoFormularioComponent },
+          { path: 'formulario/:id', component: PedidoFormularioComponent },
+          { path: 'seguimiento/:id', component: PedidoSeguimientoComponent },
+          { path: '', redirectTo: 'lista', pathMatch: 'full' }
         ]
       },
-      { path: 'reportes',  component: ReporteComponent },
-      { path: 'productos',  component: ProductoComponent },
-      { path: 'ventas',  component: VentaComponent,
+      { path: 'reportes', component: ReporteComponent },
+      { path: 'productos', component: ProductoComponent },
+      {
+        path: 'ventas', component: VentaComponent,
         children: [
-          {path: 'lista', component: VentaListaComponent},
-          {path: 'repventas', component: ReportesVentaComponent},
-          {path: 'formulario', component: VentaFormularioComponent},
-          {path: 'formulario/:id', component: VentaFormularioComponent},
-          {path: '', redirectTo: 'lista', pathMatch: 'full'}
+          { path: 'lista', component: VentaListaComponent },
+          { path: 'repventas', component: ReportesVentaComponent },
+          { path: 'formulario', component: VentaFormularioComponent },
+          { path: 'formulario/:id', component: VentaFormularioComponent },
+          { path: '', redirectTo: 'lista', pathMatch: 'full' }
         ]
       }
     ]
@@ -53,17 +55,17 @@ const routes: Routes = [
 ];
 
 @NgModule({
-	imports: [
-		RouterModule.forRoot(
-			routes,
-			{
-        useHash : true
-			}
-		)
-	],
-	exports: [
-		RouterModule
-	],
+  imports: [
+    RouterModule.forRoot(
+      routes,
+      {
+        useHash: true
+      }
+    )
+  ],
+  exports: [
+    RouterModule
+  ],
   providers: [
     SelectivePreloadingStrategy,
   ]

@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-
 import { AuthService } from '../servicios/auth.service';
-import { ApiRequestService } from '../servicios/api-request.service';
 import { ToastrService } from 'ngx-toastr';
-import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-
-
 
 @Component({
   selector: 'app-login',
@@ -16,9 +10,6 @@ import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class LoginComponent implements OnInit {
 
-  /*myform: FormGroup;
-  usuario: FormControl;
-  password: FormControl;*/
   user: any ={
     
   } ;
@@ -49,7 +40,7 @@ export class LoginComponent implements OnInit {
           }
           this.cargando = false;
           this.router.navigate(["/"]);
-          window.location.reload();
+          // window.location.reload();
         },
         errResponse => {
           this.authService.cerrarSession();
