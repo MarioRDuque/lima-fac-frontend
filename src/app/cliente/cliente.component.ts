@@ -1,13 +1,10 @@
-import { Component, OnInit, ViewChild, NgZone, ElementRef, NgModule, Input } from '@angular/core';
-import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Paginacion } from '../entidades/entidad.paginacion';
 import { ToastrService } from 'ngx-toastr';
 import { ChangeDetectorRef} from '@angular/core';
 import { SourceCodeService } from '../source-code.service';
-import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import{ ConfirmacionComponent } from './../util/confirmacion/confirmacion.component';
-import { NguiMapModule } from '@ngui/map';
-import { } from 'googlemaps';
 import { ApiRequestService } from '../servicios/api-request.service';
 
 @Component({
