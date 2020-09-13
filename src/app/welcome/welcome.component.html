@@ -13,7 +13,7 @@
         <div class="navbar-holder d-flex align-items-center justify-content-between">
           <div class="navbar-header">
             <a routerLink="/" class="navbar-brand">
-              <div class="brand-text brand-big"><span>I&E Enmanuel </span></div>
+              <div class="brand-text brand-big"><span>MIVANI</span></div>
               <div class="brand-text brand-small"><strong>E</strong></div></a>
             <a id="toggle-btn" href="#" class="menu-btn active">
               <span></span><span></span><span></span></a>
@@ -21,27 +21,6 @@
           <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
             <li class="nav-item d-flex align-items-center">
               <a id="search" href="#"><i class="fa fa-search"></i></a>
-            </li>
-            <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-bell-o"></i><span class="badge bg-red">12</span></a>
-              <ul aria-labelledby="notifications" class="dropdown-menu">
-                <li><a rel="nofollow" href="#" class="dropdown-item">
-                  <div class="notification">
-                    <div class="notification-content"><i class="fa fa-envelope bg-green"></i>Tiene 6 mensajes </div>
-                    <div class="notification-time"><small>Hace 4 minutos</small></div>
-                  </div></a>
-                </li>
-                <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>Ver todas.                                            </strong></a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown"> <a id="messages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope-o"></i><span class="badge bg-orange">10</span></a>
-              <ul aria-labelledby="notifications" class="dropdown-menu">
-                <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
-                  <div class="msg-profile"> <img src="assets/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>
-                  <div class="msg-body">
-                    <h3 class="h5">RivDu</h3><span>Envia tu mensaje</span>
-                  </div></a></li>
-                <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>Leer todos.    </strong></a></li>
-              </ul>
             </li>
             <li class="nav-item">
               <a routerLink="/login" class="nav-link logout cursor-pointer"><i class="fa fa-power-off"></i></a>
@@ -54,17 +33,17 @@
   <div class="page-content d-flex align-items-stretch">
     <nav class="side-navbar">
       <div class="sidebar-header d-flex align-items-center">
-        <div class="avatar"><img src="assets/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>
+        <div class="avatar"><img src="assets/usuario.jpg" alt="..." class="img-fluid rounded-circle"></div>
         <div class="title">
           <h1 class="h4">{{auth.getUserName()}}</h1>
-          <p>Usuario</p>
+          <p>{{auth.getNombreTipoUser()}}</p>
         </div>
       </div>
 
       <span class="heading">Principal</span>
 
       <ul class="list-unstyled mb-0">
-        <li class="active"><a routerLink="/"> <i class="fa fa-home"></i>Negocios Enmanuel</a></li>
+        <li class="active"><a routerLink="/"> <i class="fa fa-home"></i>Negocios MIVANI</a></li>
       </ul>
 
       <span class="heading">Preventas</span>
@@ -80,7 +59,6 @@
       <ul class="list-unstyled mb-0">
         <li><a routerLink="/ventas"> <i class="fa fa-money"></i>Ventas </a></li>
         <li><a routerLink="/ventas/repventas"> <i class="fa fa-money"></i>Reportes </a></li>
-        <li class="cursor-pointer"><a (click)="levantarFacturador()"> <i class="fa fa-sun-o"></i>Facturacion </a></li>
       </ul>
 
     </nav>
@@ -91,7 +69,7 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-sm-12">
-              <p>Geektic Soluciones &copy; 2018</p>
+              <p>Derechos Reservados &copy; 2020</p>
             </div>
           </div>
         </div>
