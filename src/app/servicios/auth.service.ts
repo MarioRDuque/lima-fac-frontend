@@ -12,17 +12,18 @@ export interface AuthSolicitudParam {
 }
 
 export interface ObjetoJWT {
-    userId:string;
-    token:string;
-    menus:any;
+    userId: string;
+    token: string;
+    menus: any;
     tipoUsuario: number;
+    nombreTipoUsuario: string;
 }
 
 export interface AuthRespuesta {
     success: boolean;
     mensaje: string;
     urlDestino: string;
-    user?:ObjetoJWT;
+    user?: ObjetoJWT;
 }
 
 @Injectable()
@@ -52,37 +53,38 @@ export class AuthService {
         return this.apiRequest.post('session', bodyData)
             .then(
                 jsonResp => {
-                if (jsonResp !== undefined && jsonResp.item !== null && jsonResp.estadoOperacion === "EXITO") {
-                    authRespuesta = {
-                        "success": true,
-                        "mensaje": jsonResp.operacionMensaje,
-                        "urlDestino": this.urlDestino,
-                        "user": {
-                            "userId": jsonResp.item.usuarioId,
-                            "token": jsonResp.item.token,
-                            "menus": jsonResp.item.menus,
-                            "tipoUsuario": jsonResp.item.tipoUsuario
-                        }
-                    };
-                    //calses de angular
-                    this.almacenamiento.setItem(this.usuarioActualKey, JSON.stringify(authRespuesta.user));
-                    this.homeService.guardarTiposEnStorage();
-                }
-                else {
-                    this.cerrarSession();
-                    authRespuesta = {
-                        "success": false,
-                        "mensaje": jsonResp.msgDesc,
-                        "urlDestino": "login"
-                    };
-                }
-                return authRespuesta;
-            })
+                    if (jsonResp !== undefined && jsonResp.item !== null && jsonResp.estadoOperacion === "EXITO") {
+                        authRespuesta = {
+                            "success": true,
+                            "mensaje": jsonResp.operacionMensaje,
+                            "urlDestino": this.urlDestino,
+                            "user": {
+                                "userId": jsonResp.item.usuarioId,
+                                "token": jsonResp.item.token,
+                                "menus": jsonResp.item.menus,
+                                "tipoUsuario": jsonResp.item.tipoUsuario,
+                                "nombreTipoUsuario": jsonResp.item.tipoNombreUsuario
+                            }
+                        };
+                        //calses de angular
+                        this.almacenamiento.setItem(this.usuarioActualKey, JSON.stringify(authRespuesta.user));
+                        this.homeService.guardarTiposEnStorage();
+                    }
+                    else {
+                        this.cerrarSession();
+                        authRespuesta = {
+                            "success": false,
+                            "mensaje": jsonResp.msgDesc,
+                            "urlDestino": "login"
+                        };
+                    }
+                    return authRespuesta;
+                })
             .catch(err => this.handleError(err));
     }
 
     private handleError(error: any): Promise<any> {
-      return Promise.reject(error.message || error);
+        return Promise.reject(error.message || error);
     }
 
     cerrarSession(): void {
@@ -91,20 +93,28 @@ export class AuthService {
         this.router.navigate(["login"]);/* ir al backend y caducar token */
     }
 
-    getUserName():string {
+    getUserName(): string {
         let objJWT: ObjetoJWT = JSON.parse(this.almacenamiento.getItem(this.usuarioActualKey));
-        if (objJWT !== null){
+        if (objJWT !== null) {
             return objJWT.userId
         }
         return "no-user";
     }
 
-    getTipoUser():number {
-      let objJWT: ObjetoJWT = JSON.parse(this.almacenamiento.getItem(this.usuarioActualKey));
-      if (objJWT !== null){
-        return objJWT.tipoUsuario;
-      }
-      return 0;
+    getTipoUser(): number {
+        let objJWT: ObjetoJWT = JSON.parse(this.almacenamiento.getItem(this.usuarioActualKey));
+        if (objJWT !== null) {
+            return objJWT.tipoUsuario;
+        }
+        return 0;
+    }
+
+    getNombreTipoUser(): string {
+        let objJWT: ObjetoJWT = JSON.parse(this.almacenamiento.getItem(this.usuarioActualKey));
+        if (objJWT !== null) {
+            return objJWT.nombreTipoUsuario;
+        }
+        return "";
     }
 
     eliminarDataJWT() {
@@ -116,14 +126,14 @@ export class AuthService {
     }
 
 
-    getObjetoJWT(): ObjetoJWT|null {
-        try{
+    getObjetoJWT(): ObjetoJWT | null {
+        try {
             let dataJWT: string = this.almacenamiento.getItem(this.usuarioActualKey);
             if (dataJWT) {
                 let objJWT: ObjetoJWT = JSON.parse(this.almacenamiento.getItem(this.usuarioActualKey));
                 return objJWT;
             }
-            else{
+            else {
                 return null;
             }
         }
@@ -132,29 +142,29 @@ export class AuthService {
         }
     }
 
-    hayToken():boolean {
+    hayToken(): boolean {
         let objJWT: ObjetoJWT = this.getObjetoJWT();
-        if (objJWT !== null){
+        if (objJWT !== null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    getToken():string|null {
+    getToken(): string | null {
         let objJWT: ObjetoJWT = this.getObjetoJWT();
-        if (objJWT !== null){
+        if (objJWT !== null) {
             return objJWT.token;
         }
         return null;
     }
 
-    getMenus():any|null {
-      let objJWT: ObjetoJWT = this.getObjetoJWT();
-      if (objJWT !== null){
-        return objJWT.menus;
-      }
-      return null;
+    getMenus(): any | null {
+        let objJWT: ObjetoJWT = this.getObjetoJWT();
+        if (objJWT !== null) {
+            return objJWT.menus;
+        }
+        return null;
     }
 
 }
