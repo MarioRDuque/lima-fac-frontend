@@ -117,8 +117,8 @@
         </div>
         <div class="form-row" >
           <div class="form-group col-md-3">
-            <label for="distritos" class="col-form-label">Distrito</label>
-            <select class="form-control form-control-sm" id="distritos" name="distritos" [(ngModel)]="distritoSelect" (change)="traerUbigeos('centro', distritoSelect)" required>
+            <label for="distritos" class="col-form-label">Distrito </label>
+            <select class="form-control form-control-sm" id="distritos" name="distritos" [(ngModel)]="distritoSelect" (change)="traerUbigeos('centro', distritoSelect)">
               <option *ngFor="let distrito of distritos" [ngValue]="distrito.id">
                 {{ distrito.nombre }}
               </option>
