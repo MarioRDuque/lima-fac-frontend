@@ -4,8 +4,8 @@
       <h5 class="modal-title" *ngIf="!vistaFormulario">Clientes</h5>
       <h5 *ngIf="!cliente.id && vistaFormulario" class="modal-title">Agregar Cliente</h5>
       <h5 *ngIf="cliente.id && vistaFormulario" class="modal-title">Modificar Cliente</h5>
-      <button type="button" *ngIf="!vistaFormulario" class="btn-sm cursor-pointer close" (click)="nuevoCliente()">
-        <i class="fa fa-plus-circle"></i> Nuevo
+      <button type="button" *ngIf="!vistaFormulario" class="btn btn-primary" (click)="nuevoCliente()">
+      <i class="fa fa-plus-circle"></i> Nuevo
       </button>
       <button *ngIf="isModal" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
         <span aria-hidden="true">&times;</span>
@@ -115,7 +115,7 @@
             <input type="tel" class="form-control" id="celular" name="celular" placeholder="¿Cuales es el numero de celular?" [(ngModel)]="cliente.celular" maxlength="15">
           </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" >
           <div class="form-group col-md-3">
             <label for="distritos" class="col-form-label">Distrito </label>
             <select class="form-control form-control-sm" id="distritos" name="distritos" [(ngModel)]="distritoSelect" (change)="traerUbigeos('centro', distritoSelect)">
