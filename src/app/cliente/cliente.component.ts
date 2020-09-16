@@ -44,7 +44,7 @@ export class ClienteComponent implements OnInit {
     }
   ];
   public distritos: any = [];
-  public distritoSelect: any = {};
+  public distritoSelect: any = null;
   public centros: any = [];
   autocomplete: any;
   address: any = {};
@@ -233,6 +233,9 @@ export class ClienteComponent implements OnInit {
 
   onSubmit():any{
     this.solicitando = true;
+    if(!this.distritoSelect){
+      this.cliente.idpersona.idubigeo = null;
+    }
     if(this.cliente.id){
       return this.apiRequest.put('cliente', this.cliente)
         .then(
