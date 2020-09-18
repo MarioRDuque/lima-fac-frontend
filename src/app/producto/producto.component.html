@@ -54,7 +54,7 @@
                 <tr class="cursor-pointer" (click)="activeModal.dismiss(producto)" *ngFor="let producto of productos">
                   <td>{{producto.nombre}}</td>
                   <td>{{producto.idcategoria.descripcion}}</td>
-                  <td>{{producto.idcategoria.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
+                  <td>{{producto.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                   <td class="pt-0 pb-0">
                     <i *ngIf="!isModalProducto" class="fa fa-close fa-2x cursor-pointer text-danger" (click)="confirmarEliminacion(producto)"
                       title="eliminar"></i>

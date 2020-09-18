@@ -52,7 +52,7 @@
                 <td>{{cliente.idpersona.idtipodocumento.abreviatura}}</td>
                 <td>{{cliente.idpersona.numdocumento}}</td>
                 <td>{{cliente.idpersona.nombrecompleto}}</td>
-                <td>{{cliente.idpersona.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
+                <td>{{cliente.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                 <td class="pb-0 pt-0">
                   <i *ngIf="!isModal" class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar" (click)="confirmarEliminacion(cliente)"></i>
                   <i class="fa fa-pencil fa-2x cursor-pointer text-primary" title="editar" (click)="editarCliente(cliente.id)"></i>
