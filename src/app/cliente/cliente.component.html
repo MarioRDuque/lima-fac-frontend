@@ -43,6 +43,7 @@
                 <th>Tipo Doc.</th>
                 <th>Numero Doc.</th>
                 <th>Nombre</th>
+                <th>Estado</th>
                 <th style="width:30px;">Opciones</th>
               </tr>
               </thead>
@@ -51,6 +52,7 @@
                 <td>{{cliente.idpersona.idtipodocumento.abreviatura}}</td>
                 <td>{{cliente.idpersona.numdocumento}}</td>
                 <td>{{cliente.idpersona.nombrecompleto}}</td>
+                <td>{{cliente.idpersona.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                 <td class="pb-0 pt-0">
                   <i *ngIf="!isModal" class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar" (click)="confirmarEliminacion(cliente)"></i>
                   <i class="fa fa-pencil fa-2x cursor-pointer text-primary" title="editar" (click)="editarCliente(cliente.id)"></i>
@@ -99,6 +101,12 @@
           <div class="form-group col-md-6">
             <label class="col-form-label">Nombre <span class="text-primary">*</span></label>
             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="¿Cual es el nombre?" [(ngModel)]="cliente.idpersona.nombre" maxlength="30" required>
+          </div>
+          <div class="form-group col-md-2">
+            <label class="col-form-label">Estado <span class="text-primary">*</span> </label>
+            <div>
+              <ui-switch [(ngModel)]="cliente.idpersona.estado" name="estado"></ui-switch>
+            </div>
           </div>
           <div class="form-group col-md-6">
             <label class="col-form-label">Apellidos</label>
