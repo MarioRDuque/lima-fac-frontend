@@ -45,6 +45,7 @@ import { VentaListaComponent } from './venta/venta-lista/venta-lista.component';
 import { VentaFormularioComponent } from './venta/venta-formulario/venta-formulario.component';
 import { ReportesVentaComponent } from './venta/reportes-venta/reportes-venta.component';
 import { DetalleImeisComponent } from './venta/venta-formulario/detalle-imeis/detalle-imeis.component';
+import { ProveedorComponent } from './proveedor/proveedor.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { DetalleImeisComponent } from './venta/venta-formulario/detalle-imeis/de
     VentaListaComponent,
     VentaFormularioComponent,
     ReportesVentaComponent,
-    DetalleImeisComponent
+    DetalleImeisComponent,
+    ProveedorComponent
   ],
   imports: [
     NgbModule.forRoot(),

@@ -17,6 +17,7 @@ import { PedidoSeguimientoComponent } from './pedido/pedido-seguimiento/pedido-s
 import { VentaListaComponent } from './venta/venta-lista/venta-lista.component';
 import { ReportesVentaComponent } from './venta/reportes-venta/reportes-venta.component';
 import { VentaFormularioComponent } from './venta/venta-formulario/venta-formulario.component';
+import { ProveedorComponent } from './proveedor/proveedor.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -39,6 +40,7 @@ const routes: Routes = [
       },
       { path: 'reportes', component: ReporteComponent },
       { path: 'productos', component: ProductoComponent },
+      { path: 'proveedor', component: ProveedorComponent },
       {
         path: 'ventas', component: VentaComponent,
         children: [
