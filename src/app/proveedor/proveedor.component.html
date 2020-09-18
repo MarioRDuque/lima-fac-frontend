@@ -45,7 +45,6 @@
                   <th>Tipo Doc.</th>
                   <th>Numero Doc.</th>
                   <th>Nombre</th>
-                  <th>Estado</th>
                   <th style="width:30px;">Opciones</th>
                 </tr>
               </thead>
@@ -54,7 +53,6 @@
                   <td>{{proveedor.idpersona.idtipodocumento.abreviatura}}</td>
                   <td>{{proveedor.idpersona.numdocumento}}</td>
                   <td>{{proveedor.idpersona.nombrecompleto}}</td>
-                  <td>{{proveedor.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                   <td class="pb-0 pt-0">
                     <i *ngIf="!isModal" class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar"
                       (click)="confirmarEliminacion(proveedor)"></i>
@@ -116,12 +114,6 @@
             <label class="col-form-label">Apellidos</label>
             <input type="text" class="form-control" id="apellidos" name="apellidos"
               placeholder="¿Cuales son los apellidos?" [(ngModel)]="proveedor.idpersona.apellidos" maxlength="30">
-          </div>
-        </div>
-        <div class="form-group col-md-2">
-          <label class="col-form-label">Estado <span class="text-primary">*</span> </label>
-          <div>
-            <ui-switch [(ngModel)]="proveedor.estado" name="estado"></ui-switch>
           </div>
         </div>
         <div class="form-row">
