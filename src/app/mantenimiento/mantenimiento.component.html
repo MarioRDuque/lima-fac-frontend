@@ -151,6 +151,7 @@
                     <tr>
                       <th>Nombre</th>
                       <th>Abreviatura</th>
+                      <th>Estado</th>
                       <th style="width:30px;">Opciones</th>
                     </tr>
                     </thead>
@@ -158,6 +159,7 @@
                     <tr class="cursor-pointer" *ngFor="let tipodocumento of documentos">
                       <td>{{tipodocumento.nombre}}</td>
                       <td>{{tipodocumento.abreviatura}}</td>
+                      <td>{{tipodocumento.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                       <td class="pt-0 pb-0">
                         <i class="fa fa-close fa-2x cursor-pointer text-danger" (click)="confirmarEliminacion(tipodocumento, 'tipodocumento')" title="eliminar"></i>
                         <i class="fa fa-pencil fa-2x cursor-pointer text-primary" (click)="traerParaEdicion(tipodocumento.id, 'tipodocumento')" title="editar"></i>
@@ -185,6 +187,12 @@
                 <div class="form-group col-md-6">
                   <label class="col-form-label">Abreviatura <span class="text-primary">*</span> </label>
                   <input type="text" id="abrev"  name="abrev" class="form-control" placeholder="Ingresa abreviatura" [(ngModel)]="tipodocumento.abreviatura" maxlength="6" required>
+                </div>
+                <div class="form-group col-md-2">
+                  <label class="col-form-label">Estado <span class="text-primary">*</span> </label>
+                  <div>
+                    <ui-switch [(ngModel)]="tipodocumento.estado" name="estado"></ui-switch>
+                  </div>
                 </div>
               </div>
               <div style="text-align: right" class="pt-2">
@@ -224,6 +232,7 @@
                       <th>Nombre</th>
                       <th>Abreviatura</th>
                       <th>Cantidad</th>
+                      <th>Estado</th>
                       <th style="width:30px;">Opciones</th>
                     </tr>
                     </thead>
@@ -232,6 +241,7 @@
                       <td>{{unidad.descripcion}}</td>
                       <td>{{unidad.abreviatura}}</td>
                       <td>{{unidad.cantidad}}</td>
+                      <td>{{unidad.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                       <td class="pt-0 pb-0">
                         <i class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar" (click)="confirmarEliminacion(unidad, 'unidad')"></i>
                         <i class="fa fa-pencil fa-2x cursor-pointer text-primary" title="editar" (click)="traerParaEdicion(unidad.id, 'unidad')"></i>
@@ -263,6 +273,12 @@
                 <div class="form-group col-md-3">
                   <label class="col-form-label">Cantidad <span class="text-primary">*</span> </label>
                   <input type="number" id="cant"  name="cant" class="form-control" placeholder="Ingresa cantidad" [(ngModel)]="unidad.cantidad" onKeyUp="if(this.value>9999999999){this.value='9999999999';}else if(this.value<0){this.value='0';}" required>
+                </div>
+                <div class="form-group col-md-2">
+                  <label class="col-form-label">Estado <span class="text-primary">*</span> </label>
+                  <div>
+                    <ui-switch [(ngModel)]="unidad.estado" name="estado"></ui-switch>
+                  </div>
                 </div>
               </div>
               <div style="text-align: right" class="pt-2">
@@ -301,6 +317,7 @@
                     <tr>
                       <th>ID</th>
                       <th>Descripcion</th>
+                      <th>Estado</th>
                       <th style="width:30px;">Opciones</th>
                     </tr>
                     </thead>
@@ -308,6 +325,7 @@
                     <tr class="cursor-pointer" *ngFor="let categoria of categorias">
                       <td>{{categoria.id}}</td>
                       <td>{{categoria.descripcion}}</td>
+                      <td>{{categoria.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                       <td class="pt-0 pb-0">
                         <i class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar" (click)="confirmarEliminacion(categoria, 'categoria')"></i>
                         <i class="fa fa-pencil fa-2x cursor-pointer text-primary" title="editar" (click)="traerParaEdicion(categoria.id, 'categoria')"></i>
@@ -331,6 +349,12 @@
                 <div class="form-group col-md-12">
                   <label for="nombrec" class="col-form-label">Nombre de Categoria </label>
                   <input type="text" id="nombrec"  name="nombrec" class="form-control" placeholder="Ingresa nombre" [(ngModel)]="categoria.descripcion" maxlength="200" required>
+                </div>
+                <div class="form-group col-md-2">
+                  <label class="col-form-label">Estado <span class="text-primary">*</span> </label>
+                  <div>
+                    <ui-switch [(ngModel)]="categoria.estado" name="estado"></ui-switch>
+                  </div>
                 </div>
               </div>
               <div style="text-align: right" class="pt-2">
