@@ -283,20 +283,8 @@ export class MantenimientoComponent implements OnInit {
         data => {
           if(data && data.extraInfo){
             this.solicitando = false;
-            switch (ruta){
-              case 'unidad':
-                this.unidades.splice(this.unidades.indexOf(obj),1);
-                break;
-              case 'categoria':
-                this.categorias.splice(this.categorias.indexOf(obj),1);
-                break;
-              case 'usuario':
-                this.usuarios.splice(this.usuarios.indexOf(obj),1);
-                break;
-              case 'tipodocumento':
-                this.documentos.splice(this.documentos.indexOf(obj),1);
-                break;
-            }
+            obj.estado = false;
+            this.toastr.success(data.operacionMensaje,"Informacion");
           } else {
             this.toastr.info(data.operacionMensaje,"Informacion");
           }
