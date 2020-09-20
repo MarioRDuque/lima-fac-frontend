@@ -14,7 +14,8 @@
           <div class="navbar-header">
             <a routerLink="/" class="navbar-brand">
               <div class="brand-text brand-big"><span>MIVANI</span></div>
-              <div class="brand-text brand-small"><strong>E</strong></div></a>
+              <div class="brand-text brand-small"><strong>E</strong></div>
+            </a>
             <a id="toggle-btn" href="#" class="menu-btn active">
               <span></span><span></span><span></span></a>
           </div>
@@ -50,7 +51,7 @@
 
       <ul class="list-unstyled mb-0">
         <li *ngFor="let menu of auth.getMenus()">
-          <a class="cursor-pointer" (click)="navegar(menu.url)"> <i class={{menu.icono}}></i> {{menu.nombre}}</a>
+          <a class="cursor-pointer" (click)="navegar(menu.url)"> <i class="fa fa-money"></i> {{menu.nombre}}</a>
         </li>
       </ul>
 
@@ -59,6 +60,13 @@
       <ul class="list-unstyled mb-0">
         <li><a routerLink="/ventas"> <i class="fa fa-money"></i>Ventas </a></li>
         <li><a routerLink="/ventas/repventas"> <i class="fa fa-money"></i>Reportes </a></li>
+      </ul>
+
+      <span class="heading">Compras</span>
+
+      <ul class="list-unstyled mb-0">
+        <li><a routerLink="/compras"> <i class="fa fa-money"></i>Compras </a></li>
+        <li><a routerLink="/compras/repcompras"> <i class="fa fa-money"></i>Reportes </a></li>
       </ul>
 
     </nav>

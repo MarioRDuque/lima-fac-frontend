@@ -50,6 +50,16 @@ const routes: Routes = [
           { path: 'formulario/:id', component: VentaFormularioComponent },
           { path: '', redirectTo: 'lista', pathMatch: 'full' }
         ]
+      },
+      {
+        path: 'compras', component: VentaComponent,
+        children: [
+          { path: 'lista', component: VentaListaComponent },
+          { path: 'repcompras', component: ReportesVentaComponent },
+          { path: 'formulario', component: VentaFormularioComponent },
+          { path: 'formulario/:id', component: VentaFormularioComponent },
+          { path: '', redirectTo: 'lista', pathMatch: 'full' }
+        ]
       }
     ]
   },
