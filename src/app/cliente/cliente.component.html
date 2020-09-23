@@ -4,10 +4,10 @@
       <h5 class="modal-title" *ngIf="!vistaFormulario">Clientes</h5>
       <h5 *ngIf="!cliente.id && vistaFormulario" class="modal-title">Agregar Cliente</h5>
       <h5 *ngIf="cliente.id && vistaFormulario" class="modal-title">Modificar Cliente</h5>
-      <button type="button" *ngIf="!vistaFormulario" class="btn btn-primary" (click)="nuevoCliente()">
+      <button type="button" *ngIf="!vistaFormulario" class="btn btn-primary " (click)="nuevoCliente()">
       <i class="fa fa-plus-circle"></i> Nuevo
       </button>
-      <button *ngIf="isModal" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <button *ngIf="isModal" type="button"  aria-label="Close" class="close ml-2" (click)="activeModal.dismiss()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
