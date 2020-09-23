@@ -18,6 +18,10 @@ import { VentaListaComponent } from './venta/venta-lista/venta-lista.component';
 import { ReportesVentaComponent } from './venta/reportes-venta/reportes-venta.component';
 import { VentaFormularioComponent } from './venta/venta-formulario/venta-formulario.component';
 import { ProveedorComponent } from './proveedor/proveedor.component';
+import { CompraComponent } from './compra/compra.component';
+import { CompraListaComponent } from './compra/compra-lista/compra-lista.component';
+import { ReportesCompraComponent } from './compra/reportes-compra/reportes-compra.component';
+import { CompraFormularioComponent } from './compra/compra-formulario/compra-formulario.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -48,6 +52,16 @@ const routes: Routes = [
           { path: 'repventas', component: ReportesVentaComponent },
           { path: 'formulario', component: VentaFormularioComponent },
           { path: 'formulario/:id', component: VentaFormularioComponent },
+          { path: '', redirectTo: 'lista', pathMatch: 'full' }
+        ]
+      },
+      {
+        path: 'compras', component: CompraComponent,
+        children: [
+          { path: 'lista', component: CompraListaComponent },
+          { path: 'repcompras', component: ReportesCompraComponent },
+          { path: 'formulario', component: CompraFormularioComponent },
+          { path: 'formulario/:id', component: CompraFormularioComponent },
           { path: '', redirectTo: 'lista', pathMatch: 'full' }
         ]
       }

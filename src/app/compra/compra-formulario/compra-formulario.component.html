@@ -1,0 +1,216 @@
+<div>
+  <div class="modal-header card-bonito" style="padding: 10px!important;">
+    <h5 *ngIf="!compra.id" class="modal-title">Nueva Compra</h5>
+    <h5 *ngIf="compra.id" class="modal-title">Modificar Compra</h5>
+    <button style="float: right;" type="button" class="btn btn-outline-dark" routerLink="/compras/lista">Cancelar</button>
+  </div>
+  <div class="modal-body card-bonito">
+    <div class="row justify-content-center" *ngIf="cargando">
+      <div class="col col-auto">
+        <p class="text-primary text-center">Cargando...</p>
+        <app-cargando></app-cargando>
+      </div>
+    </div>
+    <div *ngIf="!cargando">
+      <form (ngSubmit)="onSubmit()" #compraForm="ngForm">
+        <div class="row">
+          <div class="col-md-12 input-group">
+            <div class="input-group-prepend">
+              <select [(ngModel)]="compra.idmoneda" class="btn btn-outline-secondary dropdown-toggle" style="margin-bottom: 0px;" id="tipom-{{i}}"
+                name="tipom-{{i}}" required>
+                <option *ngFor="let to of tiposMon" [ngValue]="to">
+                  {{ to.definicion }}
+                </option>
+              </select>
+            </div>
+            <div class="input-group-prepend">
+              <select [(ngModel)]="compra.tipooperacion" class="btn btn-outline-secondary dropdown-toggle" style="margin-bottom: 0px;" id="tipo-{{i}}"
+                name="tipo-{{i}}" required>
+                <option *ngFor="let to of tiposOperacion" [ngValue]="to.id">
+                  {{ to.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="input-group-prepend" *ngIf="compra.tipooperacion == 00">
+              <select [(ngModel)]="compra.idtipodocumento" class="btn btn-outline-secondary dropdown-toggle" style="margin-bottom: 0px;"
+                id="doc-{{i}}" name="doc-{{i}}" required>
+                <option *ngFor="let to of tipoDocs" [ngValue]="to">
+                  {{ to.abreviatura }}
+                </option>
+              </select>
+            </div>
+            <input class="form-control" *ngIf="compra.tipooperacion == 03" type="text" pKeyFilter="pint" name="documento" placeholder="Ingrese numero de DNI"
+              [(ngModel)]="compra.docproveedor">
+            <input class="form-control" maxlength="11" *ngIf="compra.tipooperacion == 01" type="text" pKeyFilter="pint" name="documento"
+              placeholder="Ingrese numero de RUC" [(ngModel)]="compra.docproveedor">
+            <input class="form-control" maxlength="11" *ngIf="compra.tipooperacion == 00" type="text" pKeyFilter="pint" name="documento"
+              placeholder="Ingrese numero de documento" [(ngModel)]="compra.docproveedor">
+            <input class="form-control" maxlength="13" *ngIf="compra.tipooperacion == 07" type="text" name="documento" placeholder="Ingrese numero de BOLETA y/o FACTURA"
+              [(ngModel)]="seriecorrelativo">
+            <button *ngIf="compra.tipooperacion != 07" class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="validarDocumento()">
+              Validar Documento
+              <i class="fa fa-search cursor-pointer"></i>
+            </button>
+            <button *ngIf="compra.tipooperacion == 07" class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="buscarCompra()">
+              Buscar Documento
+              <i class="fa fa-search cursor-pointer"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row" *ngIf="compra.tipooperacion != 07">
+          <div class="col-md-12">
+            <div class="form-group pt-2">
+              <label class="col-form-label">Datos del proveedor
+                <span class="text-primary">*</span>
+              </label>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Ingrese proveedor" [(ngModel)]="compra.nombreproveedor" maxlength="90" id="nombrecompleto"
+                  name="cdescor">
+                <button class="btn btn-primary" type="button" style="padding: 1px 6px;" (click)="abrirProveedores()">
+                  <i class="fa fa-search cursor-pointer"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="compra.tipooperacion != 07">
+          <div class="pl-3 pr-3">
+            <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-2 p-1 bg-azul">
+              <div class="col p-1 pl-3">
+                DETALLE DEL VENTA
+              </div>
+              <div class="col-auto p-1">
+                <i class="fa fa-refresh fa-2x cursor-pointer" (click)="calcularImporte()" title="refrescar"> </i>
+                <i class="fa fa-plus-circle fa-2x cursor-pointer" (click)="abrirProductos()" title="agregar a cesta"></i>
+              </div>
+            </div>
+            <div class="row no-gutters" *ngIf="compra.compradetList && compra.compradetList.length>0">
+              <div class="col box-line-negocio-cuerpo  table-responsive-secundaria">
+                <table class="table table-sigro table-striped table-hover mb-0 table-bordered">
+                  <thead>
+                    <tr>
+                      <th class="p-1">Nombre.</th>
+                      <th class="p-1">Unidad.</th>
+                      <th class="p-1">Precio U.</th>
+                      <th class="p-1">Descuento U.</th>
+                      <th class="p-1">Cantidad</th>
+                      <th class="p-1">Descuento Tot.</th>
+                      <th class="p-1">Total.</th>
+                      <th style="width:20px;" class="p-1">Opcion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let detalle of compra.compradetList; let i = index">
+                      <td class="p-1 input-group"><p style="float: left;">{{detalle.idproducto.nombre}}</p> <button type="button" class="btn btn-sm btn-primary p-0 pl-1 pr-1" style="float: right;" (click)="verDetalle(compra.compradetList[i])"><i class="fa fa-calculator"></i></button></td>
+                      <td class="p-1" style="min-width: 200px;">
+                        <select style="height: calc(1.5rem); padding: 0 10px;" class="form-control mb-0" id="unidad-{{i}}" name="unidad-{{i}}" [(ngModel)]="compra.compradetList[i].idunidadmedida"
+                          (change)="obtenerPrecio(detalle);" required>
+                          <option *ngFor="let unidad of compra.compradetList[i].idproducto.productomedidaList" [ngValue]="unidad.idunidadmedida">
+                            {{ unidad.idunidadmedida.descripcion }}
+                          </option>
+                        </select>
+                      </td>
+                      <td class="p-1">
+                        {{compra.idmoneda.simbolo}}
+                        <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.preciounitario" name="pu-{{i}}"
+                          (keyup)="operaciones(detalle)">
+                      </td>
+                      <td class="p-1">
+                        <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.descuentounitario" name="desc-{{i}}"
+                          (keyup)="operaciones(detalle)">
+                      </td>
+                      <td class="p-1">
+                        <input style="width:80px;" pInputText type="text" pKeyFilter="money" [(ngModel)]="detalle.cantidad" name="cantidad-{{i}}"
+                          (keyup)="operaciones(detalle)">
+                      </td>
+                      <td class="p-1">
+                        {{compra.idmoneda.simbolo}} {{detalle.descuentototal | number : '1.2-2'}}
+                      </td>
+                      <td class="p-1">
+                        {{compra.idmoneda.simbolo}} {{detalle.preciototal | number : '1.2-2'}}
+                      </td>
+                      <td class="text-right p-1">
+                        <i class="fa fa-close fa-2x cursor-pointer text-primary margen-0" (click)="confirmarEliminacionDetalle(detalle)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <thead>
+                    <tr>
+                      <th colspan="6" class="text-right">Operacion Gravada</th>
+                      <th colspan="2" style="font-size: 20px;">
+                        <strong>{{compra.idmoneda.simbolo}}. </strong>
+                        <span>{{importe - compra.igv | number : '1.2-2'}}</span>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colspan="6" class="text-right">Impuesto General de la Renta (IGV). {{igv*100}}%</th>
+                      <th colspan="2" style="font-size: 20px;">
+                        <strong>{{compra.idmoneda.simbolo}}. </strong>
+                        <span>{{compra.igv | number : '1.2-2'}}</span>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colspan="6" class="text-right">Importe total</th>
+                      <th colspan="2" style="font-size: 20px;">
+                        <strong>{{compra.idmoneda.simbolo}}. </strong>
+                        <span>{{importe | number : '1.2-2'}}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <br>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: right" class="pl-3 pr-3 pt-2 pb-0">
+            <button type="submit" class="btn btn-primary" [disabled]="!compraForm.form.valid" *ngIf="!compra.id">Guardar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!compraForm.form.valid" *ngIf="compra.id">Actualizar</button>
+            <button type="button" class="btn btn-outline-dark" routerLink="/compras/lista">Cancelar</button>
+          </div>
+        </div>
+        <div *ngIf="compra.tipooperacion == 07" class="pt-2">
+          <div class="col-md-12 pb-2" *ngIf="compras && compras.length > 0">
+            <textarea name="descripcion" id="" cols="10" rows="5" maxlength="250" class="form-control" placeholder="Ingrese motivo de anulacion del documento"
+              [(ngModel)]="compra.descripcion" required></textarea>
+          </div>
+          <div *ngIf="compras && compras.length > 0">
+            <div class="row">
+              <div class="col table-responsive">
+                <table class="table table-sigro table-hover table-bordered">
+                  <thead class="thead-inverse">
+                    <tr>
+                      <th>Código</th>
+                      <th>Proveedor</th>
+                      <th>Fec. Compra</th>
+                      <th>Tipo Compra</th>
+                      <th>Registrado Por</th>
+                      <th>Generar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="cursor-pointer" *ngFor="let compra of compras">
+                      <td>{{compra.serie}} - {{compra.correlativo}}</td>
+                      <td>{{compra.docproveedor}} {{compra.nombreproveedor}}</td>
+                      <td>{{compra.fechaemision | date:"dd/MM/yyyy"}}</td>
+                      <td>{{compra.direccion}}</td>
+                      <td>{{compra.usuariosave}}</td>
+                      <td class="pb-0 pt-0">
+                        <i class="fa fa-file-archive-o fa-2x cursor-pointer text-primary" (click)="generarNotaPedido(compra.id)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: right" class="p-3 pt-0">
+            <button type="button" class="btn btn-outline-dark" routerLink="/compras/lista">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-end">
+  <a href="" id="boletaDownload" #boletaDownload></a>
+</div>
