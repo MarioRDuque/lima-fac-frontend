@@ -14,7 +14,7 @@
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Ingrese nombre de usuario" [(ngModel)]="numusu">
                 <input type="text" class="form-control" placeholder="Ingrese dni" [(ngModel)]="numdoc">
-                <button type="button" class="btn btn-primary cursor-pointer mr-2 ml-2" (click)="busqueda('usuario')"><i class="fa fa-search"></i></button>
+                <button type="button" class="btn btn-primary cursor-pointer mr-2 " (click)="busqueda('usuario')"><i class="fa fa-search"></i></button>
                 <button type="button" class="btn btn-primary cursor-pointer" (click)="nuevo()"><i class="fa fa-plus-circle"></i> Nuevo</button>
               </div>
             </div>
@@ -41,7 +41,8 @@
                       <td>{{usuario.tipousuario ? usuario.tipousuario.nombre : null}}</td>
                       <td>{{usuario.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                       <td class="pt-0 pb-0">
-                        <i class="fa fa-close fa-2x cursor-pointer text-danger" (click)="confirmarEliminacion(usuario, 'usuario')" title="eliminar"></i>
+
+                        <i class="fa fa-close fa-2x cursor-pointer text-danger" *ngIf="usuario.estado" (click)="confirmarEliminacion(usuario, 'usuario')" title="eliminar"></i>
                         <i class="fa fa-pencil fa-2x cursor-pointer text-primary" (click)="traerParaEdicion(usuario.id, 'usuario')" title="editar"></i>
                       </td>
                     </tr>
@@ -138,7 +139,7 @@
             <div class="form-row" *ngIf="!vistaFormulario && !solicitando">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Ingrese abreviatura del tipo de documento" [(ngModel)]="abrev">
-                <button type="button" class="btn btn-primary cursor-pointer mr-2 ml-2" (click)="busqueda('tipodocumento')"><i class="fa fa-search"></i></button>
+                <button type="button" class="btn btn-primary cursor-pointer mr-2 " (click)="busqueda('tipodocumento')"><i class="fa fa-search"></i></button>
                 <button type="button" class="btn btn-primary cursor-pointer" (click)="nuevo()"><i class="fa fa-plus-circle"></i> Nuevo</button>
               </div>
             </div>
@@ -161,7 +162,7 @@
                       <td>{{tipodocumento.abreviatura}}</td>
                       <td>{{tipodocumento.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                       <td class="pt-0 pb-0">
-                        <i class="fa fa-close fa-2x cursor-pointer text-danger" (click)="confirmarEliminacion(tipodocumento, 'tipodocumento')" title="eliminar"></i>
+                        <i class="fa fa-close fa-2x cursor-pointer text-danger" *ngIf="tipodocumento.estado" (click)="confirmarEliminacion(tipodocumento, 'tipodocumento')" title="eliminar"></i>
                         <i class="fa fa-pencil fa-2x cursor-pointer text-primary" (click)="traerParaEdicion(tipodocumento.id, 'tipodocumento')" title="editar"></i>
                       </td>
                     </tr>
@@ -218,7 +219,7 @@
             <div class="form-row" *ngIf="!vistaFormulario && !solicitando">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Ingrese abreviatura del unidad de medida" [(ngModel)]="abrev">
-                <button type="button" class="btn btn-primary cursor-pointer mr-2 ml-2" (click)="busqueda('unidad')"><i class="fa fa-search"></i></button>
+                <button type="button" class="btn btn-primary cursor-pointer mr-2" (click)="busqueda('unidad')"><i class="fa fa-search"></i></button>
                 <button type="button" class="btn btn-primary cursor-pointer" (click)="nuevo()"><i class="fa fa-plus-circle"></i> Nuevo</button>
               </div>
             </div>
@@ -243,7 +244,7 @@
                       <!-- <td>{{unidad.cantidad}}</td> -->
                       <td>{{unidad.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                       <td class="pt-0 pb-0">
-                        <i class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar" (click)="confirmarEliminacion(unidad, 'unidad')"></i>
+                        <i class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar" *ngIf="unidad.estado" (click)="confirmarEliminacion(unidad, 'unidad')"></i>
                         <i class="fa fa-pencil fa-2x cursor-pointer text-primary" title="editar" (click)="traerParaEdicion(unidad.id, 'unidad')"></i>
                       </td>
                     </tr>
@@ -304,7 +305,7 @@
             <div class="form-row" *ngIf="!vistaFormulario && !solicitando">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Ingrese descripcion del categoria" [(ngModel)]="abrev">
-                <button type="button" class="btn btn-primary cursor-pointer mr-2 ml-2" (click)="busqueda('unidad')"><i class="fa fa-search"></i></button>
+                <button type="button" class="btn btn-primary cursor-pointer mr-2" (click)="busqueda('unidad')"><i class="fa fa-search"></i></button>
                 <button type="button" class="btn btn-primary cursor-pointer" (click)="nuevo()"><i class="fa fa-plus-circle"></i> Nuevo</button>
               </div>
             </div>
@@ -327,7 +328,7 @@
                       <td>{{categoria.descripcion}}</td>
                       <td>{{categoria.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                       <td class="pt-0 pb-0">
-                        <i class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar" (click)="confirmarEliminacion(categoria, 'categoria')"></i>
+                        <i class="fa fa-close fa-2x cursor-pointer text-danger" title="eliminar" *ngIf="categoria.estado" (click)="confirmarEliminacion(categoria, 'categoria')"></i>
                         <i class="fa fa-pencil fa-2x cursor-pointer text-primary" title="editar" (click)="traerParaEdicion(categoria.id, 'categoria')"></i>
                       </td>
                     </tr>
