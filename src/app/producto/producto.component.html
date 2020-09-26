@@ -7,10 +7,24 @@
       <button type="button" *ngIf="!vistaFormulario" class="btn btn-primary" (click)="nuevo()">
         <i class="fa fa-plus-circle"></i> Nuevo
       </button>
-      <button *ngIf="!isModalProducto" type="button" class="btn btn-success" aria-label="Close" (click)="imprimirReporte()">
+      <!-- <button *ngIf="!isModalProducto" type="button" class="btn btn-success" aria-label="Close"
+        (click)="imprimirReporte()">
         Generar Reporte
-      </button>
-      <button *ngIf="isModalProducto" type="button" class="close ml-2" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      </button> -->
+      <div class="btn-group mr-1" *ngIf="!isModalProducto">
+        <button type="button" class="btn btn-primary" (click)="imprimirReporte()">
+          <i class="fa fa-print" aria-hidden="true"></i> <span class="d-none d-md-inline">
+            Generar PDF </span>
+        </button>
+        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item cursor-pointer" (click)="exportarProducto()">
+            Generar Excel</a>
+        </div>
+      </div>
+      <button *ngIf="isModalProducto" type="button" class="close ml-2" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -23,15 +37,15 @@
       </div>
       <div class="form-row pl-3 pr-3" *ngIf="!vistaFormulario && !solicitando">
         <div class="input-group">
-          <select style="height: calc(2rem);" placeholder="Filtrar por categoria" class="form-control" id="catbus" name="catbus" [(ngModel)]="idCategoria"
-            required>
+          <select style="height: calc(2rem);" placeholder="Filtrar por categoria" class="form-control" id="catbus"
+            name="catbus" [(ngModel)]="idCategoria" required>
             <option value="" disabled selected> Filtrar por categoria </option>
             <option *ngFor="let cat of categorias" [ngValue]="cat.id">
               {{ cat.descripcion }}
             </option>
           </select>
-          <input type="text" class="form-control" placeholder="Busque producto" [(ngModel)]="despro" maxlength="150" id="cdescor" name="cdescor"
-            required>
+          <input type="text" class="form-control" placeholder="Busque producto" [(ngModel)]="despro" maxlength="150"
+            id="cdescor" name="cdescor" required>
           <button class="btn btn-primary btn-sm" (click)="busqueda()" type="button">
             <i class="fa fa-search md-18 cursor-pointer"></i>
           </button>
@@ -58,10 +72,12 @@
                   <td>{{producto.stockmin}}</td>
                   <td>{{producto.estado ? 'HABILITADO' : 'INHABILITADO'}}</td>
                   <td class="pt-0 pb-0">
-                    <i *ngIf="!isModalProducto" class="fa fa-close fa-2x cursor-pointer text-danger" (click)="confirmarEliminacion(producto)"
-                      title="eliminar"></i>
-                    <i class="fa fa-pencil fa-2x cursor-pointer text-primary" (click)="traerParaEdicion(producto.id)" title="editar"></i>
-                    <i *ngIf="isModalProducto" class="fa fa-check-square-o  fa-2x cursor-pointer text-primary" title="elegir"></i>
+                    <i *ngIf="!isModalProducto" class="fa fa-close fa-2x cursor-pointer text-danger"
+                      (click)="confirmarEliminacion(producto)" title="eliminar"></i>
+                    <i class="fa fa-pencil fa-2x cursor-pointer text-primary" (click)="traerParaEdicion(producto.id)"
+                      title="editar"></i>
+                    <i *ngIf="isModalProducto" class="fa fa-check-square-o  fa-2x cursor-pointer text-primary"
+                      title="elegir"></i>
                   </td>
                 </tr>
               </tbody>
@@ -70,8 +86,9 @@
         </div>
         <div class="row">
           <div class="col-md-6 table-responsive">
-            <ngb-pagination style="margin-bottom: 0px;" class="ngb-pagination-sigro" [collectionSize]="paginacion.totalRegistros" [(page)]="page"
-              [maxSize]="1" [boundaryLinks]="true" (pageChange)="traerProductos()"></ngb-pagination>
+            <ngb-pagination style="margin-bottom: 0px;" class="ngb-pagination-sigro"
+              [collectionSize]="paginacion.totalRegistros" [(page)]="page" [maxSize]="1" [boundaryLinks]="true"
+              (pageChange)="traerProductos()"></ngb-pagination>
           </div>
           <div class="col-md-6 text-right pr-3">
             <p class="card-text text-secondary">
@@ -86,12 +103,13 @@
             <label for="nombre" class="col-form-label">Nombre
               <span class="text-primary">*</span>
             </label>
-            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="¿Cual es el nombre del producto?" [(ngModel)]="producto.nombre"
-              maxlength="300" required>
+            <input type="text" id="nombre" name="nombre" class="form-control"
+              placeholder="¿Cual es el nombre del producto?" [(ngModel)]="producto.nombre" maxlength="300" required>
           </div>
           <div class="form-group col-md-2">
             <label for="preciounitario" class="col-form-label">Precio Unitario</label>
-            <input type="number" id="preciounitario" name="preciounitario" class="form-control" placeholder="Precio Unitario" [(ngModel)]="producto.precioventa">
+            <input type="number" id="preciounitario" name="preciounitario" class="form-control"
+              placeholder="Precio Unitario" [(ngModel)]="producto.precioventa">
           </div>
         </div>
         <div class="form-row">
@@ -99,7 +117,8 @@
             <label for="cat" class="col-form-label">Categoria
               <span class="text-primary">*</span>
             </label>
-            <select style="height: calc(2rem);" class="form-control" id="cat" name="cat" [(ngModel)]="producto.idcategoria.id" required>
+            <select style="height: calc(2rem);" class="form-control" id="cat" name="cat"
+              [(ngModel)]="producto.idcategoria.id" required>
               <option *ngFor="let cat of categorias" [ngValue]="cat.id">
                 {{ cat.descripcion }}
               </option>
@@ -118,7 +137,8 @@
             </div>
           </div>
         </div>
-        <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center p-1 mt-2 bg-azul">
+        <div
+          class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center p-1 mt-2 bg-azul">
           <div class="col p-2 pl-3">
             Unidad de medida
           </div>
@@ -142,11 +162,13 @@
                     {{productomedida.idunidadmedida.descripcion}}
                   </td>
                   <td style="width: 200px;" class="pb-1 pt-1">
-                    <input type="number" name="precio-{{i}}" class="form-control" [(ngModel)]="productomedida.precio" onKeyUp="if(this.value>9999999999){this.value='9999999999';}else if(this.value<0){this.value='0';}"
+                    <input type="number" name="precio-{{i}}" class="form-control" [(ngModel)]="productomedida.precio"
+                      onKeyUp="if(this.value>9999999999){this.value='9999999999';}else if(this.value<0){this.value='0';}"
                       required>
                   </td>
                   <td class="pt-0 pb-0">
-                    <i class="fa fa-close fa-2x cursor-pointer text-primary" title="quitar" (click)="quitarMedida(productomedida)"></i>
+                    <i class="fa fa-close fa-2x cursor-pointer text-primary" title="quitar"
+                      (click)="quitarMedida(productomedida)"></i>
                   </td>
                 </tr>
               </tbody>
@@ -155,13 +177,16 @@
         </div>
         <div class="text-center pt-3" *ngIf="false">
           <label class="btn btn-default">
-            <input class="btn btn-primary" type="file" name="file" [(ngModel)]="producto.file" (change)="selectFile($event)">
+            <input class="btn btn-primary" type="file" name="file" [(ngModel)]="producto.file"
+              (change)="selectFile($event)">
           </label>
         </div>
         <img src="{{fileUpload}}" *ngIf="false" alt="{{fileUpload}}" style="max-width:350px" />
         <div style="text-align: right" class="pt-2">
-          <button *ngIf="!producto.id" type="submit" class="btn btn-primary btn-sm" [disabled]="!productoForm.form.valid" (click)="onSubmit()">Guardar</button>
-          <button *ngIf="producto.id" type="submit" class="btn btn-primary btn-sm" [disabled]="!productoForm.form.valid" (click)="onSubmit()">Actualizar</button>
+          <button *ngIf="!producto.id" type="submit" class="btn btn-primary btn-sm"
+            [disabled]="!productoForm.form.valid" (click)="onSubmit()">Guardar</button>
+          <button *ngIf="producto.id" type="submit" class="btn btn-primary btn-sm" [disabled]="!productoForm.form.valid"
+            (click)="onSubmit()">Actualizar</button>
           <button type="button" class="btn btn-outline-dark btn-sm" (click)="vistaFormulario = false">Cancelar</button>
         </div>
       </form>
@@ -180,7 +205,8 @@
           <label for="unidad" class="col-form-label">Unidad de Medida
             <span class="text-primary">*</span>
           </label>
-          <select style="height: calc(2rem);" class="form-control" id="unidad" name="unidad" [(ngModel)]="unidadSelect" required>
+          <select style="height: calc(2rem);" class="form-control" id="unidad" name="unidad" [(ngModel)]="unidadSelect"
+            required>
             <option *ngFor="let unidad of unidades" [ngValue]="unidad">
               {{ unidad.descripcion }}
             </option>
@@ -189,7 +215,8 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="submit" [disabled]="!unidadSelect" class="btn btn-primary" (click)="c('Close click')">Aceptar</button>
+      <button type="submit" [disabled]="!unidadSelect" class="btn btn-primary"
+        (click)="c('Close click')">Aceptar</button>
       <button type="button" class="btn btn-outline-dark" (click)="d()">Cancelar</button>
     </div>
   </ng-template>
