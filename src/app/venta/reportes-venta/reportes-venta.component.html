@@ -1,6 +1,6 @@
 <header class="page-header">
   <div class="container-fluid">
-    <h2 class="no-margin-bottom">Reportes</h2>
+    <h2 class="no-margin-bottom">Reportes Ventas</h2>
   </div>
 </header>
 <section class="dashboard-counts p-3">
@@ -12,8 +12,8 @@
             <div class="form-group col col-md-6">
               <label class="col-form-label">Desde:</label>
               <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd"
-                       name="dp" [(ngModel)]="inicio" ngbDatepicker #d="ngbDatepicker">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="inicio" ngbDatepicker
+                  #d="ngbDatepicker">
                 <button class="input-group-addon" (click)="d.toggle()" type="button">
                   <i class="fa fa-calendar margen-0"></i>
                 </button>
@@ -22,8 +22,8 @@
             <div class="form-group col col-md-6">
               <label class="col-form-label">Hasta: </label>
               <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd"
-                       name="dp1" [(ngModel)]="fin" ngbDatepicker #d1="ngbDatepicker">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp1" [(ngModel)]="fin" ngbDatepicker
+                  #d1="ngbDatepicker">
                 <button class="input-group-addon" (click)="d1.toggle()" type="button">
                   <i class="fa fa-calendar margen-0"></i>
                 </button>
@@ -31,26 +31,31 @@
             </div>
           </div>
           <div class="text-right">
-            <button type="button" class="btn btn-primary" (click)="descargarReporte('rptConsolidadoSunat')"><i class="fa fa-file-archive-o margen-0" style="font-size: 12px;"></i> Generar</button>
+            <button type="button" class="btn btn-primary" (click)="exportarVentas()">
+              <i class="fa fa-spinner" style="font-size: 12px;" *ngIf="cargando"></i>
+              <i class="fa fa-file-archive-o margen-0" style="font-size: 12px;" *ngIf="!cargando"></i>
+              Generar</button>
           </div>
         </ng-template>
       </ngb-panel>
       <ngb-panel title="Documentos por Codigo">
-          <ng-template ngbPanelContent>
-            <div class="form-row">
-              <div class="form-group col col-md-6">
-                <label class="col-form-label">Desde:</label>
-                <div class="input-group">
-                  <input class="form-control" placeholder="P.ejemplo B001-00000066"
-                         name="codigo" [(ngModel)]="codigo">
-                </div>
+        <ng-template ngbPanelContent>
+          <div class="form-row">
+            <div class="form-group col col-md-6">
+              <label class="col-form-label">Desde:</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="P.ejemplo B001-00000066" name="codigo" [(ngModel)]="codigo">
               </div>
             </div>
-            <div class="text-right">
-              <button type="button" class="btn btn-primary" (click)="descargarReporte('rptConsolidadoSunat')"><i class="fa fa-file-archive-o margen-0" style="font-size: 12px;"></i> Generar</button>
-            </div>
-          </ng-template>
-        </ngb-panel>
+          </div>
+          <div class="text-right">
+            <button type="button" class="btn btn-primary" (click)="exportarVentas2()">
+              <i class="fa fa-spinner" style="font-size: 12px;" *ngIf="cargando"></i>
+              <i class="fa fa-file-archive-o margen-0" style="font-size: 12px;" *ngIf="!cargando"></i>
+              Generar</button>
+          </div>
+        </ng-template>
+      </ngb-panel>
     </ngb-accordion>
   </div>
   <div class="row justify-content-end">

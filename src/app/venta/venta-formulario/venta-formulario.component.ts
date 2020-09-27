@@ -410,7 +410,7 @@ export class VentaFormularioComponent implements OnInit {
     let params = {
       "codusu": this.auth.getUserName(),
       "report": 'rptBoletaSunat',
-      "idVenta": this.idventa
+      "idVenta": this.idventa || this.venta.id
     };
     this.apiReport.post("reporte/generarsunat", params)
       .then(
@@ -418,7 +418,7 @@ export class VentaFormularioComponent implements OnInit {
           if (data) {
             this.descargarArchivoPDF('application/pdf', 'rptDetalleBoleta.pdf', data);
             this.cargando = false;
-            this.router.navigate(['./ventas/lista/']);
+            this.venta.id ? null : this.router.navigate(['./ventas/lista/']);
           }
         }
       )

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { Paginacion } from '../../entidades/entidad.paginacion';
 import { ApiRequestService } from '../../servicios/api-request.service';
 import { AuthService } from '../../servicios/auth.service';
+import { ConfirmacionComponent } from '../../util/confirmacion/confirmacion.component';
 
 @Component({
   selector: 'app-compra-lista',
@@ -28,7 +30,9 @@ export class CompraListaComponent implements OnInit {
   constructor(
     private router: Router,
     private apiRequest: ApiRequestService,
-    private auth: AuthService
+    private auth: AuthService,
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) {
     this.paginacion = new Paginacion();
   }
@@ -78,6 +82,31 @@ export class CompraListaComponent implements OnInit {
     this.solicitando = false;
     this.solicitudExitosa = false;
     this.mensajeForUser = 'Ups Error';
+  }
+
+  confirmarEliminacion(compra): void {
+    const modalRef = this.modalService.open(ConfirmacionComponent);
+    modalRef.result.then((result) => {
+      this.eliminar(compra);
+    }, (reason) => {
+    });
+  }
+
+  eliminar(compra) {
+    this.solicitando = true;
+    return this.apiRequest.post('compra/eliminar', { id: compra.id })
+      .then(
+        data => {
+          if (data && data.extraInfo) {
+            this.compras.splice(this.compras.indexOf(compra), 1);
+            this.toastr.success(data.operacionMensaje, "Exito");
+          } else {
+            this.toastr.warning(data.operacionMensaje, "Informacion");
+          }
+          this.solicitando = false;
+        }
+      )
+      .catch(err => this.handleError(err));
   }
 
 }

@@ -10,9 +10,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent implements OnInit {
 
-  user: any ={
-    
-  } ;
+  user: any = {
+
+  };
 
   cargando: boolean = false;
 
@@ -29,32 +29,31 @@ export class LoginComponent implements OnInit {
 
   ingresar() {
     this.cargando = true;
-    this.authService.ingresar(this.user.username, this.user.password)
-      .then(
-        resp => {
-          if (resp.user === undefined || resp.user.userId === undefined || resp.user.token === "INVALID") {
-            this.toastr.error('Usuario o clave incorrecta', 'Error');
-            this.authService.cerrarSession();
-            this.cargando = false;
-            return;
-          }
-          this.cargando = false;
-          this.router.navigate(["/"]);
-          // window.location.reload();
-        },
-        errResponse => {
-          this.authService.cerrarSession();
-          switch (errResponse.status) {
-            case 401:
-            case 403:
-              this.toastr.error('Usuario o clave incorrecta', 'Error');
-              break;
-            default:
-              this.toastr.error('Error interno', 'Error');
-          }
-          this.cargando = false;
-        }
-      );
+    this.authService.ingresar(this.user.username, this.user.password, this);
+  }
+
+  despuesDeLoguearseExito(resp) {
+    if (resp.user === undefined || resp.user.userId === undefined || resp.user.token === "INVALID") {
+      this.toastr.error('Usuario o clave incorrecta', 'Error');
+      this.authService.cerrarSession();
+      this.cargando = false;
+      return;
+    }
+    this.cargando = false;
+    this.router.navigate(["/"], { queryParams: { reload: true }, preserveQueryParams: false });
+  }
+
+  despuesDeLoguearseError(errResponse) {
+    this.authService.cerrarSession();
+    switch (errResponse.status) {
+      case 401:
+      case 403:
+        this.toastr.error('Usuario o clave incorrecta', 'Error');
+        break;
+      default:
+        this.toastr.error('Error interno', 'Error');
+    }
+    this.cargando = false;
   }
 
   salir() {

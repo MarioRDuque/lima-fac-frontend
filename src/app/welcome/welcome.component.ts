@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../servicios/auth.service';
 import { ApiRequestService } from '../servicios/api-request.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import {Location} from '@angular/common'; 
 
 @Component({
   selector: 'app-welcome',
@@ -13,23 +14,32 @@ export class WelcomeComponent implements OnInit {
   constructor(
     public auth: AuthService,
     public api: ApiRequestService,
-    public router: Router
-  ) { }
+    public router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+  ) {
+    this.route.queryParams.subscribe(params => {
+      if (params && params.reload == "true") {
+        this.location.replaceState('/')
+        window.location.reload();
+      }
+    });
+  }
 
   ngOnInit() {
-    if(!this.auth.hayToken()){
+    if (!this.auth.hayToken()) {
       this.router.navigate(['login']);
     }
   }
 
-  navegar(url){
+  navegar(url) {
     this.router.navigate([url]);
   }
 
-  levantarFacturador(){
+  levantarFacturador() {
     this.api.get("facturador")
       .then(data => {
-        if(data){
+        if (data) {
           console.log("Exito");
         }
       })

@@ -403,16 +403,16 @@ export class CompraFormularioComponent implements OnInit {
     this.cargando = true;
     let params = {
       "codusu": this.auth.getUserName(),
-      "report": 'rptBoletaSunat',
-      "idCompra": this.idcompra
+      "report": 'rptBoletaCompra',
+      "idCompra": this.idcompra || this.compra.id
     };
-    this.apiReport.post("reporte/generarsunat", params)
+    this.apiReport.post("reporte/geenerarComprobanteCompra", params)
       .then(
         data => {
           if (data) {
             this.descargarArchivoPDF('application/pdf', 'rptDetalleBoleta.pdf', data);
             this.cargando = false;
-            this.router.navigate(['./compras/lista/']);
+            this.compra.id ? null : this.router.navigate(['./compras/lista/']);
           }
         }
       )

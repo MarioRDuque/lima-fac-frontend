@@ -41,16 +41,13 @@ export class AuthService {
         private homeService: HomeService
     ) { }
 
-    ingresar(username: string, password: string): Promise<AuthRespuesta> {
+    ingresar(username: string, password: string, contexto) {
         let bodyData: AuthSolicitudParam = {
             'username': username,
             'password': password,
         }
-
-        //  console.log(bodyData);
-
         let authRespuesta: AuthRespuesta;
-        return this.apiRequest.post('session', bodyData)
+        this.apiRequest.post('session', bodyData)
             .then(
                 jsonResp => {
                     if (jsonResp !== undefined && jsonResp.item !== null && jsonResp.estadoOperacion === "EXITO") {
@@ -66,25 +63,24 @@ export class AuthService {
                                 "nombreTipoUsuario": jsonResp.item.tipoNombreUsuario
                             }
                         };
-                        //calses de angular
                         this.almacenamiento.setItem(this.usuarioActualKey, JSON.stringify(authRespuesta.user));
                         this.homeService.guardarTiposEnStorage();
-                    }
-                    else {
+                        contexto.despuesDeLoguearseExito(authRespuesta);
+                    } else {
                         this.cerrarSession();
                         authRespuesta = {
                             "success": false,
                             "mensaje": jsonResp.msgDesc,
                             "urlDestino": "login"
                         };
+                        contexto.despuesDeLoguearseError(authRespuesta);
                     }
-                    return authRespuesta;
                 })
-            .catch(err => this.handleError(err));
+            .catch(err => this.handleError(err, contexto));
     }
 
-    private handleError(error: any): Promise<any> {
-        return Promise.reject(error.message || error);
+    private handleError(error: any, contexto) {
+        contexto.despuesDeLoguearseError(error.message || error);
     }
 
     cerrarSession(): void {
